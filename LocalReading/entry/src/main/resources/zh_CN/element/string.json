@@ -83,6 +83,18 @@
     {
       "name": "password",
       "value": "密码"
+    },
+    {
+      "name": "SpeechVolume",
+      "value": "朗读音量"
+    },
+    {
+      "name": "FontSize",
+      "value": "字体大小"
+    },
+    {
+      "name": "LineHeight",
+      "value": "行间距"
     }
   ]
 }

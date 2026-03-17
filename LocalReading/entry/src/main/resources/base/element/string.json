@@ -83,6 +83,26 @@
     {
       "name": "password",
       "value": "Password"
+    },
+    {
+      "name": "distributed_data_sync_reason",
+      "value": "用于在多设备间同步阅读进度和设置"
+    },
+    {
+      "name": "distributed_device_info_reason",
+      "value": "用于发现和管理可用的同步设备"
+    },
+    {
+      "name": "SpeechVolume",
+      "value": "SpeechVolume"
+    },
+    {
+      "name": "FontSize",
+      "value": "Font Size"
+    },
+    {
+      "name": "LineHeight",
+      "value": "Line Height"
     }
   ]
 }

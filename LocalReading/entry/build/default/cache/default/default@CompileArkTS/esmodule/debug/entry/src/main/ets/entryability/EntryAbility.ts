@@ -7,8 +7,9 @@ import window from "@ohos:window";
 import { WindowAbility } from "@bundle:com.example.readerkitdemo/entry/ets/entryability/WindowAbility";
 import deviceInfo from "@ohos:deviceInfo";
 import { EyeModeStorage } from "@bundle:com.example.readerkitdemo/entry/ets/common/EyeModeStorage";
-import { GlobalContext } from "@bundle:com.example.readerkitdemo/entry/ets/utils/GlobalContext";
+import { GlobalContext } from "@bundle:com.example.readerkitdemo/entry/ets/common/GlobalContext";
 import { StorageUtil } from "@bundle:com.example.readerkitdemo/entry/ets/utils/StorageUtil";
+import { DistributedSyncManager } from "@bundle:com.example.readerkitdemo/entry/ets/utils/DistributedSyncManager";
 const TAG: string = 'EntryAbility';
 export default class EntryAbility extends UIAbility {
     private windowStage: window.WindowStage | null = null;
@@ -18,10 +19,31 @@ export default class EntryAbility extends UIAbility {
         GlobalContext.getInstance().setContext(this.context);
         //初始化护眼模式
         this.initEyeMode();
+        //初始化分布式数据同步
+        this.initDistributedSync();
     }
     private async initEyeMode() {
         const eyeMode = await EyeModeStorage.loadEyeMode(this.context);
         AppStorage.setOrCreate('eyeMode', eyeMode);
+    }
+    private async initDistributedSync() {
+        try {
+            const syncManager = DistributedSyncManager.getInstance();
+            const initialized = await syncManager.initialize();
+            AppStorage.setOrCreate('syncServiceAvailable', initialized);
+            hilog.info(0x0000, TAG, `Distributed sync service initialized: ${initialized}`);
+            // 尝试从分布式对象恢复数据（如果有其他设备同步过来的数据）
+            if (initialized) {
+                const restored = await syncManager.restoreData();
+                if (restored) {
+                    hilog.info(0x0000, TAG, 'Data restored from distributed sync');
+                }
+            }
+        }
+        catch (error) {
+            hilog.error(0x0000, TAG, `Failed to initialize distributed sync service: ${error.message}`);
+            AppStorage.setOrCreate('syncServiceAvailable', false);
+        }
     }
     onDestroy() {
         hilog.info(0x0000, TAG, '%{public}s', 'Ability onDestroy');
@@ -48,7 +70,7 @@ export default class EntryAbility extends UIAbility {
             hilog.error(0x0000, TAG, 'Failed to restore login state: ' + JSON.stringify(error));
             AppStorage.setOrCreate('currentUser', '');
         }
-        //pages/MainTab，页面加载
+        //pages/MainTab，页面加载 SyncTest
         windowStage.loadContent('pages/Welcome', (err, data) => {
             if (err.code !== 0) {
                 hilog.error(0x0000, TAG, `Failed to load the content. Code: ${err.code}, message: ${err.message}`);

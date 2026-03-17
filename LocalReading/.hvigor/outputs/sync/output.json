@@ -210,13 +210,13 @@
             "name": "default",
             "type": "HarmonyOS",
             "material": {
-              "certpath": "C:/Users/ASUS/.ohos/config/default_ReaderKitDemo_MNGDY2BW5R5qgTFvocahlpj7R8nhUJo9QU42Lbqsm7M=.cer",
+              "certpath": "C:\\Users\\ASUS\\.ohos\\config\\default_LocalReading_bniFhpUI_UZBMG7NLSz5HKcZZ6RwePKGdP0c5d4rQ2c=.cer",
               "keyAlias": "debugKey",
-              "keyPassword": "0000001AF259FA90FB0C29B12A6C46249A94E00BE02C5CECDDB5DA7B4B95C78C1A23514B72C81F8F14AD",
-              "profile": "C:/Users/ASUS/.ohos/config/default_ReaderKitDemo_MNGDY2BW5R5qgTFvocahlpj7R8nhUJo9QU42Lbqsm7M=.p7b",
+              "keyPassword": "0000001B2CE7B231DFF1680F75DF6FA96DDFE2F14ABA2AB57033DD8E6282B5E1F6962EB8AD4664C9B415C3",
+              "profile": "C:\\Users\\ASUS\\.ohos\\config\\default_LocalReading_bniFhpUI_UZBMG7NLSz5HKcZZ6RwePKGdP0c5d4rQ2c=.p7b",
               "signAlg": "SHA256withECDSA",
-              "storeFile": "C:/Users/ASUS/.ohos/config/default_ReaderKitDemo_MNGDY2BW5R5qgTFvocahlpj7R8nhUJo9QU42Lbqsm7M=.p12",
-              "storePassword": "0000001A71E70900A7F021734DD96BE6D367489B2E4B7181880EAA902A021E26698DE79BD334534F1014"
+              "storeFile": "C:\\Users\\ASUS\\.ohos\\config\\default_LocalReading_bniFhpUI_UZBMG7NLSz5HKcZZ6RwePKGdP0c5d4rQ2c=.p12",
+              "storePassword": "0000001B4249F7E4DC3FAC84744D362C6DDD6FF1087F76A16B5C814801537380BC524B06D810CEF2EAAB71"
             }
           }
         ],

@@ -355,7 +355,7 @@ export class Mine extends ViewPU {
             Column.width('95%');
         }, Column);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Image.create({ "id": 16777307, "type": 20000, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+            Image.create({ "id": 16777296, "type": 20000, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
             Context.animation({
                 duration: 200,
                 curve: Curve.EaseOut
@@ -431,7 +431,7 @@ export class Mine extends ViewPU {
             Column.create();
             Column.width('100%');
             Column.height('100%');
-            Column.backgroundColor(this.eyeMode ? '#FAF9DE' : { "id": 16777261, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+            Column.backgroundColor(this.eyeMode ? '#FAF9DE' : { "id": 16777263, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
         }, Column);
         // 自定义下拉刷新指示器 - 只有图片，没有文字
         this.customRefreshIndicator.bind(this)();
@@ -446,7 +446,7 @@ export class Mine extends ViewPU {
             Row.justifyContent(FlexAlign.SpaceBetween);
         }, Row);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Image.create({ "id": 16777293, "type": 20000, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+            Image.create({ "id": 16777303, "type": 20000, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
             Image.width(50);
             Image.height(50);
             Image.margin({ left: 25 });
@@ -552,13 +552,13 @@ export class Mine extends ViewPU {
         }, Text);
         Text.pop();
         this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Image.create({ "id": 16777289, "type": 20000, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+            Image.create({ "id": 16777295, "type": 20000, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
             Image.width(23);
             Image.height(23);
         }, Image);
         Row.pop();
         this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Image.create({ "id": 16777276, "type": 20000, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+            Image.create({ "id": 16777278, "type": 20000, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
             Image.margin({ right: 10 });
             Image.width(25);
             Image.height(25);
@@ -613,14 +613,14 @@ export class Mine extends ViewPU {
         }, Text);
         Text.pop();
         this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Image.create({ "id": 16777274, "type": 20000, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+            Image.create({ "id": 16777276, "type": 20000, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
             Image.width(23);
             Image.height(23);
             Image.margin({ left: 5 });
         }, Image);
         Row.pop();
         this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Image.create({ "id": 16777276, "type": 20000, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+            Image.create({ "id": 16777278, "type": 20000, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
             Image.margin({ right: 10 });
             Image.width(25);
             Image.height(25);
@@ -671,7 +671,7 @@ export class Mine extends ViewPU {
         }, Text);
         Text.pop();
         this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Image.create(this.eyeMode == false ? { "id": 16777283, "type": 20000, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" } : { "id": 16777284, "type": 20000, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+            Image.create(this.eyeMode == false ? { "id": 16777287, "type": 20000, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" } : { "id": 16777288, "type": 20000, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
             Image.margin({ right: 10 });
             Image.width(25);
             Image.height(25);
@@ -722,7 +722,7 @@ export class Mine extends ViewPU {
         }, Text);
         Text.pop();
         this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Image.create({ "id": 16777276, "type": 20000, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+            Image.create({ "id": 16777278, "type": 20000, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
             Image.margin({ right: 10 });
             Image.width(25);
             Image.height(25);

@@ -2,7 +2,6 @@
 /**
  * Local book import result code
  *
- * @since 2025/2/12
  */
 export enum LocalBookImportResult {
     // Local book import successful

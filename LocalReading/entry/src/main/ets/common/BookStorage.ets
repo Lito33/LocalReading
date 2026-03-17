@@ -9,6 +9,8 @@ interface StoredBookInfo {
   bookName: string;
   filePath: string;
   coverPath: string;
+  bookSourceType: number;
+  localHash: string;
 }
 
 export class BookStorage {
@@ -31,7 +33,9 @@ export class BookStorage {
         bookId: book.getBookId(),
         bookName: book.getBookName(),
         filePath: book.getFilePath(),
-        coverPath: book.getCoverPath() || ''
+        coverPath: book.getCoverPath() || '',
+        bookSourceType: book.getBookSourceType(),
+        localHash: book.getLocalHash()
       };
       return storedBook;
     });
@@ -54,7 +58,9 @@ export class BookStorage {
         book.setBookId(item.bookId)
           .setBookName(item.bookName)
           .setFilePath(item.filePath)
-          .setCoverPath(item.coverPath || '');
+          .setCoverPath(item.coverPath || '')
+          .setBookSourceType(item.bookSourceType ?? -1)
+          .setLocalHash(item.localHash ?? '');
         return book;
       });
     } catch {
@@ -80,7 +86,9 @@ export class BookStorage {
             bookId: book.getBookId(),
             bookName: book.getBookName(),
             filePath: book.getFilePath(),
-            coverPath: book.getCoverPath() || ''
+            coverPath: book.getCoverPath() || '',
+            bookSourceType: book.getBookSourceType(),
+            localHash: book.getLocalHash()
           };
           return storedBook;
         })

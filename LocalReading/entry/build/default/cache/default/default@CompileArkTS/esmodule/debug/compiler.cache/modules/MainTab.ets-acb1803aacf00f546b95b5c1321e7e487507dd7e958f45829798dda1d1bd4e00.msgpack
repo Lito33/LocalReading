@@ -74,7 +74,7 @@ class MainTab extends ViewPU {
                 }
             });
             TabContent.tabBar({ builder: () => {
-                    this.tabBarBuilder.call(this, "书库", 0, { "id": 16777279, "type": 20000, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" }, { "id": 16777278, "type": 20000, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+                    this.tabBarBuilder.call(this, "书库", 0, { "id": 16777281, "type": 20000, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" }, { "id": 16777280, "type": 20000, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
                 } });
         }, TabContent);
         TabContent.pop();
@@ -97,7 +97,7 @@ class MainTab extends ViewPU {
                 }
             });
             TabContent.tabBar({ builder: () => {
-                    this.tabBarBuilder.call(this, "笔记", 1, { "id": 16777288, "type": 20000, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" }, { "id": 16777287, "type": 20000, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+                    this.tabBarBuilder.call(this, "笔记", 1, { "id": 16777293, "type": 20000, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" }, { "id": 16777292, "type": 20000, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
                 } });
         }, TabContent);
         TabContent.pop();
@@ -120,7 +120,7 @@ class MainTab extends ViewPU {
                 }
             });
             TabContent.tabBar({ builder: () => {
-                    this.tabBarBuilder.call(this, "我的", 2, { "id": 16777269, "type": 20000, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" }, { "id": 16777268, "type": 20000, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+                    this.tabBarBuilder.call(this, "我的", 2, { "id": 16777271, "type": 20000, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" }, { "id": 16777270, "type": 20000, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
                 } });
         }, TabContent);
         TabContent.pop();

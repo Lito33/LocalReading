@@ -12,6 +12,10 @@ export interface PersistedReaderSettings {
     themeBgImg: string;
     flipMode: string;
     themeSelectIndex: number; //当前选中的主题索引
+    // TTS朗读设置
+    ttsVolume: number; // 音量 (0-2)
+    ttsPitch: number; // 音调 (0.5-2.0)
+    ttsSpeed: number; // 语速 (0.5-2.0)
 }
 export class SettingStorage {
     //保存阅读设置到 Preferences;  settings:要保存的设置对象

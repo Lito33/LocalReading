@@ -6,7 +6,9 @@
     "pages/Login",
     "pages/Mine",
     "pages/About",
-    "pages/ReadingRecord"
-
+    "pages/ReadingRecord",
+    "common/DebugStorage",
+    "pages/SyncSettings",
+    "pages/SyncTest"
   ]
 }

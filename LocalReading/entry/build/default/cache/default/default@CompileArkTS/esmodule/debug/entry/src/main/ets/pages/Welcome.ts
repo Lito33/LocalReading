@@ -75,7 +75,7 @@ class Welcome extends ViewPU {
             });
         }, Column);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Image.create({ "id": 16777267, "type": 20000, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+            Image.create({ "id": 16777269, "type": 20000, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
             Image.width("70%");
             Image.height("70%");
             Image.objectFit(ImageFit.Contain);

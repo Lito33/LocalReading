@@ -65,6 +65,7 @@ export class FileUtils {
   }
 
 //将指定路径的文件安全地复制到目标路径
+  // srcPath 支持普通路径和 URI 格式
   public static async copyFileToCache(srcPath: string, dstPath: string): Promise<void> {
     if (!srcPath || srcPath.length === 0 || !dstPath || dstPath.length === 0) {
       hilog.error(0x0000, TAG, "copyFileToCache srcPath or dstPath is blank");
@@ -72,7 +73,7 @@ export class FileUtils {
     }
     let fileId = -1;
     try {
-      //以同步方式打开文件获取文件描述符file.fd
+      // 直接使用 openSync 打开源文件（支持 URI）
       let file = fs.openSync(srcPath, fs.OpenMode.READ_ONLY);
       fileId = file.fd;
 
@@ -80,13 +81,15 @@ export class FileUtils {
       hilog.info(0x0000, TAG, "copyFileToCache succeeded");
       return Promise.resolve();
     } catch (error) {
-      hilog.info(0x0000, TAG,
+      hilog.error(0x0000, TAG,
         `copyFileToCache failed, Code: ${error.code}, message: ${error.message}`);
       return Promise.reject();
     } finally {
-      fs.close(fileId).catch(() => {
-        hilog.error(0x0000, TAG, "copyFileToCache close file failed");
-      });
+      if (fileId !== -1) {
+        fs.close(fileId).catch(() => {
+          hilog.error(0x0000, TAG, "copyFileToCache close file failed");
+        });
+      }
     }
   }
 

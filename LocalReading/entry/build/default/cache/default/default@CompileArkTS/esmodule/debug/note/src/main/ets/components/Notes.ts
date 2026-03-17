@@ -181,9 +181,9 @@ export class Notes extends ViewPU {
             //标题部分
             Row.margin({ top: 20 });
         }, Row);
-        this.TitleBar.bind(this)({ "id": 16777303, "type": 10003, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+        this.TitleBar.bind(this)({ "id": 16777314, "type": 10003, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
         this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Text.create(this.deleteMode ? { "id": 16777298, "type": 10003, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" } : { "id": 16777302, "type": 10003, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+            Text.create(this.deleteMode ? { "id": 16777309, "type": 10003, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" } : { "id": 16777313, "type": 10003, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
             Text.position({ x: "80%", y: "40%" });
             Text.fontSize("20fp");
             Text.fontColor(this.bgColor == "#333333" ? "#ff5995ee" : Color.Blue);
@@ -243,7 +243,7 @@ export class Notes extends ViewPU {
             Row.width("100%");
         }, Row);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Button.createWithLabel(!this.deleteMode ? { "id": 16777297, "type": 10003, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" } : { "id": 16777301, "type": 10003, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+            Button.createWithLabel(!this.deleteMode ? { "id": 16777308, "type": 10003, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" } : { "id": 16777312, "type": 10003, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
             Button.width(this.windowWidth > 600 ? "40%" : "60%");
             Button.height("60%");
             Button.margin({ bottom: 13 });

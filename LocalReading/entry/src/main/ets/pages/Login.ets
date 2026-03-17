@@ -1,6 +1,7 @@
 import { promptAction, router } from '@kit.ArkUI';
 import { StorageUtil } from '../utils/StorageUtil';
 import { hilog } from '@kit.PerformanceAnalysisKit';
+import { DistributedSyncManager } from '../utils/DistributedSyncManager';
 
 
 const TAG: string = "Login"
@@ -10,12 +11,6 @@ const TAG: string = "Login"
 struct Login{
 
   @StorageLink('eyeMode') eyeMode: boolean = false;
-
-
-
-
-
-
 
   build() {
     Column() {
@@ -66,25 +61,50 @@ struct LoginBottom{
   passwordController: TextInputController = new TextInputController();//密码输入框控制器
 
   // 组件初始化时加载已保存的用户信息
-  async aboutToAppear(): Promise<void> {
-    await this.loadSavedUserInfo();
+  aboutToAppear(): void {
+    this.loadSavedUserInfo();
+  }
+
+  // 页面显示时重新加载用户信息（处理退出登录后重新进入的情况）
+  onPageShow(): void {
+    console.info('Login: onPageShow - 重新加载用户信息');
+    this.loadSavedUserInfo();
   }
 
   // 加载已保存的用户信息
   private async loadSavedUserInfo(): Promise<void> {
-    this.isRememberPassword = await StorageUtil.isRememberPassword();
-    this.account = await StorageUtil.getUserAccount();
-
-    if (this.isRememberPassword) {
-      this.password = await StorageUtil.getUserPassword();
+    try {
+      console.info('Login: 开始加载保存的用户信息');
+      
+      // 获取记住密码状态
+      this.isRememberPassword = await StorageUtil.isRememberPassword();
+      const savedAccount = await StorageUtil.getUserAccount();
+      const savedPassword = await StorageUtil.getUserPassword();
+      
+      console.info('Login: loadSavedUserInfo - isRemember:', this.isRememberPassword);
+      console.info('Login: loadSavedUserInfo - account:', savedAccount || '空');
+      console.info('Login: loadSavedUserInfo - password:', savedPassword ? '***' : '空');
+      
+      // 加载账号（总是加载，如果有的话）
+      this.account = savedAccount || '';
+      
+      // 加载密码（只有当记住密码且密码不为空时）
+      if (this.isRememberPassword && savedPassword) {
+        this.password = savedPassword;
+        console.info('Login: 自动填充账号和密码');
+      } else {
+        this.password = '';
+        console.info('Login: 只填充账号，不填充密码');
+      }
+      
+      console.info('Login: 加载完成 - 当前账号:', this.account, '密码长度:', this.password.length);
+    } catch (error) {
+      console.error('Login: loadSavedUserInfo failed:', error);
     }
   }
 
-  //模拟登录逻辑（实际项目中替换为接口请求）
+  //登录逻辑
   private async simulateLogin(): Promise<boolean> {
-    //return this.account === 'admin' && this.password === '123456';
-    // 获取所有用户数据
-    const users = await StorageUtil.getAllUsers();
     const account = this.account.trim();
     const password = this.password.trim();
 
@@ -94,16 +114,19 @@ struct LoginBottom{
     }
 
     // 检查账号是否存在
-    if (users[account] !== undefined) {
-      // 账号存在，验证密码
-      if (users[account] === password) {
+    const isUserExists = await StorageUtil.userExists(account);
+    
+    if (isUserExists) {
+      // 账号存在，使用哈希验证密码
+      const isPasswordValid = await StorageUtil.verifyPassword(account, password);
+      if (isPasswordValid) {
         return true; // 密码正确
       } else {
         promptAction.showToast({ message: '密码错误', duration: 2000 });
         return false;
       }
     } else {
-      // 账号不存在，视为注册：保存新用户
+      // 账号不存在，视为注册：保存新用户（自动使用哈希存储）
       await StorageUtil.saveUser(account, password);
       promptAction.showToast({ message: '注册成功，自动登录', duration: 2000 });
       return true;
@@ -120,7 +143,7 @@ struct LoginBottom{
   build() {
     Column(){
       Column() {
-        TextInput({ placeholder: $r('app.string.account') })
+        TextInput({ placeholder: $r('app.string.account'), text: this.account })
           .maxLength(11)
           .type(InputType.USER_NAME)
           .placeholderColor("#99182431")
@@ -130,8 +153,10 @@ struct LoginBottom{
           .backgroundColor(Color.White)
           .margin({top:4})
           .padding({left:12})
+
           .onChange((value: string) => {
             this.account = value;
+            console.info('Login: 账号输入变化:', value);
           })
 
         Divider()
@@ -141,7 +166,7 @@ struct LoginBottom{
 
         //密码输入框
         Stack({ alignContent: Alignment.End }) {
-          TextInput({ placeholder: $r('app.string.password'), controller: this.passwordController })
+          TextInput({ placeholder: $r('app.string.password'), controller: this.passwordController, text: this.password })
             .maxLength(11)
             .type(InputType.Password)
             .showPasswordIcon(false)//禁用默认图标，使用自定义图标
@@ -155,6 +180,7 @@ struct LoginBottom{
             .padding({left:12, right: 40})
             .onChange((value: string) => {
               this.password = value;
+              console.info('Login: 密码输入变化，长度:', value.length);
             })
             .width('100%')
 
@@ -181,6 +207,7 @@ struct LoginBottom{
           .selectedColor("#007DFF")
           .onChange((value: boolean) => {
             this.isRememberPassword = value;
+            console.info('Login: 记住密码状态变化:', value);
           })
 
         Text("记住密码")
@@ -205,22 +232,41 @@ struct LoginBottom{
           bottom: 12
         })
         .onClick(async () => {
+          console.info('Login: 点击登录按钮 - 账号:', this.account, '密码长度:', this.password.length, '记住密码:', this.isRememberPassword);
 
           const isSuccess = await this.simulateLogin();
           if (isSuccess) {
             // 登录成功：保存记住密码相关信息
-            await StorageUtil.saveUserInfo(this.account, this.password, this.isRememberPassword);
+            console.info('Login: 登录成功，保存用户信息 - 账号:', this.account, '记住密码:', this.isRememberPassword);
+            
+            // 根据记住密码状态保存信息
+            if (this.isRememberPassword) {
+              // 记住密码：保存账号和密码
+              await StorageUtil.saveUserInfo(this.account, this.password, true);
+              console.info('Login: 已保存账号和密码');
+            } else {
+              // 不记住密码：只保存账号，清除密码
+              await StorageUtil.saveUserInfo(this.account, '', false);
+              console.info('Login: 只保存账号，清除密码');
+            }
+            
             // 设置登录状态
             await StorageUtil.setLoggedIn(this.account);
             hilog.info(0x0000, TAG, 'Login successful, setting login status for account: ' + this.account);
             AppStorage.setOrCreate('currentUser', this.account);
-            // 登录成功后返回到Tab页面，用户可以通过下拉刷新更新Mine页面状态
-            router.back();
-
-            AppStorage.setOrCreate('currentUser', this.account);
+            
+            // 触发数据同步到其他设备
+            DistributedSyncManager.getInstance().syncData().then((success) => {
+              hilog.info(0x0000, TAG, `Data sync after login: ${success ? 'success' : 'failed'}`);
+            });
             
             // 显示登录成功提示
             promptAction.showToast({ message: '登录成功', duration: 1500 });
+            
+            // 登录成功后返回到Tab页面
+            setTimeout(() => {
+              router.back();
+            }, 500);
           } else {
             promptAction.showToast({
               message: '用户名或密码错误！',

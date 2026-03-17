@@ -14,6 +14,7 @@ import { ProgressStorage, BookProgress} from '../common/ProgressStorage';
 import { emitter } from '@kit.BasicServicesKit';
 import {Speaker} from '../utils/Speaker'
 import { util } from '@kit.ArkTS';
+import { DistributedSyncManager } from '../utils/DistributedSyncManager';
 
 interface paramType {
   filePath: string;
@@ -39,6 +40,8 @@ struct Reader {
   //监听colorMode字段的变化。如果颜色变化，则触发对应主题色的变更。
   @StorageLink('colorMode') @Watch('colorModeChange') colorMode: ConfigurationConstant.ColorMode =
     ConfigurationConstant.ColorMode.COLOR_MODE_NOT_SET;
+  @State isUpdatePressed: boolean = false;
+  @StorageLink('eyeMode') eyeMode: boolean = false;
   /**
    * 显示底部菜单,废弃
    */
@@ -161,6 +164,20 @@ struct Reader {
         this.readerSetting.fontColor = '#ffffff';
       } else {
         this.readerSetting.fontColor = '#000000';
+      }
+
+      // 加载TTS朗读设置
+      if (saved.ttsVolume !== undefined) {
+        this.ttsVolume = saved.ttsVolume;
+        this.speaker.setVolume(this.ttsVolume);
+      }
+      if (saved.ttsPitch !== undefined) {
+        this.ttsPitch = saved.ttsPitch;
+        this.speaker.setPitch(this.ttsPitch);
+      }
+      if (saved.ttsSpeed !== undefined) {
+        this.ttsSpeed = saved.ttsSpeed;
+        this.speaker.setSpeed(this.ttsSpeed);
       }
 
       // 如果保存的字体路径在字体列表中，可能需要高亮（字体选择按钮已经通过 selectFontPath 处理）
@@ -427,14 +444,47 @@ struct Reader {
       themeBgImg: this.readerSetting.themeBgImg,
       flipMode: this.readerSetting.flipMode,
       themeSelectIndex: this.themeSelectIndex,
+      ttsVolume: this.ttsVolume,
+      ttsPitch: this.ttsPitch,
+      ttsSpeed: this.ttsSpeed,
     };
     await SettingStorage.saveSettings(context, settings);
+    // 触发数据同步
+    DistributedSyncManager.getInstance().syncData();
+  }
+
+  // 保存TTS朗读设置
+  private async saveTTSSettings(): Promise<void> {
+    const context = this.getUIContext().getHostContext() as common.UIAbilityContext;
+    // 先加载现有设置，再更新TTS部分
+    const saved = await SettingStorage.loadSettings(context);
+    const settings: PersistedReaderSettings = {
+      fontPath: saved?.fontPath ?? this.readerSetting.fontPath,
+      fontSize: saved?.fontSize ?? this.readerSetting.fontSize,
+      lineHeight: saved?.lineHeight ?? this.readerSetting.lineHeight,
+      nightMode: saved?.nightMode ?? this.readerSetting.nightMode,
+      themeColor: saved?.themeColor ?? this.readerSetting.themeColor,
+      themeBgImg: saved?.themeBgImg ?? this.readerSetting.themeBgImg,
+      flipMode: saved?.flipMode ?? this.readerSetting.flipMode,
+      themeSelectIndex: saved?.themeSelectIndex ?? this.themeSelectIndex,
+      ttsVolume: this.ttsVolume,
+      ttsPitch: this.ttsPitch,
+      ttsSpeed: this.ttsSpeed,
+    };
+    await SettingStorage.saveSettings(context, settings);
+    // 触发数据同步
+    DistributedSyncManager.getInstance().syncData();
   }
 
   //创建朗读实例
   @State isClicked :boolean = false;
   private speaker: Speaker = new Speaker();
   private currentPageText: string = '';// 存储当前页文本
+  
+  // TTS朗读设置状态变量
+  @State ttsVolume: number = 1.0;    // 音量 (0-2)
+  @State ttsPitch: number = 1.0;     // 音调 (0.5-2.0)
+  @State ttsSpeed: number = 1.0;     // 语速 (0.5-2.0)
 
   //加载当前章节文本用于朗读
   private async loadCurrentPageText(resourceIndex: number) {
@@ -498,25 +548,7 @@ struct Reader {
       await this.tryLoadFullBook();
     }
   }
-//   // 根据 resourceIndex 获取对应的 SpineItem，然后获取资源内容
-//   const spineList = this.defaultHandler.getSpineList();
-//   hilog.info(0x0000, TAG, `spineList length: ${spineList.length}`);
-// const spineItem = spineList[resourceIndex];
-// if (!spineItem) {
-//   hilog.error(0x0000, TAG, `spineItem not found for index ${resourceIndex}`);
-//   return;
-// }
-// if (spineItem) {
-//   const buffer = this.defaultHandler.getResourceContent(resourceIndex, spineItem.href);
-//   if (buffer) {
-//     // 假设文本编码为 UTF-8，将 ArrayBuffer 转为字符串
-//     const decoder = util.TextDecoder.create('utf-8');
-//     const rawText = decoder.decodeToString(new Uint8Array(buffer)) || '';
-//     //去除HTML标签，得到纯的文本，不读标点符号
-//     const plainText = rawText.replace(/<[^>]*>/g, '');
-//     this.currentPageText = plainText;
-//   }
-// }
+
 
   //辅助函数：清理HTML标签，保留基本标点
   private cleanHtmlTags(html: string): string {
@@ -592,8 +624,8 @@ struct Reader {
     this.readerComponentController.off('resourceRequest');
     //获取Index页面传入的“书籍文件路径”及“阅读进度”信息，并调用startPlay()接口打开书籍。
     this.readerComponentController.releaseBook();
-    this.speaker?.stopSpeak()
-    this.speaker?.shutdown();
+    // 只停止朗读，不关闭引擎（引擎可以复用）
+    this.speaker?.stopSpeak();
   }
 
   @Builder
@@ -723,7 +755,7 @@ struct Reader {
     .width('100%')
     .borderRadius({ topRight: 32, topLeft: 32 })
     .visibility(this.currentIndex === 0 ? Visibility.Visible : Visibility.None)
-    .backgroundColor(Color.White)
+    .backgroundColor(this.eyeMode ? '#FAF9DE' : $r('app.color.page_background1'))
     .zIndex(3)
   }
 
@@ -945,35 +977,167 @@ struct Reader {
         .margin({ left: 16, top: 12, right: 16 })
         .backgroundColor($r('app.color.ic_bg_grey'))
 
+      //控制播放音量
+      Row(){
+        Text($r('app.string.SpeechVolume'))
+          .fontColor(Color.Black)
+          .fontSize(16)
+          .width(50)
+          .margin({left:5})
+
+        Slider({value:this.ttsVolume,min:0,max:2,step:0.5,style:SliderStyle.InSet})
+          .blockColor('#191970')
+          .trackColor('#ADD8E6')
+          .selectedColor('#4169E1')
+          .showSteps(true)// 显示刻度点
+          .showTips(true)
+          .width('60%')
+          .onChange((value: number, mode: SliderChangeMode) => {
+            this.ttsVolume = Math.round(value * 2) / 2;  // 四舍五入到0.5的倍数
+            this.speaker.setVolume(this.ttsVolume);
+            this.saveTTSSettings();
+            hilog.info(0x0000, TAG, `TTS Volume changed to: ${this.ttsVolume}`);
+          })
+
+        Text(`${this.ttsVolume.toFixed(1)}`)
+          .fontSize(14)
+          .width(30)
+          .textAlign(TextAlign.Center)
+      }
+      .width('100%')
+      .padding({left:10, right:10})
+
+      Text()
+        .width('92%')
+        .height(1)
+        .margin({ left: 16, top: 12, right: 16 })
+        .backgroundColor($r('app.color.ic_bg_grey'))
+
+      //控制播放音调
+      Row(){
+        Text('音调')
+          .fontColor(Color.Black)
+          .fontSize(16)
+          .width(50)
+          .margin({left:5})
+
+        Slider({value:this.ttsPitch,min:0.5,max:2.0,step:0.25,style:SliderStyle.InSet})
+          .blockColor('#191970')
+          .trackColor('#ADD8E6')
+          .selectedColor('#4169E1')
+          .showSteps(true)// 显示刻度点
+          .showTips(true)
+          .width('60%')
+          .onChange((value: number, mode: SliderChangeMode) => {
+            this.ttsPitch = Math.round(value * 4) / 4;  // 四舍五入到0.25的倍数
+            this.speaker.setPitch(this.ttsPitch);
+            this.saveTTSSettings();
+            hilog.info(0x0000, TAG, `TTS Pitch changed to: ${this.ttsPitch}`);
+          })
+
+        Text(`${this.ttsPitch.toFixed(2)}`)
+          .fontSize(14)
+          .width(40)
+          .textAlign(TextAlign.Center)
+      }
+      .width('100%')
+      .padding({left:10, right:10})
+
+      Text()
+        .width('92%')
+        .height(1)
+        .margin({ left: 16, top: 12, right: 16 })
+        .backgroundColor($r('app.color.ic_bg_grey'))
+
+      //控制播放语速
+      Row(){
+        Text('语速')
+          .fontColor(Color.Black)
+          .fontSize(16)
+          .width(50)
+          .margin({left:5})
+
+        Slider({value:this.ttsSpeed,min:0.5,max:2.0,step:0.25,style:SliderStyle.InSet})
+          .blockColor('#191970')
+          .trackColor('#ADD8E6')
+          .selectedColor('#4169E1')
+          .showSteps(true)// 显示刻度点
+          .showTips(true)
+          .width('60%')
+          .onChange((value: number, mode: SliderChangeMode) => {
+            this.ttsSpeed = Math.round(value * 4) / 4;  // 四舍五入到0.25的倍数
+            this.speaker.setSpeed(this.ttsSpeed);
+            this.saveTTSSettings();
+            hilog.info(0x0000, TAG, `TTS Speed changed to: ${this.ttsSpeed}`);
+          })
+
+        Text(`${this.ttsSpeed.toFixed(2)}x`)
+          .fontSize(14)
+          .width(40)
+          .textAlign(TextAlign.Center)
+      }
+      .width('100%')
+      .padding({left:10, right:10})
+
+      Text()
+        .width('92%')
+        .height(1)
+        .margin({ left: 16, top: 12, right: 16 })
+        .backgroundColor($r('app.color.ic_bg_grey'))
+
       //字体大小
-      TextInput({ placeholder: $r('app.string.font_size_placeholder'), text: this.fontSize })
-        .margin({
-          left: 16,
-          top: 10,
-          right: 16,
-          bottom: 10
-        })
-        .backgroundColor($r('app.color.ic_text_input_bg'))
-        //It is recommended that you use layered parameters for easier color mode switching and theme color changing. <ArkTSCheck>
-        .placeholderColor($r('sys.color.ohos_dialog_text_alert'))
-        .fontColor($r('sys.color.ohos_dialog_text_alert'))
-        .type(InputType.Number)
-        .fontSize(16)
-        .onChange((value: string) => {//更改数值
-          this.fontSize = value;
-        })
+      Row(){
+        Text($r('app.string.FontSize'))
+          .fontColor(Color.Black)
+          .fontSize(13)
+          .width(30)
+          .margin({left:5})
+
+        TextInput({ placeholder: $r('app.string.font_size_placeholder'), text: this.fontSize })
+          .margin({
+            left: 16,
+            top: 10,
+            right: 16,
+            bottom: 10
+          })
+          .backgroundColor($r('app.color.ic_text_input_bg'))
+          //It is recommended that you use layered parameters for easier color mode switching and theme color changing. <ArkTSCheck>
+          .placeholderColor($r('sys.color.ohos_dialog_text_alert'))
+          .fontColor($r('sys.color.ohos_dialog_text_alert'))
+          .type(InputType.Number)
+          .fontSize(16)
+          .onChange((value: string) => {//更改数值
+            this.fontSize = value;
+          })
+          .width("80%")
+      }
+      .width("100%")
+      .justifyContent(FlexAlign.SpaceBetween)
+
 
       //行间距
-      TextInput({ placeholder: $r('app.string.line_height_placeholder'), text: this.lineHeight })
-        .margin({ left: 16, right: 16, bottom: 10 })
-        .backgroundColor($r('app.color.ic_text_input_bg'))
-        .placeholderColor($r('sys.color.ohos_dialog_text_alert'))
-        .fontColor($r('sys.color.ohos_dialog_text_alert'))
-        .type(InputType.NUMBER_DECIMAL)
-        .fontSize(16)
-        .onChange((value: string) => {//更改数值
-          this.lineHeight = value;
-        })
+      Row(){
+        Text($r('app.string.LineHeight'))
+          .fontColor(Color.Black)
+          .fontSize(13)
+          .width(30)
+          .margin({left:5})
+
+        TextInput({ placeholder: $r('app.string.line_height_placeholder'), text: this.lineHeight })
+          .margin({ left: 16, right: 16, bottom: 10 })
+          .backgroundColor($r('app.color.ic_text_input_bg'))
+          .placeholderColor($r('sys.color.ohos_dialog_text_alert'))
+          .fontColor($r('sys.color.ohos_dialog_text_alert'))
+          .type(InputType.NUMBER_DECIMAL)
+          .fontSize(16)
+          .onChange((value: string) => {//更改数值
+            this.lineHeight = value;
+          })
+          .width("80%")
+      }
+      .width("100%")
+      .justifyContent(FlexAlign.SpaceBetween)
+
 
       //更新上面两个
       Button($r('app.string.update_font_size_and_line_height'))
@@ -998,19 +1162,29 @@ struct Reader {
               `set fontSize or lineHeight failed, Code: ${error.code}, message: ${error.message}`);
           }
         })
+        .onTouch((event: TouchEvent) => {
+          if (event.type === TouchType.Down) {
+            // 按下时改变状态
+            this.isUpdatePressed = true;
+          } else if (event.type === TouchType.Up || event.type === TouchType.Cancel) {
+            // 松开或取消时恢复状态
+            this.isUpdatePressed = false;
+          }
+        })
         .fontSize(16)
         .width('92%')
         .fontColor(Color.Red)
-        .backgroundColor($r('app.color.ic_text_input_bg'))
+        .backgroundColor(this.isUpdatePressed ? "#ffb0b0b0" : $r('app.color.ic_text_input_bg'))
         .padding({ top: 10, bottom: 10 })
         .margin({ left: 16, right: 16, bottom: 30 })
 
     }
+    .borderRadius({ topRight: 32, topLeft: 32 })
     .width('100%')
     .height('100%')
     .visibility(this.currentIndex === 1 ? Visibility.Visible : Visibility.None)
     .alignItems(HorizontalAlign.Start)
-    .backgroundColor(Color.White)
+    .backgroundColor(this.eyeMode ? '#FAF9DE' : $r('app.color.page_background1'))
     .zIndex(3)
   }
 
@@ -1057,6 +1231,8 @@ struct Reader {
       }
       .position({ top: 30, right: 20 })
       .zIndex(4)
+      .visibility(this.currentIndex >= 0 ? Visibility.Visible : Visibility.None)
+      .animation({duration: 300, curve: Curve.EaseInOut})
 
       //menu bar
       if (this.currentIndex >= 0) {
@@ -1074,11 +1250,8 @@ struct Reader {
             }
             .layoutWeight(1)//撑起来
             .width('100%')
-            .backgroundColor(Color.White)
-            .borderRadius({
-              topRight: this.currentIndex === 0 ? 32 : 0,
-              topLeft: this.currentIndex === 0 ? 32 : 0
-            })
+            .backgroundColor(this.eyeMode ? '#FAF9DE' : $r('app.color.page_background1'))
+            .borderRadius({ topRight: 32, topLeft: 32 })
 
             // 底部按钮栏
             Row() {

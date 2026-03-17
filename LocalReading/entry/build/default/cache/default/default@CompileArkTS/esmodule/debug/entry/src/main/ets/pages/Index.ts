@@ -14,7 +14,7 @@ interface Index_Params {
 }
 import picker from "@ohos:file.picker";
 import { WindowAbility } from "@bundle:com.example.readerkitdemo/entry/ets/entryability/WindowAbility";
-import { LocalBookImporter } from "@bundle:com.example.readerkitdemo/entry/ets/common/LocalBookImporter";
+import { LocalBookImporter } from "@bundle:com.example.readerkitdemo/entry/ets/utils/LocalBookImporter";
 import { bookParser } from "@hms:core.readerservice.bookParser";
 import hilog from "@ohos:hilog";
 import { BookUtils } from "@bundle:com.example.readerkitdemo/entry/ets/utils/BookUtils";
@@ -27,6 +27,7 @@ import image from "@ohos:multimedia.image";
 import { FileUtils } from "@bundle:com.example.readerkitdemo/entry/ets/utils/FileUtils";
 import fs from "@ohos:file.fs";
 import { StorageUtil } from "@bundle:com.example.readerkitdemo/entry/ets/utils/StorageUtil";
+import type { BusinessError } from "@ohos:base";
 const TAG: string = 'IndexPage';
 export class Index extends ViewPU {
     constructor(parent, params, __localStorage, elmtId = -1, paramsLambda = undefined, extraInfo) {
@@ -160,21 +161,6 @@ export class Index extends ViewPU {
         }
         await this.reloadData(); //首次加载
     }
-    //   hilog.info(0x0000, TAG, 'aboutToAppear');
-    //   //控制系统栏的可见性,提前设置好他们
-    //   WindowAbility.getInstance().toggleWindowSystemBar(['status', 'navigation'], this.getUIContext().getHostContext());
-    //
-    //   const context = this.getUIContext().getHostContext() as common.UIAbilityContext;
-    //   //加载已保存的书籍列表
-    //   this.importedBooks = await BookStorage.loadBooks(context);
-    //   //加载所有阅读进度
-    //   this.progresses = await ProgressStorage.loadAllProgresses(context);
-    //   //如果有书籍，默认选中第一本
-    //   if (this.importedBooks.length > 0) {
-    //   this.selectBook(this.importedBooks[0]);
-    // }
-    // //首次加载
-    // await this.reloadData();
     onPageShow(): void {
         ////通过单例模式封装窗口系统栏的控制逻辑。用于控制这两个系统栏的显示或隐藏
         WindowAbility.getInstance().toggleWindowSystemBar(['status', 'navigation'], this.getUIContext().getHostContext());
@@ -216,54 +202,75 @@ export class Index extends ViewPU {
     }
     private async loadBook() {
         try {
+            let context = this.getUIContext().getHostContext() as common.UIAbilityContext;
             //初始化文件选择器
             let documentSelectOptions = new picker.DocumentSelectOptions();
             //设置文件类型
             documentSelectOptions.fileSuffixFilters = ['.epub', '.txt', '.mobi', '.azw', '.azw3'];
             documentSelectOptions.maxSelectNumber = 10; //可选择最大数量
-            let documentPicker = new picker.DocumentViewPicker();
+            let documentPicker = new picker.DocumentViewPicker(context);
             //通过select()方法返回Promise对象，需配合await进行异步处理
             let documentSelectResult = await documentPicker.select(documentSelectOptions);
             if (!documentSelectResult || documentSelectResult.length <= 0) {
                 hilog.error(0x0000, TAG, 'loadBook failed');
                 return;
             }
-            let context = this.getUIContext().getHostContext() as common.UIAbilityContext;
             //导入数量
             let importedCount = 0;
+            //跳过数量（重复）
+            let skippedCount = 0;
             for (let i = 0; i < documentSelectResult.length; i++) {
                 //获取书籍路径
                 let srcFile: string = decodeURI(documentSelectResult[i]);
                 hilog.info(0x0000, TAG, `开始导入第 ${i + 1} 本书: ${srcFile}`);
-                //创建LocalBookImporter实例，调用 importLocalBookToCache 将文件复制到应用缓存目录并返回一个包含书籍元数据
-                // （ID、书名、文件路径等）的 BookParserInfo 对象。
-                let importer = new LocalBookImporter();
-                let bookParserInfo = await importer.importLocalBookToCache(srcFile, BookUtils.getBookFileLocalBookPath(context.filesDir));
-                // 检查是否已存在
-                const exists = this.importedBooks.some(book => book.getFilePath() === bookParserInfo.getFilePath());
-                if (!exists) {
-                    // 提取封面（原有逻辑，建议封装为单独函数）
+                try {
+                    //创建LocalBookImporter实例，调用 importLocalBookToCache 将文件复制到应用缓存目录并返回一个包含书籍元数据
+                    // （ID、书名、文件路径等）的 BookParserInfo 对象。
+                    let importer = new LocalBookImporter();
+                    let bookParserInfo = await importer.importLocalBookToCache(srcFile, BookUtils.getBookFileLocalBookPath(context.filesDir), this.importedBooks // 传递已导入书籍列表用于重复检测
+                    );
+                    // 提取封面
                     await this.extractCover(bookParserInfo, context);
                     this.importedBooks = [...this.importedBooks, bookParserInfo];
                     importedCount++;
                 }
+                catch (err) {
+                    // 处理重复导入错误
+                    const errObj = err as BusinessError;
+                    if (errObj.code === 100) { // LOCAL_BOOK_IMPORT_DUPLICATE
+                        hilog.warn(0x0000, TAG, `跳过重复书籍: ${srcFile}`);
+                        skippedCount++;
+                    }
+                    else {
+                        // 其他错误继续抛出
+                        throw new Error(`导入失败: ${(err as Error).message}`);
+                    }
+                }
             }
+            // 保存更新后的书籍列表
             if (importedCount > 0) {
-                // 保存更新后的书籍列表
                 await BookStorage.saveBooks(this.importedBooks, context, this.currentUser);
                 // 选中最后一本导入的书籍
                 this.selectBook(this.importedBooks[this.importedBooks.length - 1]);
-                this.getUIContext().getPromptAction().showToast({
-                    message: `成功导入 ${importedCount} 本书`,
-                    duration: 2000
-                });
+            }
+            // 显示导入结果
+            let message = '';
+            if (importedCount > 0 && skippedCount > 0) {
+                message = `成功导入 ${importedCount} 本书，跳过 ${skippedCount} 本重复书籍`;
+            }
+            else if (importedCount > 0) {
+                message = `成功导入 ${importedCount} 本书`;
+            }
+            else if (skippedCount > 0) {
+                message = `全部为重复书籍，已跳过 ${skippedCount} 本`;
             }
             else {
-                this.getUIContext().getPromptAction().showToast({
-                    message: '没有新书被导入',
-                    duration: 2000
-                });
+                message = '没有新书被导入';
             }
+            this.getUIContext().getPromptAction().showToast({
+                message: message,
+                duration: 2000
+            });
         }
         catch (error) {
             hilog.error(0x0000, TAG, `loadBook failed , Code: ${error.code}, message: ${error.message}`);
@@ -290,7 +297,7 @@ export class Index extends ViewPU {
     async reloadData() {
         const context = this.getUIContext().getHostContext() as common.UIAbilityContext;
         hilog.info(0x0000, TAG, `Index reloadData: currentUser = ${this.currentUser}`);
-        // 根据当前用户加载数据（如果 currentUser 为空，则加载空数据）
+        // 根据当前用户加载数据（如果 currentUser 为空，则加载空数据，是的没登陆也能用）
         this.importedBooks = await BookStorage.loadBooks(context, this.currentUser);
         hilog.info(0x0000, TAG, `Index reloadData: loaded ${this.importedBooks.length} books`);
         this.progresses = await ProgressStorage.loadAllProgresses(context, this.currentUser);
@@ -348,7 +355,7 @@ export class Index extends ViewPU {
             RelativeContainer.create();
             RelativeContainer.height('100%');
             RelativeContainer.width('100%');
-            RelativeContainer.backgroundColor(this.eyeMode ? '#FAF9DE' : { "id": 16777261, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+            RelativeContainer.backgroundColor(this.eyeMode ? '#FAF9DE' : { "id": 16777263, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
             RelativeContainer.padding({ left: 16, right: 16 });
         }, RelativeContainer);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
@@ -396,7 +403,7 @@ export class Index extends ViewPU {
         }, Text);
         Text.pop();
         this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Image.create({ "id": 16777270, "type": 20000, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+            Image.create({ "id": 16777272, "type": 20000, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
             Image.width('30');
             Image.height('30');
             Image.onClick(async () => {
@@ -414,7 +421,7 @@ export class Index extends ViewPU {
                     this.observeComponentCreation2((elmtId, isInitialRender) => {
                         Text.create({ "id": 16777225, "type": 10003, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
                         Text.fontSize(14);
-                        Text.fontColor({ "id": 16777242, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+                        Text.fontColor({ "id": 16777244, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
                         Text.alignSelf(ItemAlign.Start);
                         Text.margin({ top: 28, left: 16 });
                         Text.fontWeight(FontWeight.Bold);
@@ -426,7 +433,7 @@ export class Index extends ViewPU {
                         //获取书籍名称
                         Text.fontSize(16);
                         //获取书籍名称
-                        Text.fontColor({ "id": 16777243, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+                        Text.fontColor({ "id": 16777245, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
                         //获取书籍名称
                         Text.backgroundColor(Color.White);
                         //获取书籍名称
@@ -518,7 +525,7 @@ export class Index extends ViewPU {
                                     }, Row);
                                     this.observeComponentCreation2((elmtId, isInitialRender) => {
                                         //这里使用绝对路径无法显示图片，改为协议路径就好了->file://,因为获取的路径是从/data开始的
-                                        Image.create(book.getCoverPath() ? 'file://' + book.getCoverPath() : { "id": 16777282, "type": 20000, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+                                        Image.create(book.getCoverPath() ? 'file://' + book.getCoverPath() : { "id": 16777285, "type": 20000, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
                                         //这里使用绝对路径无法显示图片，改为协议路径就好了->file://,因为获取的路径是从/data开始的
                                         Image.width(60);
                                         //这里使用绝对路径无法显示图片，改为协议路径就好了->file://,因为获取的路径是从/data开始的
@@ -577,7 +584,7 @@ export class Index extends ViewPU {
                                             this.ifElseBranchUpdateFunction(0, () => {
                                                 this.observeComponentCreation2((elmtId, isInitialRender) => {
                                                     // Text('✓').fontColor(Color.Green).margin({ right: 8 })
-                                                    Image.create({ "id": 16777271, "type": 20000, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+                                                    Image.create({ "id": 16777273, "type": 20000, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
                                                     // Text('✓').fontColor(Color.Green).margin({ right: 8 })
                                                     Image.margin({ right: 8 });
                                                     // Text('✓').fontColor(Color.Green).margin({ right: 8 })
@@ -632,7 +639,7 @@ export class Index extends ViewPU {
             Button.width('100%');
             Button.height(40);
             Button.margin({ top: 13, bottom: 35 });
-            Button.backgroundColor({ "id": 16777244, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+            Button.backgroundColor({ "id": 16777246, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
             Button.enabled(!!this.selectedBook);
             Button.onClick(async () => {
                 if (!this.selectedBook) {
@@ -653,10 +660,10 @@ export class Index extends ViewPU {
     //控制按钮是否继续阅读
     private getButtonText(): ResourceStr {
         if (!this.selectedBook) {
-            return { "id": 16777230, "type": 10003, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" };
+            return { "id": 16777232, "type": 10003, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" };
         }
         const hasProgress = this.progresses.some(p => p.filePath === this.selectedBook!.getFilePath());
-        return hasProgress ? { "id": 16777227, "type": 10003, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" } : { "id": 16777230, "type": 10003, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" };
+        return hasProgress ? { "id": 16777227, "type": 10003, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" } : { "id": 16777232, "type": 10003, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" };
     }
     //获取章节并展示
     private getChapterDisplay(book: BookParserInfo): string {

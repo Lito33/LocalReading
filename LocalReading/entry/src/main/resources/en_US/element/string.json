@@ -83,6 +83,14 @@
     {
       "name": "password",
       "value": "Password"
+    },
+    {
+      "name": "FontSize",
+      "value": "Font Size"
+    },
+    {
+      "name": "LineHeight",
+      "value": "Line Height"
     }
   ]
 }

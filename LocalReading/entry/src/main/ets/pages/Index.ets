@@ -1,7 +1,7 @@
 //页面入口，用于导入书籍
 import { picker } from '@kit.CoreFileKit';
 import { WindowAbility } from '../entryability/WindowAbility';
-import { LocalBookImporter } from '../common/LocalBookImporter';
+import { LocalBookImporter } from '../utils/LocalBookImporter';
 import { bookParser } from '@kit.ReaderKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { BookUtils } from '../utils/BookUtils';
@@ -13,6 +13,7 @@ import { image } from '@kit.ImageKit';
 import { FileUtils } from '../utils/FileUtils';
 import { fileIo as fs } from '@kit.CoreFileKit';
 import { StorageUtil } from '../utils/StorageUtil';
+import { BusinessError } from '@kit.BasicServicesKit';
 
 
 const TAG: string = 'IndexPage';
@@ -54,21 +55,7 @@ export struct Index {
     }
     await this.reloadData();  //首次加载
   }
-//   hilog.info(0x0000, TAG, 'aboutToAppear');
-//   //控制系统栏的可见性,提前设置好他们
-//   WindowAbility.getInstance().toggleWindowSystemBar(['status', 'navigation'], this.getUIContext().getHostContext());
-//
-//   const context = this.getUIContext().getHostContext() as common.UIAbilityContext;
-//   //加载已保存的书籍列表
-//   this.importedBooks = await BookStorage.loadBooks(context);
-//   //加载所有阅读进度
-//   this.progresses = await ProgressStorage.loadAllProgresses(context);
-//   //如果有书籍，默认选中第一本
-//   if (this.importedBooks.length > 0) {
-//   this.selectBook(this.importedBooks[0]);
-// }
-// //首次加载
-// await this.reloadData();
+
 
   onPageShow(): void {
     ////通过单例模式封装窗口系统栏的控制逻辑。用于控制这两个系统栏的显示或隐藏
@@ -115,61 +102,79 @@ export struct Index {
 
   private async loadBook() {
     try {
+      let context = this.getUIContext().getHostContext() as common.UIAbilityContext;
+      
       //初始化文件选择器
       let documentSelectOptions = new picker.DocumentSelectOptions();
       //设置文件类型
       documentSelectOptions.fileSuffixFilters = ['.epub', '.txt', '.mobi', '.azw', '.azw3'];
       documentSelectOptions.maxSelectNumber = 10;//可选择最大数量
-      let documentPicker = new picker.DocumentViewPicker();
+      let documentPicker = new picker.DocumentViewPicker(context);
       //通过select()方法返回Promise对象，需配合await进行异步处理
       let documentSelectResult = await documentPicker.select(documentSelectOptions);
       if (!documentSelectResult || documentSelectResult.length <= 0) {
         hilog.error(0x0000, TAG, 'loadBook failed');
         return;
       }
-
-
-      let context = this.getUIContext().getHostContext() as common.UIAbilityContext;
       //导入数量
       let importedCount = 0;
-
+      //跳过数量（重复）
+      let skippedCount = 0;
 
       for (let i = 0; i < documentSelectResult.length; i++){
         //获取书籍路径
         let srcFile: string = decodeURI(documentSelectResult[i]);
         hilog.info(0x0000, TAG, `开始导入第 ${i+1} 本书: ${srcFile}`);
 
-        //创建LocalBookImporter实例，调用 importLocalBookToCache 将文件复制到应用缓存目录并返回一个包含书籍元数据
-        // （ID、书名、文件路径等）的 BookParserInfo 对象。
-        let importer = new LocalBookImporter();
-        let bookParserInfo = await importer.importLocalBookToCache(srcFile,
-          BookUtils.getBookFileLocalBookPath(context.filesDir));
+        try {
+          //创建LocalBookImporter实例，调用 importLocalBookToCache 将文件复制到应用缓存目录并返回一个包含书籍元数据
+          // （ID、书名、文件路径等）的 BookParserInfo 对象。
+          let importer = new LocalBookImporter();
+          let bookParserInfo = await importer.importLocalBookToCache(
+            srcFile,
+            BookUtils.getBookFileLocalBookPath(context.filesDir),
+            this.importedBooks  // 传递已导入书籍列表用于重复检测
+          );
 
-        // 检查是否已存在
-        const exists = this.importedBooks.some(book => book.getFilePath() === bookParserInfo.getFilePath());
-        if (!exists) {
-          // 提取封面（原有逻辑，建议封装为单独函数）
+          // 提取封面
           await this.extractCover(bookParserInfo, context);
           this.importedBooks = [...this.importedBooks, bookParserInfo];
           importedCount++;
+        } catch (err) {
+          // 处理重复导入错误
+          const errObj = err as BusinessError;
+          if (errObj.code === 100) {  // LOCAL_BOOK_IMPORT_DUPLICATE
+            hilog.warn(0x0000, TAG, `跳过重复书籍: ${srcFile}`);
+            skippedCount++;
+          } else {
+            // 其他错误继续抛出
+            throw new Error(`导入失败: ${(err as Error).message}`);
+          }
         }
       }
 
+      // 保存更新后的书籍列表
       if (importedCount > 0) {
-        // 保存更新后的书籍列表
         await BookStorage.saveBooks(this.importedBooks, context, this.currentUser);
         // 选中最后一本导入的书籍
         this.selectBook(this.importedBooks[this.importedBooks.length - 1]);
-        this.getUIContext().getPromptAction().showToast({
-          message: `成功导入 ${importedCount} 本书`,
-          duration: 2000
-        });
-      } else {
-        this.getUIContext().getPromptAction().showToast({
-          message: '没有新书被导入',
-          duration: 2000
-        });
       }
+
+      // 显示导入结果
+      let message = '';
+      if (importedCount > 0 && skippedCount > 0) {
+        message = `成功导入 ${importedCount} 本书，跳过 ${skippedCount} 本重复书籍`;
+      } else if (importedCount > 0) {
+        message = `成功导入 ${importedCount} 本书`;
+      } else if (skippedCount > 0) {
+        message = `全部为重复书籍，已跳过 ${skippedCount} 本`;
+      } else {
+        message = '没有新书被导入';
+      }
+      this.getUIContext().getPromptAction().showToast({
+        message: message,
+        duration: 2000
+      });
 
     } catch (error) {
       hilog.error(0x0000, TAG, `loadBook failed , Code: ${error.code}, message: ${error.message}`);
@@ -198,7 +203,7 @@ export struct Index {
   async reloadData() {
     const context = this.getUIContext().getHostContext() as common.UIAbilityContext;
     hilog.info(0x0000,TAG,`Index reloadData: currentUser = ${this.currentUser}`);
-    // 根据当前用户加载数据（如果 currentUser 为空，则加载空数据）
+    // 根据当前用户加载数据（如果 currentUser 为空，则加载空数据，是的没登陆也能用）
     this.importedBooks = await BookStorage.loadBooks(context, this.currentUser);
     hilog.info(0x0000,TAG,`Index reloadData: loaded ${this.importedBooks.length} books`);
     this.progresses = await ProgressStorage.loadAllProgresses(context, this.currentUser);

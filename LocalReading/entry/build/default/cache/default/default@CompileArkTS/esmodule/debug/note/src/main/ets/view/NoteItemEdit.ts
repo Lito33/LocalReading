@@ -134,7 +134,7 @@ export default class NoteItemEdit extends ViewPU {
                     Row.margin({ top: 40 });
                 }, Row);
                 this.observeComponentCreation2((elmtId, isInitialRender) => {
-                    Text.create({ "id": 16777300, "type": 10003, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+                    Text.create({ "id": 16777311, "type": 10003, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
                     Text.fontColor(this.getTextColor());
                 }, Text);
                 Text.pop();
@@ -150,7 +150,7 @@ export default class NoteItemEdit extends ViewPU {
                     Row.margin("1%");
                 }, Row);
                 this.observeComponentCreation2((elmtId, isInitialRender) => {
-                    Text.create({ "id": 16777306, "type": 10003, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+                    Text.create({ "id": 16777317, "type": 10003, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
                     Text.fontColor(this.getTextColor());
                 }, Text);
                 Text.pop();
@@ -161,7 +161,7 @@ export default class NoteItemEdit extends ViewPU {
                 Text.pop();
                 Row.pop();
                 this.observeComponentCreation2((elmtId, isInitialRender) => {
-                    TextInput.create({ placeholder: { "id": 16777305, "type": 10003, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" }, text: this.m_title });
+                    TextInput.create({ placeholder: { "id": 16777316, "type": 10003, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" }, text: this.m_title });
                     TextInput.onChange((v: string) => {
                         this.m_title = v;
                     });
@@ -171,7 +171,7 @@ export default class NoteItemEdit extends ViewPU {
                     TextInput.height("6%");
                 }, TextInput);
                 this.observeComponentCreation2((elmtId, isInitialRender) => {
-                    TextArea.create({ placeholder: { "id": 16777299, "type": 10003, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" }, text: this.m_content });
+                    TextArea.create({ placeholder: { "id": 16777310, "type": 10003, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" }, text: this.m_content });
                     TextArea.onChange((v: string) => {
                         this.m_content = v;
                     });
