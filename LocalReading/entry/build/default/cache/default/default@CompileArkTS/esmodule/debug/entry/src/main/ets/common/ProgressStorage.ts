@@ -40,9 +40,10 @@ export class ProgressStorage {
     }
     static async saveProgress(context: common.UIAbilityContext, progress: BookProgress, account?: string): Promise<void> {
         const progresses = await ProgressStorage.loadAllProgresses(context, account);
-        // 优先使用 bookIdentity 匹配，其次使用 filePath
-        const index = progresses.findIndex(p => (p.bookIdentity && progress.bookIdentity && p.bookIdentity === progress.bookIdentity) ||
-            p.filePath === progress.filePath);
+        // 优先使用 filePath 匹配（确保每个文件都有独立的进度记录）
+        // 其次使用 bookIdentity 匹配（用于跨设备同步场景）
+        const index = progresses.findIndex(p => p.filePath === progress.filePath ||
+            (p.bookIdentity && progress.bookIdentity && p.bookIdentity === progress.bookIdentity));
         const newProgress: BookProgress = {
             bookIdentity: progress.bookIdentity || ProgressStorage.generateBookIdentity(progress.bookName, progress.author),
             filePath: progress.filePath,
@@ -53,14 +54,19 @@ export class ProgressStorage {
             chapterName: progress.chapterName,
             lastReadTime: Date.now()
         };
+        hilog.info(0x0000, TAG, `saveProgress: filePath=${progress.filePath}, bookIdentity=${newProgress.bookIdentity}, ` +
+            `foundIndex=${index}, totalProgresses=${progresses.length}`);
         if (index >= 0) {
             progresses[index] = newProgress;
+            hilog.info(0x0000, TAG, `saveProgress: updated existing progress at index ${index}`);
         }
         else {
             progresses.push(newProgress);
+            hilog.info(0x0000, TAG, `saveProgress: added new progress, total now ${progresses.length}`);
         }
         await ProgressStorage.saveAllProgresses(context, progresses, account);
     }
+    //查询单个阅读进度，没用了
     static async getProgress(context: common.UIAbilityContext, filePath: string, account?: string): Promise<BookProgress> {
         const progresses = await ProgressStorage.loadAllProgresses(context, account);
         const foundProgress = progresses.find(p => p.filePath === filePath);

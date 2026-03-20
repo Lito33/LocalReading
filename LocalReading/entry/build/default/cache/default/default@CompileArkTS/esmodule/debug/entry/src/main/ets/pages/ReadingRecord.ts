@@ -6,7 +6,10 @@ interface ReadingRecord_Params {
     recentBooks?: BookParserInfo[];
     olderBooks?: BookParserInfo[];
     currentUser?: string;
+    windowHeight?: number;
     progressMap?: Map<string, BookProgress>;
+    ITEM_HEIGHT?: number;
+    DEFAULT_MAX_ITEMS?: number;
 }
 import router from "@ohos:router";
 import type common from "@ohos:app.ability.common";
@@ -27,7 +30,10 @@ class ReadingRecord extends ViewPU {
         this.__recentBooks = new ObservedPropertyObjectPU([], this, "recentBooks");
         this.__olderBooks = new ObservedPropertyObjectPU([], this, "olderBooks");
         this.__currentUser = this.createStorageLink('currentUser', '', "currentUser");
+        this.__windowHeight = this.createStorageLink('windowHeight', 0, "windowHeight");
         this.progressMap = new Map();
+        this.ITEM_HEIGHT = 88;
+        this.DEFAULT_MAX_ITEMS = 4;
         this.setInitiallyProvidedValue(params);
         this.declareWatch("currentUser", this.onUserChange);
         this.finalizeConstruction();
@@ -42,6 +48,12 @@ class ReadingRecord extends ViewPU {
         if (params.progressMap !== undefined) {
             this.progressMap = params.progressMap;
         }
+        if (params.ITEM_HEIGHT !== undefined) {
+            this.ITEM_HEIGHT = params.ITEM_HEIGHT;
+        }
+        if (params.DEFAULT_MAX_ITEMS !== undefined) {
+            this.DEFAULT_MAX_ITEMS = params.DEFAULT_MAX_ITEMS;
+        }
     }
     updateStateVars(params: ReadingRecord_Params) {
     }
@@ -50,12 +62,14 @@ class ReadingRecord extends ViewPU {
         this.__recentBooks.purgeDependencyOnElmtId(rmElmtId);
         this.__olderBooks.purgeDependencyOnElmtId(rmElmtId);
         this.__currentUser.purgeDependencyOnElmtId(rmElmtId);
+        this.__windowHeight.purgeDependencyOnElmtId(rmElmtId);
     }
     aboutToBeDeleted() {
         this.__eyeMode.aboutToBeDeleted();
         this.__recentBooks.aboutToBeDeleted();
         this.__olderBooks.aboutToBeDeleted();
         this.__currentUser.aboutToBeDeleted();
+        this.__windowHeight.aboutToBeDeleted();
         SubscriberManager.Get().delete(this.id__());
         this.aboutToBeDeletedInternal();
     }
@@ -89,7 +103,35 @@ class ReadingRecord extends ViewPU {
     set currentUser(newValue: string) {
         this.__currentUser.set(newValue);
     }
+    // 监听窗口高度，用于自适应布局
+    private __windowHeight: ObservedPropertyAbstractPU<number>;
+    get windowHeight() {
+        return this.__windowHeight.get();
+    }
+    set windowHeight(newValue: number) {
+        this.__windowHeight.set(newValue);
+    }
     private progressMap: Map<string, BookProgress>; // filePath -> progress
+    // ListItem的高度（包含间距）
+    private readonly ITEM_HEIGHT: number; // 80(内容高度) + 8(space间距)
+    // 默认最大显示项数（严格限制为4个）
+    private readonly DEFAULT_MAX_ITEMS: number;
+    // 计算List的最大高度（自适应不同屏幕）
+    private calculateMaxListHeight(itemCount: number): number {
+        // 严格限制：最多显示4个ListItem
+        // 如果项数 <= 4，显示所有项
+        // 如果项数 > 4，限制为4项的高度，超出部分可滚动
+        const actualItemCount = Math.min(itemCount, this.DEFAULT_MAX_ITEMS);
+        const calculatedHeight = actualItemCount * this.ITEM_HEIGHT;
+        // 考虑屏幕高度限制（确保不会占满整个屏幕）
+        const availableHeight = this.windowHeight > 0 ? this.windowHeight - 300 : 500;
+        const maxByScreen = availableHeight * 0.45; // 每个List最多占可用空间的45%
+        // 最终高度：取计算高度和屏幕限制的较小值
+        const finalHeight = Math.min(calculatedHeight, maxByScreen);
+        hilog.info(0x0000, TAG, `calculateMaxListHeight: itemCount=${itemCount}, actualItemCount=${actualItemCount}, ` +
+            `calculatedHeight=${calculatedHeight}, maxByScreen=${maxByScreen}, finalHeight=${finalHeight}`);
+        return finalHeight;
+    }
     async aboutToAppear() {
         WindowAbility.getInstance().toggleWindowSystemBar(['status', 'navigation'], this.getUIContext().getHostContext());
         await this.loadReadingRecords();
@@ -176,6 +218,7 @@ class ReadingRecord extends ViewPU {
             Text.fontSize(18);
             Text.fontWeight(FontWeight.Bold);
             Text.fontColor(Color.Black);
+            Text.margin({ right: 15 });
         }, Text);
         Text.pop();
         this.observeComponentCreation2((elmtId, isInitialRender) => {
@@ -199,8 +242,6 @@ class ReadingRecord extends ViewPU {
             Column.create();
             //最近7天
             Column.margin({ right: 10, left: 10 });
-            //最近7天
-            Column.layoutWeight(1);
         }, Column);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Text.create('最近7天');
@@ -221,7 +262,7 @@ class ReadingRecord extends ViewPU {
                         List.scrollBar(BarState.Off);
                         List.borderRadius(8);
                         List.width('100%');
-                        List.height(this.recentBooks.length * 80);
+                        List.height(this.calculateMaxListHeight(this.recentBooks.length));
                         List.backgroundColor(Color.Transparent);
                         List.margin({ right: 10 });
                     }, List);
@@ -281,8 +322,6 @@ class ReadingRecord extends ViewPU {
             Column.create();
             // 固定下半部分：之前
             Column.margin({ right: 10, left: 10 });
-            // 固定下半部分：之前
-            Column.layoutWeight(1);
         }, Column);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Text.create('之前');
@@ -303,7 +342,7 @@ class ReadingRecord extends ViewPU {
                         List.scrollBar(BarState.Off);
                         List.margin({ right: 8 });
                         List.width('100%');
-                        List.height(this.olderBooks.length * 80);
+                        List.height(this.calculateMaxListHeight(this.olderBooks.length));
                         List.backgroundColor(Color.Transparent);
                     }, List);
                     this.observeComponentCreation2((elmtId, isInitialRender) => {

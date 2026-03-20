@@ -20,6 +20,8 @@ interface paramType {
   filePath: string;
   resourceIndex: number;
   domPos: string;
+  bookName?: string;
+  bookAuthor?: string;
 }
 
 interface AttemptParams {
@@ -112,6 +114,8 @@ struct Reader {
   }
   //主题
   @State themeSelectIndex: number = 0;
+  //标记是否为用户手动选择的主题（优先级高于系统颜色模式）
+  @State isUserSelectedTheme: boolean = false;
 //阅读相关设置
   private readerSetting: readerCore.ReaderSetting = {
     fontName: BookUtils.getString(this.getUIContext().getHostContext(), 'system_font'),
@@ -158,6 +162,11 @@ struct Reader {
       this.selectFontPath = saved.fontPath;
       this.fontSize = saved.fontSize.toString();
       this.lineHeight = saved.lineHeight.toString();
+      
+      // 如果用户之前选择过非默认主题，标记为用户手动选择
+      if (saved.themeSelectIndex > 0) {
+        this.isUserSelectedTheme = true;
+      }
 
       // 根据夜间模式调整字体颜色（与 colorModeChange 逻辑保持一致）
       if (saved.nightMode) {
@@ -188,6 +197,17 @@ struct Reader {
     let filePath = param.filePath;
     let resourceIndex = param.resourceIndex;
     let domPos = param.domPos;
+    
+    // 优先使用从参数传递的书籍信息（解决TXT文件bookIdentity都是"_"的问题）
+    if (param.bookName) {
+      this.bookTitle = param.bookName;
+      hilog.info(0x0000, TAG, `aboutToAppear: using bookName from params: ${param.bookName}`);
+    }
+    if (param.bookAuthor) {
+      this.author = param.bookAuthor;
+      hilog.info(0x0000, TAG, `aboutToAppear: using bookAuthor from params: ${param.bookAuthor}`);
+    }
+    
     this.startPlay(filePath, resourceIndex, domPos).catch(() => {
       hilog.error(0x0000, TAG, `aboutToAppear startPlay failed`);
     });
@@ -213,6 +233,12 @@ struct Reader {
 
   //系统颜色改变
   colorModeChange() {
+    // 如果用户手动选择了主题，则不响应系统颜色模式变化
+    if (this.isUserSelectedTheme) {
+      hilog.info(0x0000, TAG, 'colorModeChange: user selected theme, skip auto change');
+      return;
+    }
+    
     if (this.colorMode === ConfigurationConstant.ColorMode.COLOR_MODE_DARK) {
       this.readerSetting.nightMode = true;
       this.readerSetting.fontColor = '#ffffff';
@@ -382,6 +408,9 @@ struct Reader {
     hilog.info(0x0000, TAG, `saveCurrentProgress: saving progress for ${filePath}, bookIdentity=${bookIdentity}`);
     await ProgressStorage.saveProgress(context, progress, currentUser);
     hilog.info(0x0000, TAG, 'saveCurrentProgress: progress saved successfully');
+
+    //保存后自动同步-每次翻页后
+    await DistributedSyncManager.getInstance().syncProgressOnly();
   }
 
 
@@ -418,9 +447,14 @@ struct Reader {
     try {
       //通过 defaultHandler（书籍解析器）调用 getBookInfo() 获得一个包含书名、作者、封面资源标识等信息的 BookInfo 对象
       let bookInfo: bookParser.BookInfo | undefined = this.defaultHandler?.getBookInfo();
-      if (bookInfo) {//提取书名和作者
-        this.bookTitle = bookInfo.bookTitle || '';
-        this.author = bookInfo?.bookCreator || '';
+      if (bookInfo) {
+        // 只有当bookTitle和author为空时，才从bookInfo中获取（避免覆盖从参数传递的值）
+        if (!this.bookTitle && bookInfo.bookTitle) {
+          this.bookTitle = bookInfo.bookTitle;
+        }
+        if (!this.author && bookInfo?.bookCreator) {
+          this.author = bookInfo.bookCreator;
+        }
         //获取并解码封面图片
         //调用解析器的 getResourceContent 方法，传入-1封面资源的标识（如路径），获得封面图片的二进制数据
         let buffer = this.defaultHandler?.getResourceContent(-1, bookInfo.bookCoverImage);
@@ -430,7 +464,7 @@ struct Reader {
         this.bookCover = await imageSource.createPixelMap();
         imageSource.release();
       }
-      hilog.info(0x0000, TAG, 'getBookInfo bookInfo is: ' + JSON.stringify(bookInfo));
+      hilog.info(0x0000, TAG, `getBookInfo: bookTitle=${this.bookTitle}, author=${this.author}`);
     } catch (error) {
       hilog.error(0x0000, TAG, `getBookInfo failed, Code: ${error.code}, message: ${error.message}`);
     }
@@ -662,7 +696,7 @@ struct Reader {
       .justifyContent(FlexAlign.End)
 
       Row() {
-        Stack({ alignContent: Alignment.Top }) {
+        Stack({ alignContent: Alignment.Top }) {//图片样式
           Image(this.bookCover)
             .draggable(false)
             .width(42)
@@ -697,11 +731,11 @@ struct Reader {
         Text(this.bookTitle)
           .fontSize($r('sys.float.ohos_id_text_size_body1'))
           .textOverflow({ overflow: TextOverflow.Ellipsis })
+          .fontColor($r('app.color.black_90_opacity'))
           .maxLines(1)
           .margin({ right: 12, left: 12 })
           .fontWeight(FontWeight.Bold)
           .flexShrink(1)
-          .fontColor($r('sys.color.password_icon_focus_color'))
           .height(40)
           .visibility(this.bookTitle ? Visibility.Visible : Visibility.None)
       }
@@ -927,6 +961,7 @@ struct Reader {
               const currentDomPos = this.currentData?.startDomPos ?? '';
 
               this.themeSelectIndex = index;
+              this.isUserSelectedTheme = true; // 标记为用户手动选择主题
               this.readerSetting.themeColor = this.THEME_PAGE_COLOR[item];
               this.readerSetting.nightMode = false;
               if (index === 5) {
@@ -1213,7 +1248,7 @@ struct Reader {
             hilog.info(0x0000, TAG, 'currentPageText: ' + this.currentPageText);
             if (!this.currentPageText) {
               hilog.warn(0x0000, TAG, 'No text to speak');
-              // 可以提示用户当前无文本可读，例如用 Toast
+
               this.getUIContext().getPromptAction().showToast({ message: '当前页面无文本', duration: 1000 });
               return;
             }
@@ -1299,7 +1334,8 @@ struct Reader {
       .backgroundColor(Color.White)
       .zIndex(3)
       .visibility(this.isLoading ? Visibility.Visible : Visibility.None)
-    }.width('100%').height('100%').onClick(() => {
+    }
+    .width('100%').height('100%').onClick(() => {
       this.showModal();
     })
   }

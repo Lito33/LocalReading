@@ -192,7 +192,6 @@ class SyncSettings extends ViewPU {
             Column.create();
             Column.width('100%');
             Column.height('100%');
-            Column.padding(20);
             Column.backgroundColor(this.eyeMode ? '#FAF9DE' : { "id": 16777263, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
         }, Column);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
@@ -209,6 +208,18 @@ class SyncSettings extends ViewPU {
         }, Text);
         // 标题
         Text.pop();
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Scroll.create();
+            Scroll.width('100%');
+            Scroll.layoutWeight(1);
+            Scroll.scrollBar(BarState.Off);
+            Scroll.edgeEffect(EdgeEffect.Spring);
+        }, Scroll);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Column.create({ space: 20 });
+            Column.width('100%');
+            Column.padding({ left: 20, right: 20, bottom: 20 });
+        }, Column);
         // 同步状态卡片
         this.buildStatusCard.bind(this)();
         // 设备列表
@@ -220,6 +231,8 @@ class SyncSettings extends ViewPU {
         // 手动导入导出
         this.buildManualOperations.bind(this)();
         Column.pop();
+        Scroll.pop();
+        Column.pop();
     }
     buildStatusCard(parent = null) {
         this.observeComponentCreation2((elmtId, isInitialRender) => {
@@ -229,7 +242,6 @@ class SyncSettings extends ViewPU {
             Column.backgroundColor(Color.White);
             Column.borderRadius(8);
             Column.shadow({ radius: 4, color: '#00000010', offsetX: 0, offsetY: 2 });
-            Column.margin({ bottom: 20 });
         }, Column);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Row.create();
@@ -333,7 +345,6 @@ class SyncSettings extends ViewPU {
             Column.backgroundColor(Color.White);
             Column.borderRadius(8);
             Column.shadow({ radius: 4, color: '#00000010', offsetX: 0, offsetY: 2 });
-            Column.margin({ bottom: 20 });
         }, Column);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Row.create();
@@ -418,7 +429,6 @@ class SyncSettings extends ViewPU {
             Column.backgroundColor(Color.White);
             Column.borderRadius(8);
             Column.shadow({ radius: 4, color: '#00000010', offsetX: 0, offsetY: 2 });
-            Column.margin({ bottom: 20 });
         }, Column);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Text.create('同步设置');
@@ -495,7 +505,7 @@ class SyncSettings extends ViewPU {
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Row.create();
             Row.width('100%');
-            Row.margin({ bottom: 20 });
+            Row.padding({ left: 16, right: 16 });
         }, Row);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             // 立即同步按钮
@@ -606,7 +616,7 @@ class SyncSettings extends ViewPU {
         Column.pop();
     }
     // 加载同步状态
-    private async loadSyncStatus() {
+    private async loadSyncStatus(): Promise<void> {
         try {
             // 初始化分布式同步管理器
             const initialized = await this.syncManager.initialize();

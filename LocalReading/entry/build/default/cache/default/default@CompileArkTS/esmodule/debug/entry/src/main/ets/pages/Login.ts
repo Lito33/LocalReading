@@ -54,12 +54,28 @@ class Login extends ViewPU {
             Column.create();
             Column.backgroundColor(this.eyeMode ? '#FAF9DE' : { "id": 16777263, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
         }, Column);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Row.create();
+            Row.margin({ top: 25 });
+            Row.width('100%');
+            Row.justifyContent(FlexAlign.Start);
+        }, Row);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Image.create({ "id": 16777277, "type": 20000, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+            Image.width(25);
+            Image.height(25);
+            Image.margin({ left: 15 });
+            Image.onClick(() => {
+                router.back();
+            });
+        }, Image);
+        Row.pop();
         {
             this.observeComponentCreation2((elmtId, isInitialRender) => {
                 if (isInitialRender) {
                     let componentCall = new 
                     // Title component
-                    LoginTitle(this, {}, undefined, elmtId, () => { }, { page: "entry/src/main/ets/pages/Login.ets", line: 18, col: 7 });
+                    LoginTitle(this, {}, undefined, elmtId, () => { }, { page: "entry/src/main/ets/pages/Login.ets", line: 30, col: 7 });
                     ViewPU.create(componentCall);
                     let paramsLambda = () => {
                         return {};
@@ -76,7 +92,7 @@ class Login extends ViewPU {
                 if (isInitialRender) {
                     let componentCall = new 
                     // Bottom component
-                    LoginBottom(this, {}, undefined, elmtId, () => { }, { page: "entry/src/main/ets/pages/Login.ets", line: 20, col: 7 });
+                    LoginBottom(this, {}, undefined, elmtId, () => { }, { page: "entry/src/main/ets/pages/Login.ets", line: 32, col: 7 });
                     ViewPU.create(componentCall);
                     let paramsLambda = () => {
                         return {};

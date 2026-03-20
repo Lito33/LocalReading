@@ -7,6 +7,7 @@ interface Mine_Params {
     isEyesModePressed?: boolean;
     isClosePressed?: boolean;
     eyeMode?: boolean;
+    windowWidth?: number;
     hitokoto?: string;
     source?: string;
     author?: string;
@@ -49,6 +50,7 @@ export class Mine extends ViewPU {
         this.__isEyesModePressed = new ObservedPropertySimplePU(false, this, "isEyesModePressed");
         this.__isClosePressed = new ObservedPropertySimplePU(false, this, "isClosePressed");
         this.__eyeMode = this.createStorageLink('eyeMode', false, "eyeMode");
+        this.__windowWidth = this.createStorageLink('windowWidth', 360, "windowWidth");
         this.__hitokoto = new ObservedPropertySimplePU('', this, "hitokoto");
         this.__source = new ObservedPropertySimplePU('', this, "source");
         this.__author = new ObservedPropertySimplePU('', this, "author");
@@ -111,6 +113,7 @@ export class Mine extends ViewPU {
         this.__isEyesModePressed.purgeDependencyOnElmtId(rmElmtId);
         this.__isClosePressed.purgeDependencyOnElmtId(rmElmtId);
         this.__eyeMode.purgeDependencyOnElmtId(rmElmtId);
+        this.__windowWidth.purgeDependencyOnElmtId(rmElmtId);
         this.__hitokoto.purgeDependencyOnElmtId(rmElmtId);
         this.__source.purgeDependencyOnElmtId(rmElmtId);
         this.__author.purgeDependencyOnElmtId(rmElmtId);
@@ -127,6 +130,7 @@ export class Mine extends ViewPU {
         this.__isEyesModePressed.aboutToBeDeleted();
         this.__isClosePressed.aboutToBeDeleted();
         this.__eyeMode.aboutToBeDeleted();
+        this.__windowWidth.aboutToBeDeleted();
         this.__hitokoto.aboutToBeDeleted();
         this.__source.aboutToBeDeleted();
         this.__author.aboutToBeDeleted();
@@ -175,6 +179,14 @@ export class Mine extends ViewPU {
     }
     set eyeMode(newValue: boolean) {
         this.__eyeMode.set(newValue);
+    }
+    // 响应式布局：监听窗口宽度
+    private __windowWidth: ObservedPropertyAbstractPU<number>;
+    get windowWidth() {
+        return this.__windowWidth.get();
+    }
+    set windowWidth(newValue: number) {
+        this.__windowWidth.set(newValue);
     }
     async onEyeModeChange() {
         const context = this.getUIContext().getHostContext() as common.UIAbilityContext;
@@ -426,12 +438,19 @@ export class Mine extends ViewPU {
             Refresh.width('100%');
             // 使用Refresh组件包裹整个内容，并添加自定义下拉效果
             Refresh.height('100%');
+            // 使用Refresh组件包裹整个内容，并添加自定义下拉效果
+            Refresh.backgroundColor(this.eyeMode ? '#FAF9DE' : { "id": 16777263, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
         }, Refresh);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Scroll.create();
+            Scroll.width('100%');
+            Scroll.height('100%');
+            Scroll.scrollBar(BarState.Off);
+            Scroll.edgeEffect(EdgeEffect.Spring);
+        }, Scroll);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Column.create();
             Column.width('100%');
-            Column.height('100%');
-            Column.backgroundColor(this.eyeMode ? '#FAF9DE' : { "id": 16777263, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
         }, Column);
         // 自定义下拉刷新指示器 - 只有图片，没有文字
         this.customRefreshIndicator.bind(this)();
@@ -767,6 +786,7 @@ export class Mine extends ViewPU {
         //调用接口，显示数
         Column.pop();
         Column.pop();
+        Scroll.pop();
         // 使用Refresh组件包裹整个内容，并添加自定义下拉效果
         Refresh.pop();
     }

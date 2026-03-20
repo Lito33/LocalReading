@@ -212,6 +212,15 @@ export struct Index {
     this.importedBooks = await BookStorage.loadBooks(context, this.currentUser);
     hilog.info(0x0000,TAG,`Index reloadData: loaded ${this.importedBooks.length} books`);
     this.progresses = await ProgressStorage.loadAllProgresses(context, this.currentUser);
+    hilog.info(0x0000,TAG,`Index reloadData: loaded ${this.progresses.length} progresses`);
+    
+    // 打印所有进度和书籍的filePath用于调试
+    this.progresses.forEach((p, idx) => {
+      hilog.info(0x0000,TAG,`Progress[${idx}]: filePath=${p.filePath}, chapter=${p.chapterName}`);
+    });
+    this.importedBooks.forEach((b, idx) => {
+      hilog.info(0x0000,TAG,`Book[${idx}]: filePath=${b.getFilePath()}, name=${b.getBookName()}`);
+    });
 
     if (this.importedBooks.length > 0) {
       this.selectBook(this.importedBooks[0]);
@@ -223,7 +232,7 @@ export struct Index {
   }
 
 
-  //加载进度
+  //加载进度 没用了
   private async loadProgresses() {
     const context = this.getUIContext().getHostContext() as common.UIAbilityContext;
     this.progresses = await ProgressStorage.loadAllProgresses(context);
@@ -445,14 +454,21 @@ export struct Index {
   //控制按钮是否继续阅读
   // 根据书籍信息查找进度（优先使用 bookIdentity，其次使用 filePath）
   private findProgress(book: BookParserInfo): BookProgress | undefined {
-    const bookIdentity = ProgressStorage.generateBookIdentity(book.getBookName(), book.getBookAuthor());
-    // 优先使用 bookIdentity 匹配
-    let progress = this.progresses.find(p => p.bookIdentity && p.bookIdentity === bookIdentity);
+    // 优先使用 filePath 匹配（确保每个文件都有独立的进度记录）
+    let progress = this.progresses.find(p => p.filePath === book.getFilePath());
     if (progress) {
+      hilog.info(0x0000,TAG,`findProgress: found by filePath for ${book.getBookName()}, filePath=${book.getFilePath()}`);
       return progress;
     }
-    // 回退到 filePath 匹配
-    return this.progresses.find(p => p.filePath === book.getFilePath());
+    // 回退到 bookIdentity 匹配（用于跨设备同步场景）
+    const bookIdentity = ProgressStorage.generateBookIdentity(book.getBookName(), book.getBookAuthor());
+    progress = this.progresses.find(p => p.bookIdentity && p.bookIdentity === bookIdentity);
+    if (progress) {
+      hilog.info(0x0000,TAG,`findProgress: found by bookIdentity for ${book.getBookName()}`);
+    } else {
+      hilog.info(0x0000,TAG,`findProgress: NOT FOUND for ${book.getBookName()}, filePath=${book.getFilePath()}`);
+    }
+    return progress;
   }
 
   private getButtonText(): ResourceStr {
@@ -481,6 +497,8 @@ export struct Index {
     const progress = this.findProgress(this.selectedBook!);
     const resourceIndex = progress?.resourceIndex ?? 0;
     const domPos = progress?.startDomPos ?? '';
+    const bookName = this.selectedBook!.getBookName();
+    const bookAuthor = this.selectedBook!.getBookAuthor();
 
     //将当前文件路径存入应用全局的键值存储中，这样其他组件或页面也能方便地获取该路径
     AppStorage.setOrCreate('filePath', this.filePath);
@@ -488,7 +506,9 @@ export struct Index {
       url: "pages/Reader", params: {
         filePath: filePath,
         resourceIndex: resourceIndex, //当前阅读资源索引
-        domPos: domPos//文件中的具体位置
+        domPos: domPos,//文件中的具体位置
+        bookName: bookName, // 书名
+        bookAuthor: bookAuthor // 作者
       }
     }).catch(() => {
       hilog.error(0x0000, TAG, 'pushUrl failed');

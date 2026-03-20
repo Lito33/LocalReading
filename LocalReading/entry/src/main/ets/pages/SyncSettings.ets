@@ -50,25 +50,33 @@ struct SyncSettings {
         .fontWeight(FontWeight.Bold)
         .margin({ top: 30, bottom: 30 })
       
-      // 同步状态卡片
-      this.buildStatusCard()
-      
-      // 设备列表
-      this.buildDeviceList()
-      
-      // 同步设置
-      this.buildSyncSettings()
-      
-      // 操作按钮
-      this.buildActionButtons()
-      
-      // 手动导入导出
-      this.buildManualOperations()
-      
+      Scroll() {
+        Column({ space: 20 }) {
+          // 同步状态卡片
+          this.buildStatusCard()
+          
+          // 设备列表
+          this.buildDeviceList()
+          
+          // 同步设置
+          this.buildSyncSettings()
+          
+          // 操作按钮
+          this.buildActionButtons()
+          
+          // 手动导入导出
+          this.buildManualOperations()
+        }
+        .width('100%')
+        .padding({ left: 20, right: 20, bottom: 20 })
+      }
+      .width('100%')
+      .layoutWeight(1)
+      .scrollBar(BarState.Off)
+      .edgeEffect(EdgeEffect.Spring)
     }
     .width('100%')
     .height('100%')
-    .padding(20)
     .backgroundColor(this.eyeMode ? '#FAF9DE' : $r('app.color.page_background1'))
   }
   
@@ -132,7 +140,6 @@ struct SyncSettings {
     .backgroundColor(Color.White)
     .borderRadius(8)
     .shadow({ radius: 4, color: '#00000010', offsetX: 0, offsetY: 2 })
-    .margin({ bottom: 20 })
   }
   
   @Builder
@@ -191,7 +198,6 @@ struct SyncSettings {
     .backgroundColor(Color.White)
     .borderRadius(8)
     .shadow({ radius: 4, color: '#00000010', offsetX: 0, offsetY: 2 })
-    .margin({ bottom: 20 })
   }
   
   @Builder
@@ -248,7 +254,6 @@ struct SyncSettings {
     .backgroundColor(Color.White)
     .borderRadius(8)
     .shadow({ radius: 4, color: '#00000010', offsetX: 0, offsetY: 2 })
-    .margin({ bottom: 20 })
   }
   
   @Builder
@@ -284,7 +289,7 @@ struct SyncSettings {
       
     }
     .width('100%')
-    .margin({ bottom: 20 })
+    .padding({ left: 16, right: 16 })
   }
   
   @Builder
@@ -332,7 +337,7 @@ struct SyncSettings {
   }
   
   // 加载同步状态
-  private async loadSyncStatus() {
+  private async loadSyncStatus(): Promise<void> {
     try {
       // 初始化分布式同步管理器
       const initialized = await this.syncManager.initialize();

@@ -14,6 +14,18 @@ struct Login{
 
   build() {
     Column() {
+      Row(){
+        Image($r('app.media.arrow_Left'))
+          .width(25)
+          .height(25)
+          .margin({left: 15})
+          .onClick(()=>{
+            router.back();
+          })
+      }
+      .margin({top: 25})
+      .width('100%')
+      .justifyContent(FlexAlign.Start)
       // Title component
       LoginTitle()
       // Bottom component

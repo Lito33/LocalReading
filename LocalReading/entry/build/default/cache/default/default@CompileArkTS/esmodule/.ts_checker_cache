@@ -1832,7 +1832,7 @@
       "error": false
     },
     "D:\\devecoStudioDriector\\SomeDemo\\LocalReading\\entry\\src\\main\\ets\\common\\ProgressStorage.ets": {
-      "mtimeMs": 1773747121060.4607,
+      "mtimeMs": 1773998184321.9114,
       "children": [
         "D:\\what down\\vediodown\\tool\\devecostudio\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.data.preferences.d.ts",
         "D:\\what down\\vediodown\\tool\\devecostudio\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.common.d.ts",
@@ -2047,7 +2047,7 @@
       ]
     },
     "D:\\devecoStudioDriector\\SomeDemo\\LocalReading\\entry\\src\\main\\ets\\pages\\Index.ets": {
-      "mtimeMs": 1773747239235.8264,
+      "mtimeMs": 1774001893533.2358,
       "children": [
         "D:\\what down\\vediodown\\tool\\devecostudio\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.file.picker.d.ts",
         "D:\\devecoStudioDriector\\SomeDemo\\LocalReading\\entry\\src\\main\\ets\\entryability\\WindowAbility.ets",
@@ -2075,7 +2075,7 @@
       ]
     },
     "D:\\devecoStudioDriector\\SomeDemo\\LocalReading\\entry\\src\\main\\ets\\pages\\Mine.ets": {
-      "mtimeMs": 1773392867919.3813,
+      "mtimeMs": 1773929821286.464,
       "children": [
         "D:\\devecoStudioDriector\\SomeDemo\\LocalReading\\entry\\src\\main\\ets\\entryability\\WindowAbility.ets",
         "D:\\what down\\vediodown\\tool\\devecostudio\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.hilog.d.ts",
@@ -2395,7 +2395,7 @@
       ]
     },
     "D:\\devecoStudioDriector\\SomeDemo\\LocalReading\\entry\\src\\main\\ets\\pages\\Reader.ets": {
-      "mtimeMs": 1773747286571.9248,
+      "mtimeMs": 1774004338485.6736,
       "children": [
         "D:\\devecoStudioDriector\\SomeDemo\\LocalReading\\entry\\src\\main\\ets\\entryability\\WindowAbility.ets",
         "D:\\what down\\vediodown\\tool\\devecostudio\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.display.d.ts",
@@ -2431,7 +2431,7 @@
       "error": false
     },
     "D:\\devecoStudioDriector\\SomeDemo\\LocalReading\\entry\\src\\main\\ets\\pages\\Login.ets": {
-      "mtimeMs": 1773743461963.8652,
+      "mtimeMs": 1773995708710.75,
       "children": [
         "D:\\what down\\vediodown\\tool\\devecostudio\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.promptAction.d.ts",
         "D:\\what down\\vediodown\\tool\\devecostudio\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.router.d.ts",
@@ -2442,8 +2442,8 @@
       "parent": [],
       "error": true,
       "errorCodes": [
-        28040,
-        28007
+        28007,
+        28040
       ]
     },
     "D:\\devecoStudioDriector\\SomeDemo\\LocalReading\\entry\\src\\main\\ets\\pages\\About.ets": {
@@ -2460,7 +2460,7 @@
       ]
     },
     "D:\\devecoStudioDriector\\SomeDemo\\LocalReading\\entry\\src\\main\\ets\\pages\\ReadingRecord.ets": {
-      "mtimeMs": 1772980778000,
+      "mtimeMs": 1773997095234.0437,
       "children": [
         "D:\\what down\\vediodown\\tool\\devecostudio\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.router.d.ts",
         "D:\\what down\\vediodown\\tool\\devecostudio\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.common.d.ts",
@@ -2491,7 +2491,7 @@
       ]
     },
     "D:\\devecoStudioDriector\\SomeDemo\\LocalReading\\entry\\src\\main\\ets\\pages\\SyncSettings.ets": {
-      "mtimeMs": 1773761071689.104,
+      "mtimeMs": 1773928869091.9607,
       "children": [
         "D:\\devecoStudioDriector\\SomeDemo\\LocalReading\\entry\\src\\main\\ets\\utils\\DistributedSyncManager.ets",
         "D:\\devecoStudioDriector\\SomeDemo\\LocalReading\\entry\\src\\main\\ets\\utils\\SyncManager.ets",
@@ -2972,7 +2972,7 @@
       "error": false
     },
     "D:\\devecoStudioDriector\\SomeDemo\\LocalReading\\entry\\src\\main\\ets\\utils\\PasswordUtil.ets": {
-      "mtimeMs": 1773409037421.8774,
+      "mtimeMs": 1773821484877.5288,
       "children": [
         "D:\\what down\\vediodown\\tool\\devecostudio\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.security.cryptoFramework.d.ts",
         "D:\\what down\\vediodown\\tool\\devecostudio\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.util.d.ts"

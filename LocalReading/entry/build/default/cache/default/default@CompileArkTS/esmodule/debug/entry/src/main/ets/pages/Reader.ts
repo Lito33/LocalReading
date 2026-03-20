@@ -24,6 +24,7 @@ interface Reader_Params {
     THEME_PAGE_COLOR?: Record<string, string>;
     themeBorderColor?: Record<number, Resource>;
     themeSelectIndex?: number;
+    isUserSelectedTheme?: boolean;
     readerSetting?: readerCore.ReaderSetting;
     screenDensityCallBack?: Callback<number> | null;
     isLoading?: boolean;
@@ -61,6 +62,8 @@ interface paramType {
     filePath: string;
     resourceIndex: number;
     domPos: string;
+    bookName?: string;
+    bookAuthor?: string;
 }
 interface AttemptParams {
     index: number;
@@ -131,6 +134,7 @@ class Reader extends ViewPU {
             6: { "id": 16777253, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" }
         };
         this.__themeSelectIndex = new ObservedPropertySimplePU(0, this, "themeSelectIndex");
+        this.__isUserSelectedTheme = new ObservedPropertySimplePU(false, this, "isUserSelectedTheme");
         this.readerSetting = {
             fontName: BookUtils.getString(this.getUIContext().getHostContext(), 'system_font'),
             fontPath: '',
@@ -241,6 +245,9 @@ class Reader extends ViewPU {
         if (params.themeSelectIndex !== undefined) {
             this.themeSelectIndex = params.themeSelectIndex;
         }
+        if (params.isUserSelectedTheme !== undefined) {
+            this.isUserSelectedTheme = params.isUserSelectedTheme;
+        }
         if (params.readerSetting !== undefined) {
             this.readerSetting = params.readerSetting;
         }
@@ -293,6 +300,7 @@ class Reader extends ViewPU {
         this.__selectFontPath.purgeDependencyOnElmtId(rmElmtId);
         this.__themeList.purgeDependencyOnElmtId(rmElmtId);
         this.__themeSelectIndex.purgeDependencyOnElmtId(rmElmtId);
+        this.__isUserSelectedTheme.purgeDependencyOnElmtId(rmElmtId);
         this.__isLoading.purgeDependencyOnElmtId(rmElmtId);
         this.__isClicked.purgeDependencyOnElmtId(rmElmtId);
         this.__ttsVolume.purgeDependencyOnElmtId(rmElmtId);
@@ -315,6 +323,7 @@ class Reader extends ViewPU {
         this.__selectFontPath.aboutToBeDeleted();
         this.__themeList.aboutToBeDeleted();
         this.__themeSelectIndex.aboutToBeDeleted();
+        this.__isUserSelectedTheme.aboutToBeDeleted();
         this.__isLoading.aboutToBeDeleted();
         this.__isClicked.aboutToBeDeleted();
         this.__ttsVolume.aboutToBeDeleted();
@@ -451,6 +460,14 @@ class Reader extends ViewPU {
     set themeSelectIndex(newValue: number) {
         this.__themeSelectIndex.set(newValue);
     }
+    //标记是否为用户手动选择的主题（优先级高于系统颜色模式）
+    private __isUserSelectedTheme: ObservedPropertySimplePU<boolean>;
+    get isUserSelectedTheme() {
+        return this.__isUserSelectedTheme.get();
+    }
+    set isUserSelectedTheme(newValue: boolean) {
+        this.__isUserSelectedTheme.set(newValue);
+    }
     //阅读相关设置
     private readerSetting: readerCore.ReaderSetting;
     //自定义的回调函数，用作屏幕变化事件的处理器
@@ -485,6 +502,10 @@ class Reader extends ViewPU {
             this.selectFontPath = saved.fontPath;
             this.fontSize = saved.fontSize.toString();
             this.lineHeight = saved.lineHeight.toString();
+            // 如果用户之前选择过非默认主题，标记为用户手动选择
+            if (saved.themeSelectIndex > 0) {
+                this.isUserSelectedTheme = true;
+            }
             // 根据夜间模式调整字体颜色（与 colorModeChange 逻辑保持一致）
             if (saved.nightMode) {
                 this.readerSetting.fontColor = '#ffffff';
@@ -512,6 +533,15 @@ class Reader extends ViewPU {
         let filePath = param.filePath;
         let resourceIndex = param.resourceIndex;
         let domPos = param.domPos;
+        // 优先使用从参数传递的书籍信息（解决TXT文件bookIdentity都是"_"的问题）
+        if (param.bookName) {
+            this.bookTitle = param.bookName;
+            hilog.info(0x0000, TAG, `aboutToAppear: using bookName from params: ${param.bookName}`);
+        }
+        if (param.bookAuthor) {
+            this.author = param.bookAuthor;
+            hilog.info(0x0000, TAG, `aboutToAppear: using bookAuthor from params: ${param.bookAuthor}`);
+        }
         this.startPlay(filePath, resourceIndex, domPos).catch(() => {
             hilog.error(0x0000, TAG, `aboutToAppear startPlay failed`);
         });
@@ -533,6 +563,11 @@ class Reader extends ViewPU {
     }
     //系统颜色改变
     colorModeChange() {
+        // 如果用户手动选择了主题，则不响应系统颜色模式变化
+        if (this.isUserSelectedTheme) {
+            hilog.info(0x0000, TAG, 'colorModeChange: user selected theme, skip auto change');
+            return;
+        }
         if (this.colorMode === ConfigurationConstant.ColorMode.COLOR_MODE_DARK) {
             this.readerSetting.nightMode = true;
             this.readerSetting.fontColor = '#ffffff';
@@ -662,6 +697,8 @@ class Reader extends ViewPU {
         hilog.info(0x0000, TAG, `saveCurrentProgress: saving progress for ${filePath}, bookIdentity=${bookIdentity}`);
         await ProgressStorage.saveProgress(context, progress, currentUser);
         hilog.info(0x0000, TAG, 'saveCurrentProgress: progress saved successfully');
+        //保存后自动同步-每次翻页后
+        await DistributedSyncManager.getInstance().syncProgressOnly();
     }
     //以指定阅读进度打开书籍，初始化阅读器页面。阅读器启动的统一入口
     private async startPlay(path: string, resourceIndex: number, domPos: string) {
@@ -697,9 +734,14 @@ class Reader extends ViewPU {
         try {
             //通过 defaultHandler（书籍解析器）调用 getBookInfo() 获得一个包含书名、作者、封面资源标识等信息的 BookInfo 对象
             let bookInfo: bookParser.BookInfo | undefined = this.defaultHandler?.getBookInfo();
-            if (bookInfo) { //提取书名和作者
-                this.bookTitle = bookInfo.bookTitle || '';
-                this.author = bookInfo?.bookCreator || '';
+            if (bookInfo) {
+                // 只有当bookTitle和author为空时，才从bookInfo中获取（避免覆盖从参数传递的值）
+                if (!this.bookTitle && bookInfo.bookTitle) {
+                    this.bookTitle = bookInfo.bookTitle;
+                }
+                if (!this.author && bookInfo?.bookCreator) {
+                    this.author = bookInfo.bookCreator;
+                }
                 //获取并解码封面图片
                 //调用解析器的 getResourceContent 方法，传入-1封面资源的标识（如路径），获得封面图片的二进制数据
                 let buffer = this.defaultHandler?.getResourceContent(-1, bookInfo.bookCoverImage);
@@ -709,7 +751,7 @@ class Reader extends ViewPU {
                 this.bookCover = await imageSource.createPixelMap();
                 imageSource.release();
             }
-            hilog.info(0x0000, TAG, 'getBookInfo bookInfo is: ' + JSON.stringify(bookInfo));
+            hilog.info(0x0000, TAG, `getBookInfo: bookTitle=${this.bookTitle}, author=${this.author}`);
         }
         catch (error) {
             hilog.error(0x0000, TAG, `getBookInfo failed, Code: ${error.code}, message: ${error.message}`);
@@ -1018,11 +1060,11 @@ class Reader extends ViewPU {
             Text.create(this.bookTitle);
             Text.fontSize({ "id": 125829684, "type": 10002, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
             Text.textOverflow({ overflow: TextOverflow.Ellipsis });
+            Text.fontColor({ "id": 16777245, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
             Text.maxLines(1);
             Text.margin({ right: 12, left: 12 });
             Text.fontWeight(FontWeight.Bold);
             Text.flexShrink(1);
-            Text.fontColor({ "id": 125834677, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
             Text.height(40);
             Text.visibility(this.bookTitle ? Visibility.Visible : Visibility.None);
         }, Text);
@@ -1323,6 +1365,7 @@ class Reader extends ViewPU {
                         const currentResourceIndex = this.currentData?.resourceIndex ?? 0;
                         const currentDomPos = this.currentData?.startDomPos ?? '';
                         this.themeSelectIndex = index;
+                        this.isUserSelectedTheme = true; // 标记为用户手动选择主题
                         this.readerSetting.themeColor = this.THEME_PAGE_COLOR[item];
                         this.readerSetting.nightMode = false;
                         if (index === 5) {
@@ -1677,7 +1720,7 @@ class Reader extends ViewPU {
                                 hilog.info(0x0000, TAG, `ReadPageComponent init failed, Code: ${err.code}, message: ${err.message}`);
                             }
                         }
-                    }, undefined, elmtId, () => { }, { page: "entry/src/main/ets/pages/Reader.ets", line: 1198, col: 7 });
+                    }, undefined, elmtId, () => { }, { page: "entry/src/main/ets/pages/Reader.ets", line: 1233, col: 7 });
                     ViewPU.create(componentCall);
                     let paramsLambda = () => {
                         return {
@@ -1718,7 +1761,6 @@ class Reader extends ViewPU {
                 hilog.info(0x0000, TAG, 'currentPageText: ' + this.currentPageText);
                 if (!this.currentPageText) {
                     hilog.warn(0x0000, TAG, 'No text to speak');
-                    // 可以提示用户当前无文本可读，例如用 Toast
                     this.getUIContext().getPromptAction().showToast({ message: '当前页面无文本', duration: 1000 });
                     return;
                 }

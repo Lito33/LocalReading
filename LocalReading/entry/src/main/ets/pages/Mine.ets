@@ -38,6 +38,9 @@ export struct Mine {
 
   //全局护眼模式状态,顺便监听
   @StorageLink('eyeMode') @Watch('onEyeModeChange') eyeMode: boolean = false;
+  
+  // 响应式布局：监听窗口宽度
+  @StorageLink('windowWidth') windowWidth: number = 360;
 
   async onEyeModeChange() {
     const context = this.getUIContext().getHostContext() as common.UIAbilityContext;
@@ -204,58 +207,59 @@ export struct Mine {
     Refresh({
       refreshing: this.isRefreshing
     }) {
-      Column() {
-        // 自定义下拉刷新指示器 - 只有图片，没有文字
-        this.customRefreshIndicator()
-        
-        Row({space:10}){//登录卡片
-          Image($r('app.media.userIcon'))//默认头像
-            .width(50)
-            .height(50)
-            .margin({left:25})
+      Scroll() {
+        Column() {
+          // 自定义下拉刷新指示器 - 只有图片，没有文字
+          this.customRefreshIndicator()
+          
+          Row({space:10}){//登录卡片
+            Image($r('app.media.userIcon'))//默认头像
+              .width(50)
+              .height(50)
+              .margin({left:25})
 
-          Column({space:5}){
-            Text(this.isLoggedIn ? this.currentUser : "未登录")//显示用户名
-              .fontColor(Color.Black)
-              .fontSize(20)
-            //如果未登录则显示"登录"，如果已经登录则显示"退出登录"
-            //点击后如果未登录，则跳转到登录界面
-            if (this.isLoggedIn) {
-              Button("退出登录")
-                .width(100)
-                .borderRadius(8)
-                .backgroundColor(Color.Red)
-                .onClick(async () => {
-                  // 退出登录
-                  await StorageUtil.setLoggedOut();
-                  AppStorage.setOrCreate('currentUser', '');//清除
-                  this.isLoggedIn = false;
-                  this.currentUser = '';
-                  promptAction.showToast({ message: '已退出登录', duration: 1500 });
-                })
-            } else {
-              Button("登录/注册")
-                .width(100)
-                .borderRadius(8)
-                .backgroundColor("#007DFF")
-                .onClick(() => {
-                  router.pushUrl({ url: 'pages/Login' }).catch(() => {
-                    hilog.error(0x0000, TAG, "登录路由跳转失败");
-                  });
-                })
+            Column({space:5}){
+              Text(this.isLoggedIn ? this.currentUser : "未登录")//显示用户名
+                .fontColor(Color.Black)
+                .fontSize(20)
+              //如果未登录则显示"登录"，如果已经登录则显示"退出登录"
+              //点击后如果未登录，则跳转到登录界面
+              if (this.isLoggedIn) {
+                Button("退出登录")
+                  .width(100)
+                  .borderRadius(8)
+                  .backgroundColor(Color.Red)
+                  .onClick(async () => {
+                    // 退出登录
+                    await StorageUtil.setLoggedOut();
+                    AppStorage.setOrCreate('currentUser', '');//清除
+                    this.isLoggedIn = false;
+                    this.currentUser = '';
+                    promptAction.showToast({ message: '已退出登录', duration: 1500 });
+                  })
+              } else {
+                Button("登录/注册")
+                  .width(100)
+                  .borderRadius(8)
+                  .backgroundColor("#007DFF")
+                  .onClick(() => {
+                    router.pushUrl({ url: 'pages/Login' }).catch(() => {
+                      hilog.error(0x0000, TAG, "登录路由跳转失败");
+                    });
+                  })
+              }
             }
+            .margin({right:25})
+            .justifyContent(FlexAlign.Start)
+            //.alignItems(HorizontalAlign.Start)
           }
-          .margin({right:25})
-          .justifyContent(FlexAlign.Start)
-          //.alignItems(HorizontalAlign.Start)
-        }
-        .margin({top:50,bottom:20})
-        .width('80%')
-        .height(100)
-        .backgroundColor(Color.White)
-        .border({width:2})
-        .borderRadius(10)
-        .justifyContent(FlexAlign.SpaceBetween)
+          .margin({top:50,bottom:20})
+          .width('80%')
+          .height(100)
+          .backgroundColor(Color.White)
+          .border({width:2})
+          .borderRadius(10)
+          .justifyContent(FlexAlign.SpaceBetween)
 
         //阅读记录
         Row(){
@@ -453,8 +457,11 @@ export struct Mine {
 
       }
       .width('100%')
-      .height('100%')
-      .backgroundColor(this.eyeMode ? '#FAF9DE' : $r('app.color.page_background1'))
+    }
+    .width('100%')
+    .height('100%')
+    .scrollBar(BarState.Off)
+    .edgeEffect(EdgeEffect.Spring)
     }
     .onRefreshing(() => {
       this.onRefresh();
@@ -490,6 +497,7 @@ export struct Mine {
     })
     .width('100%')
     .height('100%')
+    .backgroundColor(this.eyeMode ? '#FAF9DE' : $r('app.color.page_background1'))
   }
 
 

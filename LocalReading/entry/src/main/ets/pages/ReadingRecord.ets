@@ -18,8 +18,39 @@ struct ReadingRecord {
   @State olderBooks: BookParserInfo[] = [];
 
   @StorageLink('currentUser')@Watch('onUserChange') currentUser: string = '';
+  
+  // 监听窗口高度，用于自适应布局
+  @StorageLink('windowHeight') windowHeight: number = 0;
 
   private progressMap: Map<string, BookProgress> = new Map(); // filePath -> progress
+  
+  // ListItem的高度（包含间距）
+  private readonly ITEM_HEIGHT: number = 88; // 80(内容高度) + 8(space间距)
+  // 默认最大显示项数（严格限制为4个）
+  private readonly DEFAULT_MAX_ITEMS: number = 4;
+  
+  // 计算List的最大高度（自适应不同屏幕）
+  private calculateMaxListHeight(itemCount: number): number {
+    // 严格限制：最多显示4个ListItem
+    // 如果项数 <= 4，显示所有项
+    // 如果项数 > 4，限制为4项的高度，超出部分可滚动
+    
+    const actualItemCount = Math.min(itemCount, this.DEFAULT_MAX_ITEMS);
+    const calculatedHeight = actualItemCount * this.ITEM_HEIGHT;
+    
+    // 考虑屏幕高度限制（确保不会占满整个屏幕）
+    const availableHeight = this.windowHeight > 0 ? this.windowHeight - 300 : 500;
+    const maxByScreen = availableHeight * 0.45; // 每个List最多占可用空间的45%
+    
+    // 最终高度：取计算高度和屏幕限制的较小值
+    const finalHeight = Math.min(calculatedHeight, maxByScreen);
+    
+    hilog.info(0x0000, TAG, 
+      `calculateMaxListHeight: itemCount=${itemCount}, actualItemCount=${actualItemCount}, ` +
+      `calculatedHeight=${calculatedHeight}, maxByScreen=${maxByScreen}, finalHeight=${finalHeight}`);
+    
+    return finalHeight;
+  }
 
   async aboutToAppear() {
     WindowAbility.getInstance().toggleWindowSystemBar(['status', 'navigation'], this.getUIContext().getHostContext());
@@ -100,6 +131,7 @@ struct ReadingRecord {
           .fontSize(18)
           .fontWeight(FontWeight.Bold)
           .fontColor(Color.Black)
+          .margin({right:15})
         Blank().layoutWeight(1)
       }
       .width('100%')
@@ -128,7 +160,7 @@ struct ReadingRecord {
               .scrollBar(BarState.Off)
               .borderRadius(8)
               .width('100%')
-              .height(this.recentBooks.length * 80)
+              .height(this.calculateMaxListHeight(this.recentBooks.length))
               .backgroundColor(Color.Transparent)
               .margin({right:10})
             } else {
@@ -144,7 +176,6 @@ struct ReadingRecord {
             }
           }
           .margin({right:10,left:10})
-          .layoutWeight(1)
 
           // 固定下半部分：之前
           Column() {
@@ -167,7 +198,7 @@ struct ReadingRecord {
               .scrollBar(BarState.Off)
               .margin({right:8})
               .width('100%')
-              .height(this.olderBooks.length * 80)
+              .height(this.calculateMaxListHeight(this.olderBooks.length))
               .backgroundColor(Color.Transparent)
             } else {
               Text('暂无更早的阅读记录')
@@ -182,7 +213,6 @@ struct ReadingRecord {
             }
           }
           .margin({right:10,left:10})
-          .layoutWeight(1)
 
           // 当两个列表都为空时的提示
           if (this.recentBooks.length === 0 && this.olderBooks.length === 0) {
