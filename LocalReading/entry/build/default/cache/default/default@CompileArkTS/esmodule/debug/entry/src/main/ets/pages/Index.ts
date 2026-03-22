@@ -207,24 +207,24 @@ export class Index extends ViewPU {
     private async loadBook() {
         try {
             let context = this.getUIContext().getHostContext() as common.UIAbilityContext;
-            //初始化文件选择器
+            // 初始化文件选择器
             let documentSelectOptions = new picker.DocumentSelectOptions();
-            //设置文件类型
+            // 设置文件类型
             documentSelectOptions.fileSuffixFilters = ['.epub', '.txt', '.mobi', '.azw', '.azw3'];
-            documentSelectOptions.maxSelectNumber = 10; //可选择最大数量
+            documentSelectOptions.maxSelectNumber = 10; // 可选择最大数量
             let documentPicker = new picker.DocumentViewPicker(context);
-            //通过select()方法返回Promise对象，需配合await进行异步处理
+            // 通过select()方法返回Promise对象，需配合await进行异步处理
             let documentSelectResult = await documentPicker.select(documentSelectOptions);
             if (!documentSelectResult || documentSelectResult.length <= 0) {
                 hilog.error(0x0000, TAG, 'loadBook failed');
                 return;
             }
-            //导入数量
+            // 导入数量
             let importedCount = 0;
-            //跳过数量（重复）
+            // 跳过数量（重复）
             let skippedCount = 0;
             for (let i = 0; i < documentSelectResult.length; i++) {
-                //获取书籍路径
+                // 获取书籍路径
                 let srcFile: string = decodeURI(documentSelectResult[i]);
                 hilog.info(0x0000, TAG, `开始导入第 ${i + 1} 本书: ${srcFile}`);
                 try {
@@ -302,10 +302,21 @@ export class Index extends ViewPU {
         const context = this.getUIContext().getHostContext() as common.UIAbilityContext;
         hilog.info(0x0000, TAG, `Index reloadData: currentUser = ${this.currentUser}`);
         // 根据当前用户加载数据（如果 currentUser 为空，则加载空数据，是的没登陆也能用）
-        this.importedBooks = await BookStorage.loadBooks(context, this.currentUser);
-        hilog.info(0x0000, TAG, `Index reloadData: loaded ${this.importedBooks.length} books`);
+        const books = await BookStorage.loadBooks(context, this.currentUser);
+        hilog.info(0x0000, TAG, `Index reloadData: loaded ${books.length} books`);
         this.progresses = await ProgressStorage.loadAllProgresses(context, this.currentUser);
         hilog.info(0x0000, TAG, `Index reloadData: loaded ${this.progresses.length} progresses`);
+        // 建立 filePath 到 lastReadTime 的映射
+        const progressMap = new Map<string, number>();
+        this.progresses.forEach(p => {
+            progressMap.set(p.filePath, p.lastReadTime);
+        });
+        // 按最后阅读时间降序排序（最近打开的在最上方）
+        this.importedBooks = books.sort((a, b) => {
+            const timeA = progressMap.get(a.getFilePath()) || 0;
+            const timeB = progressMap.get(b.getFilePath()) || 0;
+            return timeB - timeA; // 降序，最新的在前
+        });
         // 打印所有进度和书籍的filePath用于调试
         this.progresses.forEach((p, idx) => {
             hilog.info(0x0000, TAG, `Progress[${idx}]: filePath=${p.filePath}, chapter=${p.chapterName}`);
@@ -332,9 +343,20 @@ export class Index extends ViewPU {
         try {
             const context = this.getUIContext().getHostContext() as common.UIAbilityContext;
             // 重新加载书籍列表
-            this.importedBooks = await BookStorage.loadBooks(context, this.currentUser);
+            const books = await BookStorage.loadBooks(context, this.currentUser);
             // 重新加载进度
             this.progresses = await ProgressStorage.loadAllProgresses(context, this.currentUser);
+            // 建立 filePath 到 lastReadTime 的映射
+            const progressMap = new Map<string, number>();
+            this.progresses.forEach(p => {
+                progressMap.set(p.filePath, p.lastReadTime);
+            });
+            // 按最后阅读时间降序排序（最近打开的在最上方）
+            this.importedBooks = books.sort((a, b) => {
+                const timeA = progressMap.get(a.getFilePath()) || 0;
+                const timeB = progressMap.get(b.getFilePath()) || 0;
+                return timeB - timeA; // 降序，最新的在前
+            });
             // 如果有书籍，重新选中第一本
             if (this.importedBooks.length > 0) {
                 this.selectBook(this.importedBooks[0]);

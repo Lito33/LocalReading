@@ -48,7 +48,7 @@ struct SyncSettings {
         .fontColor(Color.Black)
         .fontSize(24)
         .fontWeight(FontWeight.Bold)
-        .margin({ top: 30, bottom: 30 })
+        .margin({ top: 50, bottom: 10 })
       
       Scroll() {
         Column({ space: 20 }) {
@@ -56,7 +56,7 @@ struct SyncSettings {
           this.buildStatusCard()
           
           // 设备列表
-          this.buildDeviceList()
+          this.buildDeviceInfo()
           
           // 同步设置
           this.buildSyncSettings()
@@ -143,7 +143,7 @@ struct SyncSettings {
   }
   
   @Builder
-  buildDeviceList() {
+  buildDeviceInfo() {
     Column() {
       Row() {
         Text('跨设备同步')

@@ -12,6 +12,7 @@ export interface PersistedReaderSettings {
     themeBgImg: string;
     flipMode: string;
     themeSelectIndex: number; //当前选中的主题索引
+    fontColor: string; // 字体颜色
     // TTS朗读设置
     ttsVolume: number; // 音量 (0-2)
     ttsPitch: number; // 音调 (0.5-2.0)

@@ -168,11 +168,18 @@ struct Reader {
         this.isUserSelectedTheme = true;
       }
 
-      // 根据夜间模式调整字体颜色（与 colorModeChange 逻辑保持一致）
-      if (saved.nightMode) {
-        this.readerSetting.fontColor = '#ffffff';
+      // 根据主题索引调整字体颜色（优先使用保存的fontColor，否则根据themeSelectIndex推断）
+      if (saved.fontColor) {
+        this.readerSetting.fontColor = saved.fontColor;
       } else {
-        this.readerSetting.fontColor = '#000000';
+        // 兼容旧数据：根据themeSelectIndex推断字体颜色
+        // themeList: ['white', 'yellow', 'pink', 'green', 'dark', 'whiteSky', 'darkSky']
+        // index 4 (dark), 6 (darkSky) 需要白色字体
+        if (saved.themeSelectIndex === 4 || saved.themeSelectIndex === 6) {
+          this.readerSetting.fontColor = '#ffffff';
+        } else {
+          this.readerSetting.fontColor = '#000000';
+        }
       }
 
       // 加载TTS朗读设置
@@ -373,7 +380,7 @@ struct Reader {
       // 通过 resourceIndex 获取对应的 SpineItem，再匹配目录项得到章节名
       const spineList = this.defaultHandler?.getSpineList() || [];
       const catalogList = this.defaultHandler?.getCatalogList() || [];
-      
+
       if (data.resourceIndex >= 0 && data.resourceIndex < spineList.length) {
         const spineItem = spineList[data.resourceIndex];
         if (spineItem) {
@@ -482,6 +489,7 @@ struct Reader {
       themeBgImg: this.readerSetting.themeBgImg,
       flipMode: this.readerSetting.flipMode,
       themeSelectIndex: this.themeSelectIndex,
+      fontColor: this.readerSetting.fontColor,
       ttsVolume: this.ttsVolume,
       ttsPitch: this.ttsPitch,
       ttsSpeed: this.ttsSpeed,
@@ -505,6 +513,7 @@ struct Reader {
       themeBgImg: saved?.themeBgImg ?? this.readerSetting.themeBgImg,
       flipMode: saved?.flipMode ?? this.readerSetting.flipMode,
       themeSelectIndex: saved?.themeSelectIndex ?? this.themeSelectIndex,
+      fontColor: saved?.fontColor ?? this.readerSetting.fontColor,
       ttsVolume: this.ttsVolume,
       ttsPitch: this.ttsPitch,
       ttsSpeed: this.ttsSpeed,

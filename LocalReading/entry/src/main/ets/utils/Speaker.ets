@@ -57,10 +57,12 @@ export class Speaker {
           this.rejectEngineReady(err);
           return;
         }
+        // 保存引擎实例到成员变量
         this.ttsEngine = engine;
         this.isEngineShutdown = false;  // 标记引擎已创建
         this.setListener();
         hilog.info(0x0000, TAG, 'TTS Engine created and listener set.');
+        // 解决Promise，表示引擎已就绪！
         this.resolveEngineReady();
       });
     } catch (error) {
@@ -161,6 +163,7 @@ export class Speaker {
     }
   }
 
+  //暂时没有使用
   public shutdown() {
     if (this.ttsEngine) {
       this.ttsEngine.shutdown();

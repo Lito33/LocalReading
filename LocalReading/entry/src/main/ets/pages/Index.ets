@@ -109,25 +109,25 @@ export struct Index {
     try {
       let context = this.getUIContext().getHostContext() as common.UIAbilityContext;
       
-      //初始化文件选择器
+      // 初始化文件选择器
       let documentSelectOptions = new picker.DocumentSelectOptions();
-      //设置文件类型
+      // 设置文件类型
       documentSelectOptions.fileSuffixFilters = ['.epub', '.txt', '.mobi', '.azw', '.azw3'];
-      documentSelectOptions.maxSelectNumber = 10;//可选择最大数量
+      documentSelectOptions.maxSelectNumber = 10;// 可选择最大数量
       let documentPicker = new picker.DocumentViewPicker(context);
-      //通过select()方法返回Promise对象，需配合await进行异步处理
+      // 通过select()方法返回Promise对象，需配合await进行异步处理
       let documentSelectResult = await documentPicker.select(documentSelectOptions);
       if (!documentSelectResult || documentSelectResult.length <= 0) {
         hilog.error(0x0000, TAG, 'loadBook failed');
         return;
       }
-      //导入数量
+      // 导入数量
       let importedCount = 0;
-      //跳过数量（重复）
+      // 跳过数量（重复）
       let skippedCount = 0;
 
       for (let i = 0; i < documentSelectResult.length; i++){
-        //获取书籍路径
+        // 获取书籍路径
         let srcFile: string = decodeURI(documentSelectResult[i]);
         hilog.info(0x0000, TAG, `开始导入第 ${i+1} 本书: ${srcFile}`);
 

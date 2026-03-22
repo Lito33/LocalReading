@@ -29,7 +29,7 @@ export class BookParserInfo {
   private coverPath: string = '';
   private bookLanguage: string = '';
   private bookName: string = '';
-  private bookAuthor: string = '';  // 作者
+  private bookAuthor: string = '';
   private bookId: string = '';
   private bookSourceType: number = -1;
   private localHash: string = '';

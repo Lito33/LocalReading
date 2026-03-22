@@ -204,7 +204,7 @@ class SyncSettings extends ViewPU {
             // 标题
             Text.fontWeight(FontWeight.Bold);
             // 标题
-            Text.margin({ top: 30, bottom: 30 });
+            Text.margin({ top: 50, bottom: 10 });
         }, Text);
         // 标题
         Text.pop();
@@ -223,7 +223,7 @@ class SyncSettings extends ViewPU {
         // 同步状态卡片
         this.buildStatusCard.bind(this)();
         // 设备列表
-        this.buildDeviceList.bind(this)();
+        this.buildDeviceInfo.bind(this)();
         // 同步设置
         this.buildSyncSettings.bind(this)();
         // 操作按钮
@@ -337,7 +337,7 @@ class SyncSettings extends ViewPU {
         If.pop();
         Column.pop();
     }
-    buildDeviceList(parent = null) {
+    buildDeviceInfo(parent = null) {
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Column.create();
             Column.width('100%');

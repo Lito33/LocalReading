@@ -247,6 +247,7 @@ export class DistributedSyncManager {
             const context = GlobalContext.getInstance().getContext() as common.UIAbilityContext;
             const currentUser = await StorageUtil.getCurrentUser();
             const progresses = await ProgressStorage.loadAllProgresses(context, currentUser);
+            // 标记本次同步时间
             const now = Date.now();
             // 仅更新进度相关属性
             this.dataObject['timestamp'] = now;

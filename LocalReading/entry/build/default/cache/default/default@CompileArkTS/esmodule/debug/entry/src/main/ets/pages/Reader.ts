@@ -506,12 +506,20 @@ class Reader extends ViewPU {
             if (saved.themeSelectIndex > 0) {
                 this.isUserSelectedTheme = true;
             }
-            // 根据夜间模式调整字体颜色（与 colorModeChange 逻辑保持一致）
-            if (saved.nightMode) {
-                this.readerSetting.fontColor = '#ffffff';
+            // 根据主题索引调整字体颜色（优先使用保存的fontColor，否则根据themeSelectIndex推断）
+            if (saved.fontColor) {
+                this.readerSetting.fontColor = saved.fontColor;
             }
             else {
-                this.readerSetting.fontColor = '#000000';
+                // 兼容旧数据：根据themeSelectIndex推断字体颜色
+                // themeList: ['white', 'yellow', 'pink', 'green', 'dark', 'whiteSky', 'darkSky']
+                // index 4 (dark), 6 (darkSky) 需要白色字体
+                if (saved.themeSelectIndex === 4 || saved.themeSelectIndex === 6) {
+                    this.readerSetting.fontColor = '#ffffff';
+                }
+                else {
+                    this.readerSetting.fontColor = '#000000';
+                }
             }
             // 加载TTS朗读设置
             if (saved.ttsVolume !== undefined) {
@@ -769,6 +777,7 @@ class Reader extends ViewPU {
             themeBgImg: this.readerSetting.themeBgImg,
             flipMode: this.readerSetting.flipMode,
             themeSelectIndex: this.themeSelectIndex,
+            fontColor: this.readerSetting.fontColor,
             ttsVolume: this.ttsVolume,
             ttsPitch: this.ttsPitch,
             ttsSpeed: this.ttsSpeed,
@@ -791,6 +800,7 @@ class Reader extends ViewPU {
             themeBgImg: saved?.themeBgImg ?? this.readerSetting.themeBgImg,
             flipMode: saved?.flipMode ?? this.readerSetting.flipMode,
             themeSelectIndex: saved?.themeSelectIndex ?? this.themeSelectIndex,
+            fontColor: saved?.fontColor ?? this.readerSetting.fontColor,
             ttsVolume: this.ttsVolume,
             ttsPitch: this.ttsPitch,
             ttsSpeed: this.ttsSpeed,
@@ -1720,7 +1730,7 @@ class Reader extends ViewPU {
                                 hilog.info(0x0000, TAG, `ReadPageComponent init failed, Code: ${err.code}, message: ${err.message}`);
                             }
                         }
-                    }, undefined, elmtId, () => { }, { page: "entry/src/main/ets/pages/Reader.ets", line: 1233, col: 7 });
+                    }, undefined, elmtId, () => { }, { page: "entry/src/main/ets/pages/Reader.ets", line: 1242, col: 7 });
                     ViewPU.create(componentCall);
                     let paramsLambda = () => {
                         return {
