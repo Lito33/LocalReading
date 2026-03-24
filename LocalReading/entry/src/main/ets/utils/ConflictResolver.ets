@@ -10,7 +10,7 @@ export interface ConflictInfo {
   remoteVersion: number;
   localTimestamp: number;
   remoteTimestamp: number;
-  conflictType: 'UPDATE_UPDATE' | 'DELETE_UPDATE' | 'CREATE_CREATE';
+  conflictType: 'UPDATE_UPDATE' | 'DELETE_UPDATE';
 }
 
 export interface ResolutionStrategy {
@@ -102,7 +102,9 @@ export class ConflictResolver {
       const remoteVersion = remoteData.version || 1;
       const localTimestamp = localData.updatedAt || Date.now();
       const remoteTimestamp = remoteData.updatedAt || Date.now();
-      
+
+
+      // 版本不同，两端都更新了，万一呢我是说万一呢
       if (localVersion !== remoteVersion) {
         return {
           dataType: ConflictResolver.getDataType(localData),
@@ -113,6 +115,7 @@ export class ConflictResolver {
           conflictType: 'UPDATE_UPDATE'
         };
       }
+
     }
     
     return null;
