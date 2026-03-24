@@ -40,7 +40,27 @@ export struct Mine {
   @StorageLink('eyeMode') @Watch('onEyeModeChange') eyeMode: boolean = false;
   
   // 响应式布局：监听窗口宽度
-  @StorageLink('windowWidth') windowWidth: number = 360;
+  @StorageLink('windowWidth') windowWidth: number = 360
+
+  // 计算卡片宽度
+  private getCardWidth(): string {
+    return this.windowWidth > 600 ? '85%' : '80%';
+  }
+
+  // 计算行高
+  private getRowHeight(): number {
+    return this.windowWidth > 600 ? 80 : 70;
+  }
+
+  // 计算字体大小
+  private getTitleFontSize(): number {
+    return this.windowWidth > 600 ? 22 : 18;
+  }
+
+  // 判断是否为平板
+  private isTablet(): boolean {
+    return this.windowWidth > 600;
+  }
 
   async onEyeModeChange() {
     const context = this.getUIContext().getHostContext() as common.UIAbilityContext;
@@ -51,6 +71,7 @@ export struct Mine {
   @State source: string = '';
   @State author: string = '';
 
+  //获取名言
   async fetchQuote() {
     //创建实例
     const httpRequest = http.createHttp();
@@ -214,19 +235,19 @@ export struct Mine {
           
           Row({space:10}){//登录卡片
             Image($r('app.media.userIcon'))//默认头像
-              .width(50)
-              .height(50)
+              .width(this.isTablet() ? 60 : 50)
+              .height(this.isTablet() ? 60 : 50)
               .margin({left:25})
 
             Column({space:5}){
               Text(this.isLoggedIn ? this.currentUser : "未登录")//显示用户名
                 .fontColor(Color.Black)
-                .fontSize(20)
+                .fontSize(this.getTitleFontSize())
               //如果未登录则显示"登录"，如果已经登录则显示"退出登录"
               //点击后如果未登录，则跳转到登录界面
               if (this.isLoggedIn) {
                 Button("退出登录")
-                  .width(100)
+                  .width(this.isTablet() ? 120 : 100)
                   .borderRadius(8)
                   .backgroundColor(Color.Red)
                   .onClick(async () => {
@@ -239,7 +260,7 @@ export struct Mine {
                   })
               } else {
                 Button("登录/注册")
-                  .width(100)
+                  .width(this.isTablet() ? 120 : 100)
                   .borderRadius(8)
                   .backgroundColor("#007DFF")
                   .onClick(() => {
@@ -255,7 +276,7 @@ export struct Mine {
           }
           .margin({top:50,bottom:20})
           .width('80%')
-          .height(100)
+          .height(this.isTablet() ? 120 : 100)
           .backgroundColor(Color.White)
           .border({width:2})
           .borderRadius(10)
@@ -265,7 +286,7 @@ export struct Mine {
         Row(){
           Row({space:7}){
             Text("阅读记录")
-              .fontSize(18)
+              .fontSize(this.getTitleFontSize())
               .fontColor(Color.Black)
               .fontWeight(FontWeight.Bold)
               .margin({left:10})
@@ -281,8 +302,8 @@ export struct Mine {
             .height(25)
 
         }
-        .height(70)
-        .width("80%")
+        .height(this.getRowHeight())
+        .width(this.getCardWidth())
         .borderRadius(10)
         .justifyContent(FlexAlign.SpaceBetween)
         .backgroundColor(this.isReadingRecordPressed ? '#E0E0E0' : Color.White)
@@ -327,8 +348,8 @@ export struct Mine {
             .height(25)
 
         }
-        .height(70)
-        .width("80%")
+        .height(this.getRowHeight())
+        .width(this.getCardWidth())
         .borderRadius(10)
         .justifyContent(FlexAlign.SpaceBetween)
         .backgroundColor(this.isReadingSettingsPressed ? '#E0E0E0' : Color.White)
@@ -366,8 +387,8 @@ export struct Mine {
             .height(25)
 
         }
-        .height(70)
-        .width("80%")
+        .height(this.getRowHeight())
+        .width(this.getCardWidth())
         .borderRadius(10)
         .justifyContent(FlexAlign.SpaceBetween)
         .backgroundColor(this.isEyesModePressed ? '#E0E0E0' : Color.White)
@@ -403,8 +424,8 @@ export struct Mine {
             .height(25)
 
         }
-        .height(70)
-        .width("80%")
+        .height(this.getRowHeight())
+        .width(this.getCardWidth())
         .borderRadius(10)
         .justifyContent(FlexAlign.SpaceBetween)
         .backgroundColor(this.isClosePressed ? '#E0E0E0' : Color.White)
