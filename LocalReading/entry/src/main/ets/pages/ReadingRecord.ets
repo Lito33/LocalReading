@@ -22,7 +22,8 @@ struct ReadingRecord {
   // 监听窗口高度，用于自适应布局
   @StorageLink('windowHeight') windowHeight: number = 0;
 
-  private progressMap: Map<string, BookProgress> = new Map(); // filePath -> progress
+  // 使用@State装饰，确保进度更新时UI能够响应式刷新
+  @State progressMap: Map<string, BookProgress> = new Map(); // filePath -> progress
   
   // ListItem的高度（包含间距）
   private readonly ITEM_HEIGHT: number = 88; // 80(内容高度) + 8(space间距)
