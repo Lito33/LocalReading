@@ -8,7 +8,7 @@ export interface ConflictInfo {
     remoteVersion: number;
     localTimestamp: number;
     remoteTimestamp: number;
-    conflictType: 'UPDATE_UPDATE' | 'DELETE_UPDATE' | 'CREATE_CREATE';
+    conflictType: 'UPDATE_UPDATE' | 'DELETE_UPDATE';
 }
 export interface ResolutionStrategy {
     strategy: 'LAST_WRITE_WINS' | 'MANUAL_RESOLUTION' | 'MERGE' | 'LOCAL_WINS' | 'REMOTE_WINS';
@@ -90,6 +90,7 @@ export class ConflictResolver {
             const remoteVersion = remoteData.version || 1;
             const localTimestamp = localData.updatedAt || Date.now();
             const remoteTimestamp = remoteData.updatedAt || Date.now();
+            // 版本不同，两端都更新了，万一呢我是说万一呢
             if (localVersion !== remoteVersion) {
                 return {
                     dataType: ConflictResolver.getDataType(localData),
@@ -211,6 +212,9 @@ export class ConflictResolver {
         hilog.info(0x0000, TAG, 'Data merged successfully');
         return result;
     }
+    /**
+     * 合并数据
+     */
     private static mergeField<T>(localValue: T | undefined, remoteValue: T | undefined, localTimestamp: number, remoteTimestamp: number): T | undefined {
         if (localValue === undefined && remoteValue === undefined)
             return undefined;

@@ -419,5 +419,9 @@
 			"type":	"string",
 			"name":	"SpeechVolume",
 			"id":	"0x01000068"
+		}, {
+			"type":	"string",
+			"name":	"Notice",
+			"id":	"0x01000069"
 		}]
 }

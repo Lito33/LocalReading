@@ -10,8 +10,20 @@ import type { StoredUserCredential } from './PasswordUtil';
 import { ProgressStorage } from "@bundle:com.example.readerkitdemo/entry/ets/common/ProgressStorage";
 import type { BookProgress } from "@bundle:com.example.readerkitdemo/entry/ets/common/ProgressStorage";
 import { ConflictResolver } from "@bundle:com.example.readerkitdemo/entry/ets/utils/ConflictResolver";
+import { BookStorage } from "@bundle:com.example.readerkitdemo/entry/ets/common/BookStorage";
+import { BookParserInfo } from "@bundle:com.example.readerkitdemo/entry/ets/common/BookParserInfo";
 const TAG = 'DistributedSyncManager';
 const SESSION_ID = 'local_reading_sync_v2'; // 固定sessionId，同账号设备自动同步
+// 书籍同步数据接口
+interface SyncBookData {
+    bookId: string;
+    bookName: string;
+    bookAuthor: string;
+    filePath: string;
+    coverPath: string;
+    bookSourceType: number;
+    localHash: string;
+}
 // 同步数据结构
 class SyncDataObject {
     version: string = '1.0';
@@ -20,6 +32,7 @@ class SyncDataObject {
     currentUser: string = '';
     settingsJson: string = ''; // PersistedReaderSettings 的 JSON
     progressesJson: string = '[]'; // BookProgress[] 的 JSON（阅读进度）
+    booksJson: string = '[]'; // BookParserInfo[] 的 JSON（书籍列表）
 }
 // 同步状态
 export interface SyncStatus {
@@ -132,6 +145,12 @@ export class DistributedSyncManager {
                 const remoteProgresses: BookProgress[] = JSON.parse(remoteProgressesJson);
                 await this.mergeReadingProgresses(context, remoteProgresses);
             }
+            // 恢复书籍列表
+            const remoteBooksJson = this.dataObject['booksJson'] as string;
+            if (remoteBooksJson) {
+                const remoteBooks: SyncBookData[] = JSON.parse(remoteBooksJson);
+                await this.mergeBooks(context, remoteBooks);
+            }
             // 设置当前用户
             const remoteCurrentUser = this.dataObject['currentUser'] as string;
             if (remoteCurrentUser) {
@@ -171,6 +190,43 @@ export class DistributedSyncManager {
         }
     }
     /**
+     * 合并远程书籍列表到本地
+     */
+    private async mergeBooks(context: common.UIAbilityContext, remoteBooks: SyncBookData[]): Promise<void> {
+        try {
+            const currentUser = await StorageUtil.getCurrentUser();
+            const localBooks = await BookStorage.loadBooks(context, currentUser);
+            hilog.info(0x0000, TAG, `Merging books: local=${localBooks.length}, remote=${remoteBooks.length}`);
+            // 将远程书籍数据转换为 BookParserInfo 实例
+            const remoteBookInstances: BookParserInfo[] = remoteBooks.map((obj: SyncBookData) => {
+                const book = new BookParserInfo();
+                book.setBookId(obj.bookId ?? '')
+                    .setBookName(obj.bookName ?? '')
+                    .setBookAuthor(obj.bookAuthor ?? '')
+                    .setFilePath(obj.filePath ?? '')
+                    .setCoverPath(obj.coverPath ?? '')
+                    .setBookSourceType(obj.bookSourceType ?? -1)
+                    .setLocalHash(obj.localHash ?? '');
+                return book;
+            });
+            // 合并书籍列表：以 remoteBooks 为主，补充 localBooks 中不存在的书籍
+            const remoteBookIds = new Set(remoteBookInstances.map(b => b.getBookId()));
+            const mergedBooks = [...remoteBookInstances];
+            for (const localBook of localBooks) {
+                if (!remoteBookIds.has(localBook.getBookId())) {
+                    mergedBooks.push(localBook);
+                }
+            }
+            // 保存合并后的书籍列表
+            await BookStorage.saveBooks(mergedBooks, context, currentUser);
+            hilog.info(0x0000, TAG, `Books merged: ${mergedBooks.length} records after merge`);
+        }
+        catch (error) {
+            const err = error as BusinessError;
+            hilog.error(0x0000, TAG, `Merge books failed: ${err.message}`);
+        }
+    }
+    /**
      * 同步本地数据到分布式对象
      */
     async syncData(): Promise<boolean> {
@@ -186,6 +242,19 @@ export class DistributedSyncManager {
             const currentUser = await StorageUtil.getCurrentUser();
             const settings = await SettingStorage.loadSettings(context);
             const progresses = await ProgressStorage.loadAllProgresses(context, currentUser);
+            const books = await BookStorage.loadBooks(context, currentUser);
+            // 将 BookParserInfo 对象序列化为可传输的格式
+            const booksForSync: SyncBookData[] = books.map((book: BookParserInfo): SyncBookData => {
+                return {
+                    bookId: book.getBookId(),
+                    bookName: book.getBookName(),
+                    bookAuthor: book.getBookAuthor(),
+                    filePath: book.getFilePath(),
+                    coverPath: book.getCoverPath(),
+                    bookSourceType: book.getBookSourceType(),
+                    localHash: book.getLocalHash()
+                } as SyncBookData;
+            });
             const now = Date.now();
             // 更新分布式对象属性
             this.dataObject['version'] = '1.0';
@@ -194,12 +263,13 @@ export class DistributedSyncManager {
             this.dataObject['currentUser'] = currentUser;
             this.dataObject['settingsJson'] = settings ? JSON.stringify(settings) : '';
             this.dataObject['progressesJson'] = JSON.stringify(progresses);
+            this.dataObject['booksJson'] = JSON.stringify(booksForSync);
             // 保存到本地持久化（"local" 表示本地设备）
             await this.dataObject.save('local');
             this.syncStatus.lastSyncTime = now;
             this.syncStatus.isSyncing = false;
             this.syncStatus.syncError = undefined;
-            hilog.info(0x0000, TAG, `Data synced successfully, including ${progresses.length} reading progresses`);
+            hilog.info(0x0000, TAG, `Data synced successfully, including ${progresses.length} progresses and ${books.length} books`);
             return true;
         }
         catch (error) {

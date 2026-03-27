@@ -195,6 +195,7 @@ export class Index extends ViewPU {
                         fs.mkdirSync(coverDir);
                     }
                     const coverPath = await FileUtils.savePixelMapToFile(pixelMap, coverDir, bookParserInfo.getBookId());
+                    console.log(`书籍:${bookInfo.bookTitle}的封面路径:${coverPath}`);
                     bookParserInfo.setCoverPath(coverPath);
                     imageSource.release();
                 }
@@ -775,6 +776,7 @@ export class Index extends ViewPU {
     }
     private async deleteBook(book: BookParserInfo) {
         const context = this.getUIContext().getHostContext() as common.UIAbilityContext;
+        hilog.info(0x0000, TAG, `deleteBook: 开始删除书籍《${book.getBookName()}》, bookId=${book.getBookId()}`);
         //从书籍列表中移除
         this.importedBooks = this.importedBooks.filter(b => b.getBookId() !== book.getBookId());
         //从进度列表中移除
@@ -788,6 +790,12 @@ export class Index extends ViewPU {
         //更新存储
         await BookStorage.saveBooks(this.importedBooks, context, this.currentUser);
         await ProgressStorage.saveAllProgresses(context, this.progresses, this.currentUser);
+        // 删除后打印 Preference 中的书籍内容
+        const booksAfterDelete = await BookStorage.loadBooks(context, this.currentUser);
+        hilog.info(0x0000, TAG, `deleteBook: 删除后 Preference 中剩余书籍数量 = ${booksAfterDelete.length}`);
+        booksAfterDelete.forEach((b, index) => {
+            hilog.info(0x0000, TAG, `deleteBook: 书籍[${index}] - 书名="${b.getBookName()}", bookId=${b.getBookId()}, filePath=${b.getFilePath()}`);
+        });
         //提示删除成功
         try {
             this.getUIContext().getPromptAction().showToast({ message: '删除成功', duration: 1500 });

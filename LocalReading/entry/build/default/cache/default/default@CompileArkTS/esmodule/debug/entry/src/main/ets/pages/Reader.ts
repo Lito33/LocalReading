@@ -24,7 +24,6 @@ interface Reader_Params {
     THEME_PAGE_COLOR?: Record<string, string>;
     themeBorderColor?: Record<number, Resource>;
     themeSelectIndex?: number;
-    isUserSelectedTheme?: boolean;
     readerSetting?: readerCore.ReaderSetting;
     screenDensityCallBack?: Callback<number> | null;
     isLoading?: boolean;
@@ -134,7 +133,6 @@ class Reader extends ViewPU {
             6: { "id": 16777253, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" }
         };
         this.__themeSelectIndex = new ObservedPropertySimplePU(0, this, "themeSelectIndex");
-        this.__isUserSelectedTheme = new ObservedPropertySimplePU(false, this, "isUserSelectedTheme");
         this.readerSetting = {
             fontName: BookUtils.getString(this.getUIContext().getHostContext(), 'system_font'),
             fontPath: '',
@@ -245,9 +243,6 @@ class Reader extends ViewPU {
         if (params.themeSelectIndex !== undefined) {
             this.themeSelectIndex = params.themeSelectIndex;
         }
-        if (params.isUserSelectedTheme !== undefined) {
-            this.isUserSelectedTheme = params.isUserSelectedTheme;
-        }
         if (params.readerSetting !== undefined) {
             this.readerSetting = params.readerSetting;
         }
@@ -300,7 +295,6 @@ class Reader extends ViewPU {
         this.__selectFontPath.purgeDependencyOnElmtId(rmElmtId);
         this.__themeList.purgeDependencyOnElmtId(rmElmtId);
         this.__themeSelectIndex.purgeDependencyOnElmtId(rmElmtId);
-        this.__isUserSelectedTheme.purgeDependencyOnElmtId(rmElmtId);
         this.__isLoading.purgeDependencyOnElmtId(rmElmtId);
         this.__isClicked.purgeDependencyOnElmtId(rmElmtId);
         this.__ttsVolume.purgeDependencyOnElmtId(rmElmtId);
@@ -323,7 +317,6 @@ class Reader extends ViewPU {
         this.__selectFontPath.aboutToBeDeleted();
         this.__themeList.aboutToBeDeleted();
         this.__themeSelectIndex.aboutToBeDeleted();
-        this.__isUserSelectedTheme.aboutToBeDeleted();
         this.__isLoading.aboutToBeDeleted();
         this.__isClicked.aboutToBeDeleted();
         this.__ttsVolume.aboutToBeDeleted();
@@ -460,14 +453,6 @@ class Reader extends ViewPU {
     set themeSelectIndex(newValue: number) {
         this.__themeSelectIndex.set(newValue);
     }
-    //标记是否为用户手动选择的主题（优先级高于系统颜色模式）
-    private __isUserSelectedTheme: ObservedPropertySimplePU<boolean>;
-    get isUserSelectedTheme() {
-        return this.__isUserSelectedTheme.get();
-    }
-    set isUserSelectedTheme(newValue: boolean) {
-        this.__isUserSelectedTheme.set(newValue);
-    }
     //阅读相关设置
     private readerSetting: readerCore.ReaderSetting;
     //自定义的回调函数，用作屏幕变化事件的处理器
@@ -502,24 +487,35 @@ class Reader extends ViewPU {
             this.selectFontPath = saved.fontPath;
             this.fontSize = saved.fontSize.toString();
             this.lineHeight = saved.lineHeight.toString();
-            // 如果用户之前选择过非默认主题，标记为用户手动选择
-            if (saved.themeSelectIndex > 0) {
-                this.isUserSelectedTheme = true;
-            }
-            // 根据主题索引调整字体颜色（优先使用保存的fontColor，否则根据themeSelectIndex推断）
-            if (saved.fontColor) {
+            // 优先使用保存的字体颜色和夜间模式设置
+            // 如果保存的设置中有有效的 fontColor（非空字符串），直接使用
+            // themeList: ['white', 'yellow', 'pink', 'green', 'dark', 'whiteSky', 'darkSky']
+            // index 4 (dark), 6 (darkSky) 需要白色字体
+            if (saved.fontColor && saved.fontColor.length > 0) {
                 this.readerSetting.fontColor = saved.fontColor;
+                this.readerSetting.nightMode = saved.nightMode;
+                hilog.info(0x0000, TAG, `Using saved fontColor: ${saved.fontColor}, nightMode: ${saved.nightMode}`);
             }
             else {
-                // 兼容旧数据：根据themeSelectIndex推断字体颜色
-                // themeList: ['white', 'yellow', 'pink', 'green', 'dark', 'whiteSky', 'darkSky']
-                // index 4 (dark), 6 (darkSky) 需要白色字体
-                if (saved.themeSelectIndex === 4 || saved.themeSelectIndex === 6) {
+                // 兼容旧数据：根据主题索引推断字体颜色
+                hilog.info(0x0000, TAG, `No valid fontColor saved, inferring from themeSelectIndex: ${saved.themeSelectIndex}`);
+                if (this.colorMode === ConfigurationConstant.ColorMode.COLOR_MODE_DARK) {
+                    // 系统深色模式：使用白色字体
                     this.readerSetting.fontColor = '#ffffff';
+                    this.readerSetting.nightMode = true;
                 }
                 else {
-                    this.readerSetting.fontColor = '#000000';
+                    // 系统浅色模式：根据主题索引设置字体颜色
+                    if (saved.themeSelectIndex === 4 || saved.themeSelectIndex === 6) {
+                        this.readerSetting.fontColor = '#ffffff';
+                        this.readerSetting.nightMode = true;
+                    }
+                    else {
+                        this.readerSetting.fontColor = '#000000';
+                        this.readerSetting.nightMode = false;
+                    }
                 }
+                hilog.info(0x0000, TAG, `Inferred fontColor: ${this.readerSetting.fontColor}, nightMode: ${this.readerSetting.nightMode}`);
             }
             // 加载TTS朗读设置
             if (saved.ttsVolume !== undefined) {
@@ -571,11 +567,7 @@ class Reader extends ViewPU {
     }
     //系统颜色改变
     colorModeChange() {
-        // 如果用户手动选择了主题，则不响应系统颜色模式变化
-        if (this.isUserSelectedTheme) {
-            hilog.info(0x0000, TAG, 'colorModeChange: user selected theme, skip auto change');
-            return;
-        }
+        // 移除用户手动选择主题的判断，确保主题切换时字体颜色能够正确更新
         if (this.colorMode === ConfigurationConstant.ColorMode.COLOR_MODE_DARK) {
             this.readerSetting.nightMode = true;
             this.readerSetting.fontColor = '#ffffff';
@@ -1375,7 +1367,6 @@ class Reader extends ViewPU {
                         const currentResourceIndex = this.currentData?.resourceIndex ?? 0;
                         const currentDomPos = this.currentData?.startDomPos ?? '';
                         this.themeSelectIndex = index;
-                        this.isUserSelectedTheme = true; // 标记为用户手动选择主题
                         this.readerSetting.themeColor = this.THEME_PAGE_COLOR[item];
                         this.readerSetting.nightMode = false;
                         if (index === 5) {
@@ -1730,7 +1721,7 @@ class Reader extends ViewPU {
                                 hilog.info(0x0000, TAG, `ReadPageComponent init failed, Code: ${err.code}, message: ${err.message}`);
                             }
                         }
-                    }, undefined, elmtId, () => { }, { page: "entry/src/main/ets/pages/Reader.ets", line: 1242, col: 7 });
+                    }, undefined, elmtId, () => { }, { page: "entry/src/main/ets/pages/Reader.ets", line: 1243, col: 7 });
                     ViewPU.create(componentCall);
                     let paramsLambda = () => {
                         return {

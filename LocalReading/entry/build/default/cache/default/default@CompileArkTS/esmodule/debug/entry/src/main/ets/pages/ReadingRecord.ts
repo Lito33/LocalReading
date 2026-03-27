@@ -31,7 +31,7 @@ class ReadingRecord extends ViewPU {
         this.__olderBooks = new ObservedPropertyObjectPU([], this, "olderBooks");
         this.__currentUser = this.createStorageLink('currentUser', '', "currentUser");
         this.__windowHeight = this.createStorageLink('windowHeight', 0, "windowHeight");
-        this.progressMap = new Map();
+        this.__progressMap = new ObservedPropertyObjectPU(new Map(), this, "progressMap");
         this.ITEM_HEIGHT = 88;
         this.DEFAULT_MAX_ITEMS = 4;
         this.setInitiallyProvidedValue(params);
@@ -63,6 +63,7 @@ class ReadingRecord extends ViewPU {
         this.__olderBooks.purgeDependencyOnElmtId(rmElmtId);
         this.__currentUser.purgeDependencyOnElmtId(rmElmtId);
         this.__windowHeight.purgeDependencyOnElmtId(rmElmtId);
+        this.__progressMap.purgeDependencyOnElmtId(rmElmtId);
     }
     aboutToBeDeleted() {
         this.__eyeMode.aboutToBeDeleted();
@@ -70,6 +71,7 @@ class ReadingRecord extends ViewPU {
         this.__olderBooks.aboutToBeDeleted();
         this.__currentUser.aboutToBeDeleted();
         this.__windowHeight.aboutToBeDeleted();
+        this.__progressMap.aboutToBeDeleted();
         SubscriberManager.Get().delete(this.id__());
         this.aboutToBeDeletedInternal();
     }
@@ -111,7 +113,14 @@ class ReadingRecord extends ViewPU {
     set windowHeight(newValue: number) {
         this.__windowHeight.set(newValue);
     }
-    private progressMap: Map<string, BookProgress>; // filePath -> progress
+    // 使用@State装饰，确保进度更新时UI能够响应式刷新
+    private __progressMap: ObservedPropertyObjectPU<Map<string, BookProgress>>; // filePath -> progress
+    get progressMap() {
+        return this.__progressMap.get();
+    }
+    set progressMap(newValue: Map<string, BookProgress>) {
+        this.__progressMap.set(newValue);
+    }
     // ListItem的高度（包含间距）
     private readonly ITEM_HEIGHT: number; // 80(内容高度) + 8(space间距)
     // 默认最大显示项数（严格限制为4个）

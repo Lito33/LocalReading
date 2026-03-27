@@ -4,6 +4,7 @@ string EntryAbility_label 0x01000006
 string FontSize 0x01000066
 string Library 0x01000007
 string LineHeight 0x01000067
+string Notice 0x01000069
 string SpeechVolume 0x01000068
 string account 0x01000008
 string add 0x0100005c

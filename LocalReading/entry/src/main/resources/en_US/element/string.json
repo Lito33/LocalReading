@@ -91,6 +91,10 @@
     {
       "name": "LineHeight",
       "value": "Line Height"
+    },
+    {
+      "name": "Notice",
+      "value": "Notice"
     }
   ]
 }

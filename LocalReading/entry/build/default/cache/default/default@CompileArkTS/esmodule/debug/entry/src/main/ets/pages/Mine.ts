@@ -50,7 +50,9 @@ export class Mine extends ViewPU {
         this.__isEyesModePressed = new ObservedPropertySimplePU(false, this, "isEyesModePressed");
         this.__isClosePressed = new ObservedPropertySimplePU(false, this, "isClosePressed");
         this.__eyeMode = this.createStorageLink('eyeMode', false, "eyeMode");
-        this.__windowWidth = this.createStorageLink('windowWidth', 360, "windowWidth");
+        this.__windowWidth = this.createStorageLink('windowWidth', 360
+        // 判断是否为平板（物理像素阈值：手机 720-1440，平板 1600+）
+        , "windowWidth");
         this.__hitokoto = new ObservedPropertySimplePU('', this, "hitokoto");
         this.__source = new ObservedPropertySimplePU('', this, "source");
         this.__author = new ObservedPropertySimplePU('', this, "author");
@@ -188,6 +190,22 @@ export class Mine extends ViewPU {
     set windowWidth(newValue: number) {
         this.__windowWidth.set(newValue);
     }
+    // 判断是否为平板（物理像素阈值：手机 720-1440，平板 1600+）
+    private isTablet(): boolean {
+        return this.windowWidth > 1600;
+    }
+    // 计算卡片宽度
+    private getCardWidth(): string {
+        return this.isTablet() ? '85%' : '80%';
+    }
+    // 计算行高
+    private getRowHeight(): number {
+        return this.isTablet() ? 80 : 70;
+    }
+    // 计算字体大小
+    private getTitleFontSize(): number {
+        return this.isTablet() ? 22 : 18;
+    }
     async onEyeModeChange() {
         const context = this.getUIContext().getHostContext() as common.UIAbilityContext;
         await EyeModeStorage.saveEyeMode(context, this.eyeMode);
@@ -213,6 +231,7 @@ export class Mine extends ViewPU {
     set author(newValue: string) {
         this.__author.set(newValue);
     }
+    //获取名言
     async fetchQuote() {
         //创建实例
         const httpRequest = http.createHttp();
@@ -458,7 +477,7 @@ export class Mine extends ViewPU {
             Row.create({ space: 10 });
             Row.margin({ top: 50, bottom: 20 });
             Row.width('80%');
-            Row.height(100);
+            Row.height(this.isTablet() ? 120 : 100);
             Row.backgroundColor(Color.White);
             Row.border({ width: 2 });
             Row.borderRadius(10);
@@ -466,8 +485,8 @@ export class Mine extends ViewPU {
         }, Row);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Image.create({ "id": 16777303, "type": 20000, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
-            Image.width(50);
-            Image.height(50);
+            Image.width(this.isTablet() ? 60 : 50);
+            Image.height(this.isTablet() ? 60 : 50);
             Image.margin({ left: 25 });
         }, Image);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
@@ -478,7 +497,7 @@ export class Mine extends ViewPU {
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Text.create(this.isLoggedIn ? this.currentUser : "未登录");
             Text.fontColor(Color.Black);
-            Text.fontSize(20);
+            Text.fontSize(this.getTitleFontSize());
         }, Text);
         Text.pop();
         this.observeComponentCreation2((elmtId, isInitialRender) => {
@@ -489,7 +508,7 @@ export class Mine extends ViewPU {
                 this.ifElseBranchUpdateFunction(0, () => {
                     this.observeComponentCreation2((elmtId, isInitialRender) => {
                         Button.createWithLabel("退出登录");
-                        Button.width(100);
+                        Button.width(this.isTablet() ? 120 : 100);
                         Button.borderRadius(8);
                         Button.backgroundColor(Color.Red);
                         Button.onClick(async () => {
@@ -508,7 +527,7 @@ export class Mine extends ViewPU {
                 this.ifElseBranchUpdateFunction(1, () => {
                     this.observeComponentCreation2((elmtId, isInitialRender) => {
                         Button.createWithLabel("登录/注册");
-                        Button.width(100);
+                        Button.width(this.isTablet() ? 120 : 100);
                         Button.borderRadius(8);
                         Button.backgroundColor("#007DFF");
                         Button.onClick(() => {
@@ -528,9 +547,9 @@ export class Mine extends ViewPU {
             //阅读记录
             Row.create();
             //阅读记录
-            Row.height(70);
+            Row.height(this.getRowHeight());
             //阅读记录
-            Row.width("80%");
+            Row.width(this.getCardWidth());
             //阅读记录
             Row.borderRadius(10);
             //阅读记录
@@ -564,7 +583,7 @@ export class Mine extends ViewPU {
         }, Row);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Text.create("阅读记录");
-            Text.fontSize(18);
+            Text.fontSize(this.getTitleFontSize());
             Text.fontColor(Color.Black);
             Text.fontWeight(FontWeight.Bold);
             Text.margin({ left: 10 });
@@ -588,9 +607,9 @@ export class Mine extends ViewPU {
             //关于
             Row.create();
             //关于
-            Row.height(70);
+            Row.height(this.getRowHeight());
             //关于
-            Row.width("80%");
+            Row.width(this.getCardWidth());
             //关于
             Row.borderRadius(10);
             //关于
@@ -650,9 +669,9 @@ export class Mine extends ViewPU {
             //护眼模式
             Row.create();
             //护眼模式
-            Row.height(70);
+            Row.height(this.getRowHeight());
             //护眼模式
-            Row.width("80%");
+            Row.width(this.getCardWidth());
             //护眼模式
             Row.borderRadius(10);
             //护眼模式
@@ -701,9 +720,9 @@ export class Mine extends ViewPU {
             //退出按钮
             Row.create();
             //退出按钮
-            Row.height(70);
+            Row.height(this.getRowHeight());
             //退出按钮
-            Row.width("80%");
+            Row.width(this.getCardWidth());
             //退出按钮
             Row.borderRadius(10);
             //退出按钮

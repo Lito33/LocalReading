@@ -12,6 +12,7 @@ interface SyncSettings_Params {
     eyeMode?: boolean;
     context?: common.UIAbilityContext;
     syncManager?: DistributedSyncManager;
+    networkManager?: NetworkManager;
     statusMonitorTimer?: number;
     autoSyncTimer?: number;
     AUTO_SYNC_INTERVAL?: number;
@@ -19,6 +20,7 @@ interface SyncSettings_Params {
 import { DistributedSyncManager } from "@bundle:com.example.readerkitdemo/entry/ets/utils/DistributedSyncManager";
 import type { SyncStatus } from "@bundle:com.example.readerkitdemo/entry/ets/utils/DistributedSyncManager";
 import { SyncManager } from "@bundle:com.example.readerkitdemo/entry/ets/utils/SyncManager";
+import { NetworkManager } from "@bundle:com.example.readerkitdemo/entry/ets/utils/NetworkManager";
 import { GlobalContext } from "@bundle:com.example.readerkitdemo/entry/ets/common/GlobalContext";
 import type common from "@ohos:app.ability.common";
 import abilityAccessCtrl from "@ohos:abilityAccessCtrl";
@@ -47,6 +49,7 @@ class SyncSettings extends ViewPU {
         this.__eyeMode = this.createStorageLink('eyeMode', false, "eyeMode");
         this.context = GlobalContext.getInstance().getContext() as common.UIAbilityContext;
         this.syncManager = DistributedSyncManager.getInstance();
+        this.networkManager = NetworkManager.getInstance();
         this.statusMonitorTimer = -1 // 状态监控定时器ID
         ;
         this.autoSyncTimer = -1 // 自动同步定时器ID
@@ -83,6 +86,9 @@ class SyncSettings extends ViewPU {
         }
         if (params.syncManager !== undefined) {
             this.syncManager = params.syncManager;
+        }
+        if (params.networkManager !== undefined) {
+            this.networkManager = params.networkManager;
         }
         if (params.statusMonitorTimer !== undefined) {
             this.statusMonitorTimer = params.statusMonitorTimer;
@@ -176,10 +182,13 @@ class SyncSettings extends ViewPU {
     }
     private context: common.UIAbilityContext;
     private syncManager: DistributedSyncManager;
+    private networkManager: NetworkManager;
     private statusMonitorTimer: number; // 状态监控定时器ID
     private autoSyncTimer: number; // 自动同步定时器ID
     private readonly AUTO_SYNC_INTERVAL: number; // 自动同步间隔：5分钟
-    aboutToAppear() {
+    async aboutToAppear() {
+        // 初始化网络管理器
+        await this.networkManager.initialize();
         this.loadSyncStatus();
         this.startSyncStatusMonitoring();
     }
@@ -696,6 +705,17 @@ class SyncSettings extends ViewPU {
             hilog.info(0x0000, TAG, '正在同步中，跳过本次自动同步');
             return;
         }
+        // 检查网络条件
+        if (!this.networkManager.isSuitableForSync(this.wifiOnlySync)) {
+            const networkInfo = this.networkManager.getNetworkInfo();
+            if (!networkInfo.isConnected) {
+                hilog.info(0x0000, TAG, '无网络连接，跳过自动同步');
+            }
+            else if (this.wifiOnlySync && !networkInfo.isWifi) {
+                hilog.info(0x0000, TAG, '当前非WiFi网络，已开启仅WiFi同步，跳过自动同步');
+            }
+            return;
+        }
         hilog.info(0x0000, TAG, '开始执行自动同步...');
         try {
             const success = await this.syncManager.syncData();
@@ -754,11 +774,28 @@ class SyncSettings extends ViewPU {
         if (!hasPermission) {
             return;
         }
+        // 检查网络条件
+        if (!this.networkManager.isSuitableForSync(this.wifiOnlySync)) {
+            const networkInfo = this.networkManager.getNetworkInfo();
+            if (!networkInfo.isConnected) {
+                promptAction.showToast({
+                    message: '无网络连接，无法同步',
+                    duration: 2000
+                });
+            }
+            else if (this.wifiOnlySync && !networkInfo.isWifi) {
+                promptAction.showToast({
+                    message: '当前非WiFi网络，已开启仅WiFi同步',
+                    duration: 2000
+                });
+            }
+            return;
+        }
         this.syncStatus.isSyncing = true;
         this.syncStatus.syncError = '';
         this.syncProgress = 0;
         try {
-            // 模拟进度更新
+            // 进度更新
             const progressInterval = setInterval(() => {
                 this.syncProgress += 10;
                 if (this.syncProgress >= 100) {

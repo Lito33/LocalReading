@@ -42,24 +42,24 @@ export struct Mine {
   // 响应式布局：监听窗口宽度
   @StorageLink('windowWidth') windowWidth: number = 360
 
+  // 判断是否为平板（物理像素阈值：手机 720-1440，平板 1600+）
+  private isTablet(): boolean {
+    return this.windowWidth > 1600;
+  }
+
   // 计算卡片宽度
   private getCardWidth(): string {
-    return this.windowWidth > 600 ? '85%' : '80%';
+    return this.isTablet() ? '85%' : '80%';
   }
 
   // 计算行高
   private getRowHeight(): number {
-    return this.windowWidth > 600 ? 80 : 70;
+    return this.isTablet() ? 80 : 70;
   }
 
   // 计算字体大小
   private getTitleFontSize(): number {
-    return this.windowWidth > 600 ? 22 : 18;
-  }
-
-  // 判断是否为平板
-  private isTablet(): boolean {
-    return this.windowWidth > 600;
+    return this.isTablet() ? 22 : 18;
   }
 
   async onEyeModeChange() {

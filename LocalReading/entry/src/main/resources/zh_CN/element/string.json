@@ -95,6 +95,10 @@
     {
       "name": "LineHeight",
       "value": "行间距"
+    },
+    {
+      "name": "Notice",
+      "value": "通知"
     }
   ]
 }

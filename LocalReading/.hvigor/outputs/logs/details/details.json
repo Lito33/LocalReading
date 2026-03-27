@@ -7,9 +7,6 @@
         "INCLUDE_IN_BUILD": true,
         "IS_COMMAND_LINE_ENTRY_MODULE": true,
         "MODULE_TYPE": "entry",
-        "INCREMENTAL_TASKS": {
-          "COMPILE_ARKTS": true
-        },
         "IS_INCREMENTAL_MODULE": true
       },
       {
@@ -32,28 +29,27 @@
     "IS_HVIGORFILE_TYPE_CHECK": false,
     "TASK_TIME": {
       "923fe53966c6cd9343e11af776cd4b05be315ea4b200b02e4d5dfb0f929b73bf": {
-        "CreateModuleInfo": 3378400,
-        "PreCheckSyscap": 1481600,
-        "GeneratePkgContextInfo": 19460000,
-        "ProcessIntegratedHsp": 3292800,
-        "SyscapTransform": 34769100,
-        "ProcessStartupConfig": 4915100,
-        "ConfigureCmake": 708200,
-        "BuildNativeWithCmake": 643800,
-        "BuildNativeWithNinja": 1457800,
-        "BuildJS": 5296600,
-        "CompileArkTS": 17187135500,
-        "ProcessCompiledResources": 2148200,
-        "PackageHap": 960210100,
-        "PackingCheck": 13289700,
-        "SignHap": 1964714500,
-        "CollectDebugSymbol": 1215100,
-        "assembleHap": 346400
+        "PreBuild": 14025200,
+        "CreateModuleInfo": 574100,
+        "PreCheckSyscap": 428600,
+        "GeneratePkgContextInfo": 3733200,
+        "ProcessIntegratedHsp": 812900,
+        "SyscapTransform": 1638700,
+        "ProcessStartupConfig": 1038900,
+        "ConfigureCmake": 223600,
+        "BuildNativeWithCmake": 258500,
+        "BuildNativeWithNinja": 405300,
+        "BuildJS": 3126800,
+        "ProcessCompiledResources": 583700,
+        "PackingCheck": 5575200,
+        "CollectDebugSymbol": 943100,
+        "assembleHap": 202400
       },
       "edb465624291e4053c6c5ea4b7eb320dec773e10a57d26b95dcf0564f8e310f8": {
-        "ConfigureCmake": 1069100,
-        "BuildNativeWithCmake": 755900,
-        "BuildNativeWithNinja": 1712500
+        "PreBuild": 8473600,
+        "ConfigureCmake": 239600,
+        "BuildNativeWithCmake": 292100,
+        "BuildNativeWithNinja": 660100
       }
     },
     "APIS": [
@@ -64,7 +60,7 @@
       "ENABLE_CPP_FUNCTION_LEVEL_INCREMENTAL": false
     },
     "CONFIG_PROPERTIES": {},
-    "BUILD_ID": "202603241328383750",
-    "TOTAL_TIME": 24729464200
+    "TOTAL_TIME": 296523300,
+    "BUILD_ID": "202603271252245130"
   }
 }

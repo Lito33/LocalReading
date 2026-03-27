@@ -105,39 +105,67 @@ export class NetworkManager {
    */
   private async updateNetworkStatus(): Promise<void> {
     try {
-      const netHandle = connection.getDefaultNetSync();
+      hilog.info(0x0000, TAG, 'updateNetworkStatus: start');
       
-      if (!netHandle) {
+      // 检查网络是否可用
+      const hasDefaultNet = connection.hasDefaultNetSync();
+      hilog.info(0x0000, TAG, `hasDefaultNetSync: ${hasDefaultNet}`);
+      
+      if (!hasDefaultNet) {
+        hilog.info(0x0000, TAG, 'No default network, set disconnected');
         this.setNetworkInfo(false, 0);
         return;
       }
 
-      // 检查网络是否可用
-      const hasDefaultNet = connection.hasDefaultNetSync();
+      // 获取默认网络句柄
+      const netHandle = connection.getDefaultNetSync();
+      hilog.info(0x0000, TAG, `getDefaultNetSync: netId=${netHandle?.netId}`);
       
-      if (hasDefaultNet) {
-        // 获取网络能力信息
-        const netCapabilities = connection.getNetCapabilitiesSync(netHandle);
-        
-        // 确定网络类型
-        let networkType = 0;
-        if (netCapabilities.bearerTypes.includes(connection.NetBearType.BEARER_WIFI)) {
-          networkType = connection.NetBearType.BEARER_WIFI;
-        } else if (netCapabilities.bearerTypes.includes(connection.NetBearType.BEARER_CELLULAR)) {
-          networkType = connection.NetBearType.BEARER_CELLULAR;
-        } else if (netCapabilities.bearerTypes.includes(connection.NetBearType.BEARER_ETHERNET)) {
-          networkType = connection.NetBearType.BEARER_ETHERNET;
-        } else if (netCapabilities.bearerTypes.includes(connection.NetBearType.BEARER_BLUETOOTH)) {
-          networkType = connection.NetBearType.BEARER_BLUETOOTH;
-        }
-        
-        this.setNetworkInfo(true, networkType);
-      } else {
+      if (!netHandle || netHandle.netId === 0) {
+        hilog.info(0x0000, TAG, 'Invalid netHandle, set disconnected');
         this.setNetworkInfo(false, 0);
+        return;
+      }
+
+      // 获取网络能力信息
+      const netCapabilities = connection.getNetCapabilitiesSync(netHandle);
+      hilog.info(0x0000, TAG, `getNetCapabilitiesSync: bearerTypes=${JSON.stringify(netCapabilities?.bearerTypes)}`);
+      
+      if (!netCapabilities || !netCapabilities.bearerTypes) {
+        hilog.info(0x0000, TAG, 'No capabilities, set disconnected');
+        this.setNetworkInfo(false, 0);
+        return;
+      }
+
+      // 确定网络类型（HarmonyOS NetBearType 常量: BEARER_WIFI=1, BEARER_CELLULAR=2, BEARER_ETHERNET=3, BEARER_BLUETOOTH=4）
+      let networkType = 0;
+      const bearerTypes = netCapabilities.bearerTypes;
+      
+      hilog.info(0x0000, TAG, `Checking bearer types: ${JSON.stringify(bearerTypes)}`);
+      
+      // 直接使用数值判断，避免枚举值异常问题
+      if (bearerTypes.includes(1)) {
+        networkType = 1;  // WiFi
+        hilog.info(0x0000, TAG, 'Detected: WiFi (type=1)');
+      } else if (bearerTypes.includes(2)) {
+        networkType = 2;  // Cellular
+        hilog.info(0x0000, TAG, 'Detected: Cellular (type=2)');
+      } else if (bearerTypes.includes(3)) {
+        networkType = 3;  // Ethernet
+        hilog.info(0x0000, TAG, 'Detected: Ethernet (type=3)');
+      } else if (bearerTypes.includes(4)) {
+        networkType = 4;  // Bluetooth
+        hilog.info(0x0000, TAG, 'Detected: Bluetooth (type=4)');
+      } else {
+        hilog.info(0x0000, TAG, `Unknown bearer type: ${JSON.stringify(bearerTypes)}`);
       }
       
+      hilog.info(0x0000, TAG, `setNetworkInfo: connected=true, networkType=${networkType}`);
+      this.setNetworkInfo(true, networkType);
+      
     } catch (error) {
-      hilog.error(0x0000, TAG, `Update network status failed: ${(error as Error).message}`);
+      const err = error as Error;
+      hilog.error(0x0000, TAG, `Update network status failed: ${err.message}, stack: ${err.stack}`);
       this.setNetworkInfo(false, 0);
     }
   }
@@ -147,8 +175,15 @@ export class NetworkManager {
    */
   private async registerNetworkListener(): Promise<void> {
     try {
-      // 创建网络连接监听器
-      this.netConnection = connection.createNetConnection(undefined, 0);
+      // 创建网络连接监听器（不传参数，使用默认配置）
+      this.netConnection = connection.createNetConnection();
+      
+      if (!this.netConnection) {
+        hilog.error(0x0000, TAG, 'createNetConnection returned null, skip listener registration');
+        return;
+      }
+      
+      hilog.info(0x0000, TAG, 'NetConnection created successfully');
       
       // 监听网络可用事件
       this.netConnection.on('netAvailable', (data: connection.NetHandle) => {
@@ -161,9 +196,6 @@ export class NetworkManager {
         hilog.info(0x0000, TAG, `Network capabilities changed: ${data.netHandle.netId}`);
         this.updateNetworkStatus();
       });
-
-      // 监听网络连接属性变化事件（使用netCapabilitiesChange事件替代）
-      // netConnectionPropertiesChange 不是标准事件，使用 netCapabilitiesChange 监听网络变化
 
       // 监听网络丢失事件
       this.netConnection.on('netLost', (data: connection.NetHandle) => {
@@ -181,6 +213,8 @@ export class NetworkManager {
       this.netConnection.register((error: BusinessError) => {
         if (error) {
           hilog.error(0x0000, TAG, `Failed to register network listener: ${error.message}`);
+        } else {
+          hilog.info(0x0000, TAG, 'Network listener registered successfully');
         }
       });
       
@@ -197,10 +231,15 @@ export class NetworkManager {
     
     this.networkInfo.isConnected = isConnected;
     this.networkInfo.networkType = networkType;
-    this.networkInfo.isWifi = networkType === connection.NetBearType.BEARER_WIFI;
-    this.networkInfo.isCellular = networkType === connection.NetBearType.BEARER_CELLULAR;
-    this.networkInfo.isEthernet = networkType === connection.NetBearType.BEARER_ETHERNET;
-    this.networkInfo.isBluetooth = networkType === connection.NetBearType.BEARER_BLUETOOTH;
+    
+    // 使用数值常量判断网络类型（HarmonyOS NetBearType: BEARER_WIFI=1, BEARER_CELLULAR=2, BEARER_ETHERNET=3, BEARER_BLUETOOTH=4）
+    this.networkInfo.isWifi = networkType === 1;
+    this.networkInfo.isCellular = networkType === 2;
+    this.networkInfo.isEthernet = networkType === 3;
+    this.networkInfo.isBluetooth = networkType === 4;
+    
+    hilog.info(0x0000, TAG, 
+      `setNetworkInfo: isConnected=${isConnected}, networkType=${networkType}, isWifi=${this.networkInfo.isWifi}, isCellular=${this.networkInfo.isCellular}`);
 
     // 如果网络状态发生变化，通知所有监听器
     if (this.hasNetworkChanged(oldInfo, this.networkInfo)) {

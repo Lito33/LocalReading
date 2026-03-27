@@ -4,6 +4,7 @@ import { SettingStorage } from '../common/SettingStorage';
 import { GlobalContext } from '../common/GlobalContext';
 import { common, abilityAccessCtrl, Permissions } from '@kit.AbilityKit';
 import { ProgressStorage, BookProgress } from '../common/ProgressStorage';
+import { NetworkManager, NetworkInfo } from '../utils/NetworkManager';
 
 @Entry
 @Component
@@ -12,6 +13,8 @@ struct SyncTest {
   @State syncStatus: SyncStatus | null = null;
   @State isInitialized: boolean = false;
   @State progressCount: number = 0;  // 阅读进度数量
+  @State networkInfo: NetworkInfo | null = null;  // 网络信息
+  @State wifiOnlySync: boolean = true;  // 仅WiFi同步开关
 
   aboutToAppear(): void {
     this.checkStatus();
@@ -144,22 +147,22 @@ struct SyncTest {
       
       this.testLog = `✅ 本地数据读取成功！
       
-用户列表: ${Object.keys(users).length} 个用户
-${Object.keys(users).map(u => `  - ${u}`).join('\n')}
+  用户列表: ${Object.keys(users).length} 个用户
+  ${Object.keys(users).map(u => `  - ${u}`).join('\n')}
 
-当前用户: ${currentUser || '无'}
+  当前用户: ${currentUser || '无'}
 
-设置信息:
-  - 字体大小: ${settings?.fontSize ?? '默认'}
-  - 夜间模式: ${settings?.nightMode ? '开启' : '关闭'}
-  - 主题颜色: ${settings?.themeColor ?? '默认'}
+  设置信息:
+    - 字体大小: ${settings?.fontSize ?? '默认'}
+    - 夜间模式: ${settings?.nightMode ? '开启' : '关闭'}
+    - 主题颜色: ${settings?.themeColor ?? '默认'}
 
-阅读进度: ${progresses.length} 条记录
-${progressInfo}`;
-    } catch (error) {
-      this.testLog = `❌ 读取异常: ${JSON.stringify(error)}`;
+  阅读进度: ${progresses.length} 条记录
+  ${progressInfo}`;
+      } catch (error) {
+        this.testLog = `❌ 读取异常: ${JSON.stringify(error)}`;
+      }
     }
-  }
 
   async testFullFlow(): Promise<void> {
     this.testLog = '开始完整流程测试...\n';
@@ -256,6 +259,89 @@ ${progressInfo}`;
     }
   }
 
+  // 测试仅WiFi同步功能
+  async testWifiOnlySync(): Promise<void> {
+    this.testLog = '正在测试仅WiFi同步功能...\n';
+
+    try {
+      // 1. 初始化网络管理器
+      this.testLog += '\n[1/4] 初始化网络管理器...';
+      const initSuccess = await NetworkManager.getInstance().initialize();
+      this.testLog += initSuccess ? ' ✅' : ' ❌';
+
+      if (!initSuccess) {
+        this.testLog += '\n❌ 网络管理器初始化失败';
+        return;
+      }
+
+      // 2. 获取当前网络信息
+      this.testLog += '\n[2/4] 获取当前网络信息...';
+      this.networkInfo = NetworkManager.getInstance().getNetworkInfo();
+      this.testLog += ' ✅';
+
+      // 3. 测试网络条件判断
+      this.testLog += '\n[3/4] 测试网络条件判断...';
+      const suitableForWifiOnly = NetworkManager.getInstance().isSuitableForSync(true);
+      const suitableForAny = NetworkManager.getInstance().isSuitableForSync(false);
+      this.testLog += ' ✅';
+
+      // 4. 显示测试结果
+      this.testLog += '\n[4/4] 生成测试报告...';
+      this.testLog += ' ✅';
+
+      // 构建详细报告（显示原始值便于调试）
+      this.testLog += '\n\n📊 网络状态报告:';
+      this.testLog += `\n  - isConnected: ${this.networkInfo.isConnected}`;
+      this.testLog += `\n  - networkType: ${this.networkInfo.networkType} (${this.getNetworkTypeName(this.networkInfo.networkType)})`;
+      this.testLog += `\n  - isWifi: ${this.networkInfo.isWifi}`;
+      this.testLog += `\n  - isCellular: ${this.networkInfo.isCellular}`;
+      this.testLog += `\n  - isEthernet: ${this.networkInfo.isEthernet}`;
+      this.testLog += `\n  - isBluetooth: ${this.networkInfo.isBluetooth}`;
+
+      this.testLog += '\n\n📋 同步条件测试:';
+      this.testLog += `\n  - 仅WiFi同步条件满足: ${suitableForWifiOnly ? '是 ✅' : '否 ❌'}`;
+      this.testLog += `\n  - 任意网络同步条件满足: ${suitableForAny ? '是 ✅' : '否 ❌'}`;
+
+      // 模拟场景测试
+      this.testLog += '\n\n🧪 场景模拟测试:';
+      
+      // 场景1: 开启仅WiFi同步
+      this.wifiOnlySync = true;
+      const canSyncWifiOnly = NetworkManager.getInstance().isSuitableForSync(this.wifiOnlySync);
+      this.testLog += `\n  场景1 [仅WiFi同步=开启]:`;
+      if (canSyncWifiOnly) {
+        this.testLog += ` ✅ 可以同步 (当前是WiFi)`;
+      } else {
+        this.testLog += ` ⚠️ 跳过同步 (${this.networkInfo.isConnected ? '当前非WiFi' : '无网络'})`;
+      }
+
+      // 场景2: 关闭仅WiFi同步
+      this.wifiOnlySync = false;
+      const canSyncAny = NetworkManager.getInstance().isSuitableForSync(this.wifiOnlySync);
+      this.testLog += `\n  场景2 [仅WiFi同步=关闭]:`;
+      if (canSyncAny) {
+        this.testLog += ` ✅ 可以同步 (有可用网络)`;
+      } else {
+        this.testLog += ` ❌ 无法同步 (无网络连接)`;
+      }
+
+      this.testLog += '\n\n✅ 仅WiFi同步功能测试完成！';
+    } catch (error) {
+      this.testLog = `❌ 测试异常: ${JSON.stringify(error)}`;
+    }
+  }
+
+  // 获取网络类型名称
+  private getNetworkTypeName(type: number): string {
+    switch (type) {
+      case 1: return 'WiFi';
+      case 2: return '蜂窝网络';
+      case 3: return '以太网';
+      case 4: return '蓝牙';
+      default: return '未知';
+    }
+  }
+
   build() {
     Column({ space: 16 }) {
       // 标题
@@ -327,6 +413,11 @@ ${progressInfo}`;
           .width('90%')
           .backgroundColor('#FF9800')
           .onClick(() => this.testProgressSync())
+        
+        Button('6. 测试仅WiFi同步功能')
+          .width('90%')
+          .backgroundColor('#00BCD4')
+          .onClick(() => this.testWifiOnlySync())
         
         Button('🚀 完整流程测试')
           .width('90%')

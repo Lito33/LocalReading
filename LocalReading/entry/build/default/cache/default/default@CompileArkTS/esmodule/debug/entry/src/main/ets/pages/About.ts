@@ -6,6 +6,7 @@ interface About_Params {
     odd?: number;
     isOddPressed?: boolean;
     isSyncPressed?: boolean;
+    windowWidth?: number;
 }
 import promptAction from "@ohos:promptAction";
 import router from "@ohos:router";
@@ -21,6 +22,9 @@ class About extends ViewPU {
         this.__odd = new ObservedPropertySimplePU(0, this, "odd");
         this.__isOddPressed = new ObservedPropertySimplePU(false, this, "isOddPressed");
         this.__isSyncPressed = new ObservedPropertySimplePU(false, this, "isSyncPressed");
+        this.__windowWidth = this.createStorageLink('windowWidth', 360
+        // 判断是否为平板（物理像素阈值：手机 720-1440，平板 1600+）
+        , "windowWidth");
         this.setInitiallyProvidedValue(params);
         this.finalizeConstruction();
     }
@@ -42,12 +46,14 @@ class About extends ViewPU {
         this.__odd.purgeDependencyOnElmtId(rmElmtId);
         this.__isOddPressed.purgeDependencyOnElmtId(rmElmtId);
         this.__isSyncPressed.purgeDependencyOnElmtId(rmElmtId);
+        this.__windowWidth.purgeDependencyOnElmtId(rmElmtId);
     }
     aboutToBeDeleted() {
         this.__eyeMode.aboutToBeDeleted();
         this.__odd.aboutToBeDeleted();
         this.__isOddPressed.aboutToBeDeleted();
         this.__isSyncPressed.aboutToBeDeleted();
+        this.__windowWidth.aboutToBeDeleted();
         SubscriberManager.Get().delete(this.id__());
         this.aboutToBeDeletedInternal();
     }
@@ -79,6 +85,38 @@ class About extends ViewPU {
     set isSyncPressed(newValue: boolean) {
         this.__isSyncPressed.set(newValue);
     }
+    // 响应式布局：监听窗口宽度
+    private __windowWidth: ObservedPropertyAbstractPU<number>;
+    get windowWidth() {
+        return this.__windowWidth.get();
+    }
+    set windowWidth(newValue: number) {
+        this.__windowWidth.set(newValue);
+    }
+    // 判断是否为平板（物理像素阈值：手机 720-1440，平板 1600+）
+    private isTablet(): boolean {
+        return this.windowWidth > 1600;
+    }
+    // 计算卡片宽度
+    private getCardWidth(): string {
+        return this.isTablet() ? '85%' : '80%';
+    }
+    // 计算行高
+    private getRowHeight(): number {
+        return this.isTablet() ? 60 : 50;
+    }
+    // 计算字体大小
+    private getTitleFontSize(): number {
+        return this.isTablet() ? 16 : 14;
+    }
+    // 计算标题字体大小
+    private getHeaderFontSize(): number {
+        return this.isTablet() ? 22 : 18;
+    }
+    // 计算图标大小
+    private getIconSize(): number {
+        return this.isTablet() ? 30 : 25;
+    }
     initialRender() {
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Column.create();
@@ -89,12 +127,12 @@ class About extends ViewPU {
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Row.create();
             Row.width('100%');
-            Row.margin({ top: 50, bottom: 50 });
+            Row.margin({ top: this.isTablet() ? 60 : 50, bottom: this.isTablet() ? 60 : 50 });
         }, Row);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Image.create({ "id": 16777277, "type": 20000, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
-            Image.width(25);
-            Image.height(25);
+            Image.width(this.getIconSize());
+            Image.height(this.getIconSize());
             Image.margin({ left: 20 });
             Image.onClick(() => {
                 router.back();
@@ -107,7 +145,7 @@ class About extends ViewPU {
         Blank.pop();
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Text.create("关于本软件");
-            Text.fontSize(18);
+            Text.fontSize(this.getHeaderFontSize());
             Text.fontWeight(FontWeight.Bold);
             Text.fontColor(Color.Black);
             Text.margin({ right: 25 });
@@ -122,18 +160,18 @@ class About extends ViewPU {
         Row.pop();
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Column.create();
-            Column.margin({ bottom: 35 });
+            Column.margin({ bottom: this.isTablet() ? 45 : 35 });
         }, Column);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Image.create({ "id": 16777217, "type": 20000, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
-            Image.width(70);
-            Image.height(70);
+            Image.width(this.isTablet() ? 90 : 70);
+            Image.height(this.isTablet() ? 90 : 70);
             Image.margin({ bottom: 9 });
             Image.borderRadius(10);
         }, Image);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Text.create({ "id": 16777222, "type": 10003, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
-            Text.fontSize(16);
+            Text.fontSize(this.isTablet() ? 20 : 16);
             Text.fontColor(Color.Black);
         }, Text);
         Text.pop();
@@ -142,7 +180,7 @@ class About extends ViewPU {
             //文字
             Column.create();
             //文字
-            Column.width('80%');
+            Column.width(this.getCardWidth());
             //文字
             Column.borderRadius(8);
             //文字
@@ -152,7 +190,7 @@ class About extends ViewPU {
             Row.create();
             Row.borderRadius({ topLeft: 8, topRight: 8 });
             Row.width('100%');
-            Row.height(50);
+            Row.height(this.getRowHeight());
             Row.padding({ left: 6, right: 6, top: 6, bottom: 6 });
             Row.justifyContent(FlexAlign.SpaceBetween);
             Row.backgroundColor(this.isOddPressed ? '#E0E0E0' : Color.White);
@@ -179,14 +217,14 @@ class About extends ViewPU {
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Text.create("开发人员:");
             Text.fontColor(Color.Black);
-            Text.fontSize(14);
+            Text.fontSize(this.getTitleFontSize());
             Text.margin({ left: 5 });
         }, Text);
         Text.pop();
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Text.create("张牧野");
             Text.fontColor(Color.Black);
-            Text.fontSize(14);
+            Text.fontSize(this.getTitleFontSize());
             Text.margin({ right: 5 });
         }, Text);
         Text.pop();
@@ -200,21 +238,21 @@ class About extends ViewPU {
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Row.create();
             Row.width('100%');
-            Row.height(50);
+            Row.height(this.getRowHeight());
             Row.padding({ left: 6, right: 6, top: 6, bottom: 6 });
             Row.justifyContent(FlexAlign.SpaceBetween);
         }, Row);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Text.create("联系邮箱:");
             Text.fontColor(Color.Black);
-            Text.fontSize(14);
+            Text.fontSize(this.getTitleFontSize());
             Text.margin({ left: 5 });
         }, Text);
         Text.pop();
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Text.create("3374382907@qq.com");
             Text.fontColor(Color.Black);
-            Text.fontSize(14);
+            Text.fontSize(this.getTitleFontSize());
             Text.margin({ right: 5 });
         }, Text);
         Text.pop();
@@ -228,21 +266,21 @@ class About extends ViewPU {
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Row.create();
             Row.width('100%');
-            Row.height(50);
+            Row.height(this.getRowHeight());
             Row.padding({ left: 6, right: 6, top: 6, bottom: 6 });
             Row.justifyContent(FlexAlign.SpaceBetween);
         }, Row);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Text.create("版本号:");
             Text.fontColor(Color.Black);
-            Text.fontSize(14);
+            Text.fontSize(this.getTitleFontSize());
             Text.margin({ left: 5 });
         }, Text);
         Text.pop();
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Text.create("1.0.0");
             Text.fontColor(Color.Black);
-            Text.fontSize(14);
+            Text.fontSize(this.getTitleFontSize());
             Text.margin({ right: 5 });
         }, Text);
         Text.pop();
@@ -259,7 +297,7 @@ class About extends ViewPU {
             // 数据同步
             Row.width('100%');
             // 数据同步
-            Row.height(50);
+            Row.height(this.getRowHeight());
             // 数据同步
             Row.padding({ left: 6, right: 6, top: 6, bottom: 6 });
             // 数据同步
@@ -287,26 +325,127 @@ class About extends ViewPU {
         }, Row);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Text.create("数据同步");
-            Text.fontSize(14);
+            Text.fontSize(this.getTitleFontSize());
             Text.fontColor(Color.Black);
             Text.margin({ left: 5 });
         }, Text);
         Text.pop();
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Image.create({ "id": 16777300, "type": 20000, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
-            Image.width(20);
-            Image.height(20);
+            Image.width(this.isTablet() ? 24 : 20);
+            Image.height(this.isTablet() ? 24 : 20);
         }, Image);
         Row.pop();
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Image.create({ "id": 16777278, "type": 20000, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
             Image.margin({ right: 5 });
-            Image.width(20);
-            Image.height(20);
+            Image.width(this.isTablet() ? 24 : 20);
+            Image.height(this.isTablet() ? 24 : 20);
         }, Image);
         // 数据同步
         Row.pop();
         //文字
+        Column.pop();
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            // 通知栏
+            Column.create();
+            // 通知栏
+            Column.margin({ top: 20 });
+            // 通知栏
+            Column.width(this.getCardWidth());
+            // 通知栏
+            Column.backgroundColor(Color.White);
+            // 通知栏
+            Column.borderRadius(12);
+            // 通知栏
+            Column.shadow({
+                radius: 8,
+                color: 'rgba(0, 0, 0, 0.08)',
+                offsetX: 0,
+                offsetY: 2
+            });
+        }, Column);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            // 标题栏
+            Row.create();
+            // 标题栏
+            Row.width('100%');
+            // 标题栏
+            Row.padding({ left: 16, right: 16, top: 12, bottom: 8 });
+            // 标题栏
+            Row.justifyContent(FlexAlign.Start);
+        }, Row);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Text.create('📢');
+            Text.fontSize(this.isTablet() ? 22 : 18);
+            Text.margin({ right: 8 });
+        }, Text);
+        Text.pop();
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Text.create({ "id": 16777321, "type": 10003, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+            Text.fontSize(this.isTablet() ? 18 : 16);
+            Text.fontWeight(FontWeight.Bold);
+            Text.fontColor(Color.Black);
+        }, Text);
+        Text.pop();
+        // 标题栏
+        Row.pop();
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Divider.create();
+            Divider.color('#E5E5E5');
+            Divider.strokeWidth(1);
+            Divider.margin({ left: 16, right: 16 });
+        }, Divider);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            // 通知内容
+            Column.create();
+            // 通知内容
+            Column.width('100%');
+            // 通知内容
+            Column.padding({ left: 16, right: 16, top: 10, bottom: 12 });
+            // 通知内容
+            Column.alignItems(HorizontalAlign.Start);
+        }, Column);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Row.create();
+            Row.width('100%');
+            Row.margin({ bottom: 8 });
+        }, Row);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Text.create('•');
+            Text.fontSize(this.isTablet() ? 16 : 14);
+            Text.fontColor('#FF6B6B');
+            Text.margin({ right: 6 });
+        }, Text);
+        Text.pop();
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Text.create('若手动导入数据后请重启一次应用。');
+            Text.fontSize(this.isTablet() ? 15 : 13);
+            Text.fontColor('#333333');
+        }, Text);
+        Text.pop();
+        Row.pop();
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Row.create();
+            Row.width('100%');
+        }, Row);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Text.create('•');
+            Text.fontSize(this.isTablet() ? 16 : 14);
+            Text.fontColor('#FF6B6B');
+            Text.margin({ right: 6 });
+        }, Text);
+        Text.pop();
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Text.create('若导入数据后阅读字体没有正常改变，请先手动修改一次主题，重启应用即可。');
+            Text.fontSize(this.isTablet() ? 15 : 13);
+            Text.fontColor('#333333');
+        }, Text);
+        Text.pop();
+        Row.pop();
+        // 通知内容
+        Column.pop();
+        // 通知栏
         Column.pop();
         Column.pop();
     }

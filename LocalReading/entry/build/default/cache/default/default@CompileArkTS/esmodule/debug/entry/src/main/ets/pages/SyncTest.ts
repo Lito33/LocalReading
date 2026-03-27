@@ -6,6 +6,8 @@ interface SyncTest_Params {
     syncStatus?: SyncStatus | null;
     isInitialized?: boolean;
     progressCount?: number;
+    networkInfo?: NetworkInfo | null;
+    wifiOnlySync?: boolean;
 }
 import { DistributedSyncManager } from "@bundle:com.example.readerkitdemo/entry/ets/utils/DistributedSyncManager";
 import type { SyncStatus } from "@bundle:com.example.readerkitdemo/entry/ets/utils/DistributedSyncManager";
@@ -17,6 +19,8 @@ import abilityAccessCtrl from "@ohos:abilityAccessCtrl";
 import type { Permissions } from "@ohos:abilityAccessCtrl";
 import { ProgressStorage } from "@bundle:com.example.readerkitdemo/entry/ets/common/ProgressStorage";
 import type { BookProgress } from "@bundle:com.example.readerkitdemo/entry/ets/common/ProgressStorage";
+import { NetworkManager } from "@bundle:com.example.readerkitdemo/entry/ets/utils/NetworkManager";
+import type { NetworkInfo } from "@bundle:com.example.readerkitdemo/entry/ets/utils/NetworkManager";
 class SyncTest extends ViewPU {
     constructor(parent, params, __localStorage, elmtId = -1, paramsLambda = undefined, extraInfo) {
         super(parent, __localStorage, elmtId, extraInfo);
@@ -27,6 +31,8 @@ class SyncTest extends ViewPU {
         this.__syncStatus = new ObservedPropertyObjectPU(null, this, "syncStatus");
         this.__isInitialized = new ObservedPropertySimplePU(false, this, "isInitialized");
         this.__progressCount = new ObservedPropertySimplePU(0, this, "progressCount");
+        this.__networkInfo = new ObservedPropertyObjectPU(null, this, "networkInfo");
+        this.__wifiOnlySync = new ObservedPropertySimplePU(true, this, "wifiOnlySync");
         this.setInitiallyProvidedValue(params);
         this.finalizeConstruction();
     }
@@ -43,6 +49,12 @@ class SyncTest extends ViewPU {
         if (params.progressCount !== undefined) {
             this.progressCount = params.progressCount;
         }
+        if (params.networkInfo !== undefined) {
+            this.networkInfo = params.networkInfo;
+        }
+        if (params.wifiOnlySync !== undefined) {
+            this.wifiOnlySync = params.wifiOnlySync;
+        }
     }
     updateStateVars(params: SyncTest_Params) {
     }
@@ -51,12 +63,16 @@ class SyncTest extends ViewPU {
         this.__syncStatus.purgeDependencyOnElmtId(rmElmtId);
         this.__isInitialized.purgeDependencyOnElmtId(rmElmtId);
         this.__progressCount.purgeDependencyOnElmtId(rmElmtId);
+        this.__networkInfo.purgeDependencyOnElmtId(rmElmtId);
+        this.__wifiOnlySync.purgeDependencyOnElmtId(rmElmtId);
     }
     aboutToBeDeleted() {
         this.__testLog.aboutToBeDeleted();
         this.__syncStatus.aboutToBeDeleted();
         this.__isInitialized.aboutToBeDeleted();
         this.__progressCount.aboutToBeDeleted();
+        this.__networkInfo.aboutToBeDeleted();
+        this.__wifiOnlySync.aboutToBeDeleted();
         SubscriberManager.Get().delete(this.id__());
         this.aboutToBeDeletedInternal();
     }
@@ -87,6 +103,20 @@ class SyncTest extends ViewPU {
     }
     set progressCount(newValue: number) {
         this.__progressCount.set(newValue);
+    }
+    private __networkInfo: ObservedPropertyObjectPU<NetworkInfo | null>; // 网络信息
+    get networkInfo() {
+        return this.__networkInfo.get();
+    }
+    set networkInfo(newValue: NetworkInfo | null) {
+        this.__networkInfo.set(newValue);
+    }
+    private __wifiOnlySync: ObservedPropertySimplePU<boolean>; // 仅WiFi同步开关
+    get wifiOnlySync() {
+        return this.__wifiOnlySync.get();
+    }
+    set wifiOnlySync(newValue: boolean) {
+        this.__wifiOnlySync.set(newValue);
     }
     aboutToAppear(): void {
         this.checkStatus();
@@ -196,18 +226,18 @@ class SyncTest extends ViewPU {
             }
             this.testLog = `✅ 本地数据读取成功！
       
-用户列表: ${Object.keys(users).length} 个用户
-${Object.keys(users).map(u => `  - ${u}`).join('\n')}
+  用户列表: ${Object.keys(users).length} 个用户
+  ${Object.keys(users).map(u => `  - ${u}`).join('\n')}
 
-当前用户: ${currentUser || '无'}
+  当前用户: ${currentUser || '无'}
 
-设置信息:
-  - 字体大小: ${settings?.fontSize ?? '默认'}
-  - 夜间模式: ${settings?.nightMode ? '开启' : '关闭'}
-  - 主题颜色: ${settings?.themeColor ?? '默认'}
+  设置信息:
+    - 字体大小: ${settings?.fontSize ?? '默认'}
+    - 夜间模式: ${settings?.nightMode ? '开启' : '关闭'}
+    - 主题颜色: ${settings?.themeColor ?? '默认'}
 
-阅读进度: ${progresses.length} 条记录
-${progressInfo}`;
+  阅读进度: ${progresses.length} 条记录
+  ${progressInfo}`;
         }
         catch (error) {
             this.testLog = `❌ 读取异常: ${JSON.stringify(error)}`;
@@ -290,6 +320,79 @@ ${progressInfo}`;
         }
         catch (error) {
             this.testLog = `❌ 测试异常: ${JSON.stringify(error)}`;
+        }
+    }
+    // 测试仅WiFi同步功能
+    async testWifiOnlySync(): Promise<void> {
+        this.testLog = '正在测试仅WiFi同步功能...\n';
+        try {
+            // 1. 初始化网络管理器
+            this.testLog += '\n[1/4] 初始化网络管理器...';
+            const initSuccess = await NetworkManager.getInstance().initialize();
+            this.testLog += initSuccess ? ' ✅' : ' ❌';
+            if (!initSuccess) {
+                this.testLog += '\n❌ 网络管理器初始化失败';
+                return;
+            }
+            // 2. 获取当前网络信息
+            this.testLog += '\n[2/4] 获取当前网络信息...';
+            this.networkInfo = NetworkManager.getInstance().getNetworkInfo();
+            this.testLog += ' ✅';
+            // 3. 测试网络条件判断
+            this.testLog += '\n[3/4] 测试网络条件判断...';
+            const suitableForWifiOnly = NetworkManager.getInstance().isSuitableForSync(true);
+            const suitableForAny = NetworkManager.getInstance().isSuitableForSync(false);
+            this.testLog += ' ✅';
+            // 4. 显示测试结果
+            this.testLog += '\n[4/4] 生成测试报告...';
+            this.testLog += ' ✅';
+            // 构建详细报告（显示原始值便于调试）
+            this.testLog += '\n\n📊 网络状态报告:';
+            this.testLog += `\n  - isConnected: ${this.networkInfo.isConnected}`;
+            this.testLog += `\n  - networkType: ${this.networkInfo.networkType} (${this.getNetworkTypeName(this.networkInfo.networkType)})`;
+            this.testLog += `\n  - isWifi: ${this.networkInfo.isWifi}`;
+            this.testLog += `\n  - isCellular: ${this.networkInfo.isCellular}`;
+            this.testLog += `\n  - isEthernet: ${this.networkInfo.isEthernet}`;
+            this.testLog += `\n  - isBluetooth: ${this.networkInfo.isBluetooth}`;
+            this.testLog += '\n\n📋 同步条件测试:';
+            this.testLog += `\n  - 仅WiFi同步条件满足: ${suitableForWifiOnly ? '是 ✅' : '否 ❌'}`;
+            this.testLog += `\n  - 任意网络同步条件满足: ${suitableForAny ? '是 ✅' : '否 ❌'}`;
+            // 模拟场景测试
+            this.testLog += '\n\n🧪 场景模拟测试:';
+            // 场景1: 开启仅WiFi同步
+            this.wifiOnlySync = true;
+            const canSyncWifiOnly = NetworkManager.getInstance().isSuitableForSync(this.wifiOnlySync);
+            this.testLog += `\n  场景1 [仅WiFi同步=开启]:`;
+            if (canSyncWifiOnly) {
+                this.testLog += ` ✅ 可以同步 (当前是WiFi)`;
+            }
+            else {
+                this.testLog += ` ⚠️ 跳过同步 (${this.networkInfo.isConnected ? '当前非WiFi' : '无网络'})`;
+            }
+            // 场景2: 关闭仅WiFi同步
+            this.wifiOnlySync = false;
+            const canSyncAny = NetworkManager.getInstance().isSuitableForSync(this.wifiOnlySync);
+            this.testLog += `\n  场景2 [仅WiFi同步=关闭]:`;
+            if (canSyncAny) {
+                this.testLog += ` ✅ 可以同步 (有可用网络)`;
+            }
+            else {
+                this.testLog += ` ❌ 无法同步 (无网络连接)`;
+            }
+            this.testLog += '\n\n✅ 仅WiFi同步功能测试完成！';
+        }
+        catch (error) {
+            this.testLog = `❌ 测试异常: ${JSON.stringify(error)}`;
+        }
+    }
+    // 获取网络类型名称
+    private getNetworkTypeName(type: number): string {
+        switch (type) {
+            case 1: return 'WiFi';
+            case 2: return '蜂窝网络';
+            case 3: return '以太网';
+            case 4: return '蓝牙';
+            default: return '未知';
         }
     }
     initialRender() {
@@ -427,6 +530,13 @@ ${progressInfo}`;
             Button.width('90%');
             Button.backgroundColor('#FF9800');
             Button.onClick(() => this.testProgressSync());
+        }, Button);
+        Button.pop();
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Button.createWithLabel('6. 测试仅WiFi同步功能');
+            Button.width('90%');
+            Button.backgroundColor('#00BCD4');
+            Button.onClick(() => this.testWifiOnlySync());
         }, Button);
         Button.pop();
         this.observeComponentCreation2((elmtId, isInitialRender) => {

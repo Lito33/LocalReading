@@ -161,22 +161,32 @@ struct Reader {
       this.fontSize = saved.fontSize.toString();
       this.lineHeight = saved.lineHeight.toString();
       
-      // 根据当前系统主题动态调整字体颜色
+      // 优先使用保存的字体颜色和夜间模式设置
+      // 如果保存的设置中有有效的 fontColor（非空字符串），直接使用
       // themeList: ['white', 'yellow', 'pink', 'green', 'dark', 'whiteSky', 'darkSky']
       // index 4 (dark), 6 (darkSky) 需要白色字体
-      if (this.colorMode === ConfigurationConstant.ColorMode.COLOR_MODE_DARK) {
-        // 系统深色模式：使用白色字体，万一呢
-        this.readerSetting.fontColor = '#ffffff';
-        this.readerSetting.nightMode = true;
+      if (saved.fontColor && saved.fontColor.length > 0) {
+        this.readerSetting.fontColor = saved.fontColor;
+        this.readerSetting.nightMode = saved.nightMode;
+        hilog.info(0x0000, TAG, `Using saved fontColor: ${saved.fontColor}, nightMode: ${saved.nightMode}`);
       } else {
-        // 系统浅色模式：根据主题索引设置字体颜色
-        if (saved.themeSelectIndex === 4 || saved.themeSelectIndex === 6) {
+        // 兼容旧数据：根据主题索引推断字体颜色
+        hilog.info(0x0000, TAG, `No valid fontColor saved, inferring from themeSelectIndex: ${saved.themeSelectIndex}`);
+        if (this.colorMode === ConfigurationConstant.ColorMode.COLOR_MODE_DARK) {
+          // 系统深色模式：使用白色字体
           this.readerSetting.fontColor = '#ffffff';
           this.readerSetting.nightMode = true;
         } else {
-          this.readerSetting.fontColor = '#000000';
-          this.readerSetting.nightMode = false;
+          // 系统浅色模式：根据主题索引设置字体颜色
+          if (saved.themeSelectIndex === 4 || saved.themeSelectIndex === 6) {
+            this.readerSetting.fontColor = '#ffffff';
+            this.readerSetting.nightMode = true;
+          } else {
+            this.readerSetting.fontColor = '#000000';
+            this.readerSetting.nightMode = false;
+          }
         }
+        hilog.info(0x0000, TAG, `Inferred fontColor: ${this.readerSetting.fontColor}, nightMode: ${this.readerSetting.nightMode}`);
       }
 
       // 加载TTS朗读设置
