@@ -471,7 +471,7 @@ export class Mine extends ViewPU {
             Column.create();
             Column.width('100%');
         }, Column);
-        // 自定义下拉刷新指示器 - 只有图片，没有文字
+        // 自定义下拉刷新指示器
         this.customRefreshIndicator.bind(this)();
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Row.create({ space: 10 });

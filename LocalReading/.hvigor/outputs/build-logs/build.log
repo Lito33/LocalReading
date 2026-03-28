@@ -9344,3 +9344,1484 @@ Require stack:
 [2026-03-28T15:33:01.392] [DEBUG] debug-file - watch worker: worker id should be larger than 0. Nothing will be sent to any worker thread.
 [2026-03-28T15:33:01.393] [DEBUG] debug-file - watch worker: worker id should be larger than 0. Nothing will be sent to any worker thread.
 [2026-03-28T15:33:01.393] [DEBUG] debug-file - worker[14] exits with exit code 1.
+[2026-03-28T18:00:07.020] [DEBUG] debug-file - env: nodejsVersion=v18.20.1
+[2026-03-28T18:00:07.095] [DEBUG] debug-file - env: daemon=true
+[2026-03-28T18:00:07.022] [DEBUG] debug-file - env: hvigor-config.json5 content = {
+  modelVersion: '5.0.4',
+  dependencies: {},
+  execution: {},
+  logging: {},
+  debugging: {},
+  nodeOptions: {}
+}
+[2026-03-28T18:00:07.873] [DEBUG] debug-file - session manager: set active socket. socketId=qca-IIiM0Sfuoz1MAAAN
+[2026-03-28T18:00:07.887] [DEBUG] debug-file - watch worker: worker id should be larger than 0. Nothing will be sent to any worker thread.
+[2026-03-28T18:00:07.899] [DEBUG] debug-file - Workers' log level updated to INFO
+[2026-03-28T18:00:07.907] [DEBUG] debug-file - Hvigor init with startParameters:{
+  hvigorfileTypeCheck: false,
+  parallelExecution: true,
+  incrementalExecution: true,
+  printStackTrace: false,
+  daemon: true,
+  analyze: 0,
+  logLevel: Level { level: 20000, levelStr: 'INFO', colour: 'green' },
+  optimizationStrategy: 'memory',
+  hotCompile: undefined,
+  hotReloadBuild: undefined,
+  customizedParam: undefined
+}
+[2026-03-28T18:00:07.917] [DEBUG] debug-file - Cache service initialization finished in 10 ms 
+[2026-03-28T18:00:07.919] [DEBUG] debug-file - hvigorfile, resolving D:\devecoStudioDriector\SomeDemo\LocalReading\hvigorfile.ts
+[2026-03-28T18:00:07.937] [DEBUG] debug-file - hvigorfile, require result:  { default: { plugins: [] } }
+[2026-03-28T18:00:07.937] [DEBUG] debug-file - hvigorfile, binding system plugins null
+[2026-03-28T18:00:07.938] [DEBUG] debug-file - Starting plugin build process
+[2026-03-28T18:00:07.939] [DEBUG] debug-file - App plugin prepare start...
+[2026-03-28T18:00:07.939] [DEBUG] debug-file - App plugin prepare end...
+[2026-03-28T18:00:07.939] [DEBUG] debug-file - App plugin creating...
+[2026-03-28T18:00:07.964] [DEBUG] debug-file - App plugin register hook start...
+[2026-03-28T18:00:07.964] [DEBUG] debug-file - App plugin register hook end...
+[2026-03-28T18:00:07.964] [DEBUG] debug-file - Plugin build process completed
+[2026-03-28T18:00:07.965] [DEBUG] debug-file - Start initialize project's product build option map with build mode debug.
+[2026-03-28T18:00:07.965] [DEBUG] debug-file - Picking option from product 'default' with build mode 'debug'.
+[2026-03-28T18:00:07.965] [DEBUG] debug-file - Product 'default' build option initialized
+[2026-03-28T18:00:07.966] [DEBUG] debug-file - End initialize project's product build option map with build mode 'debug'.
+[2026-03-28T18:00:07.967] [DEBUG] debug-file - Obtain build option for product 'default'in this build.
+[2026-03-28T18:00:07.975] [DEBUG] debug-file - D:\devecoStudioDriector\SomeDemo\LocalReading\build\cache\default\remote_hsp\remoteHspCache.json not exists.
+[2026-03-28T18:00:07.980] [DEBUG] debug-file - Start recording SDK configuration permission data.
+[2026-03-28T18:00:08.014] [DEBUG] debug-file - Sdk init in 38 ms 
+[2026-03-28T18:00:08.019] [DEBUG] debug-file - Project task initialization takes 5 ms 
+[2026-03-28T18:00:08.019] [DEBUG] debug-file - hvigorfile, binding custom plugins []
+[2026-03-28T18:00:08.019] [DEBUG] debug-file - hvigorfile, no custom plugins were found in D:\devecoStudioDriector\SomeDemo\LocalReading\hvigorfile.ts
+[2026-03-28T18:00:08.019] [DEBUG] debug-file - hvigorfile, resolve finished D:\devecoStudioDriector\SomeDemo\LocalReading\hvigorfile.ts
+[2026-03-28T18:00:08.020] [DEBUG] debug-file - hvigorfile, resolving D:\devecoStudioDriector\SomeDemo\LocalReading\entry\hvigorfile.ts
+[2026-03-28T18:00:08.024] [DEBUG] debug-file - hvigorfile, require result:  { default: { plugins: [] } }
+[2026-03-28T18:00:08.024] [DEBUG] debug-file - hvigorfile, binding system plugins null
+[2026-03-28T18:00:08.024] [DEBUG] debug-file - Starting plugin build process
+[2026-03-28T18:00:08.024] [DEBUG] debug-file - Hap plugin creating...
+[2026-03-28T18:00:08.027] [DEBUG] debug-file - failed to load cangjie to dynamically generate schemas: Error: Cannot find module '@ohos/cangjie-build-support/index'
+Require stack:
+- D:\what down\vediodown\tool\devecostudio\DevEco Studio\tools\hvigor\hvigor-ohos-plugin\src\plugin\hooks\cangjie-register.js
+- D:\what down\vediodown\tool\devecostudio\DevEco Studio\tools\hvigor\hvigor-ohos-plugin\src\plugin\strategy\stage-init-strategy.js
+- D:\what down\vediodown\tool\devecostudio\DevEco Studio\tools\hvigor\hvigor-ohos-plugin\src\plugin\builder\abstract-plugin-builder.js
+- D:\what down\vediodown\tool\devecostudio\DevEco Studio\tools\hvigor\hvigor-ohos-plugin\src\plugin\builder\app-plugin-builder.js
+- D:\what down\vediodown\tool\devecostudio\DevEco Studio\tools\hvigor\hvigor-ohos-plugin\src\plugin\factory\plugin-factory.js
+- D:\what down\vediodown\tool\devecostudio\DevEco Studio\tools\hvigor\hvigor-ohos-plugin\index.js
+- D:\devecoStudioDriector\SomeDemo\LocalReading\hvigorfile.ts
+- D:\what down\vediodown\tool\devecostudio\DevEco Studio\tools\hvigor\hvigor\src\base\internal\lifecycle\configuration.js
+- D:\what down\vediodown\tool\devecostudio\DevEco Studio\tools\hvigor\hvigor\src\base\boot\index.js
+- D:\what down\vediodown\tool\devecostudio\DevEco Studio\tools\hvigor\hvigor\src\base\daemon\cluster\worker-process-lifecycle.js
+- D:\what down\vediodown\tool\devecostudio\DevEco Studio\tools\hvigor\hvigor\src\base\daemon\process\daemon-process-boot-script.js
+[2026-03-28T18:00:08.029] [DEBUG] debug-file - Start initialize module-target build option map, moduleName=entry, buildMode=debug
+[2026-03-28T18:00:08.029] [DEBUG] debug-file - Target 'default' config initialized
+[2026-03-28T18:00:08.030] [DEBUG] debug-file - Module 'entry' target 'default' build option initialized
+[2026-03-28T18:00:08.030] [DEBUG] debug-file - End initialize module-target build option map, moduleName=entry
+[2026-03-28T18:00:08.030] [DEBUG] debug-file - Start initialize module-target build option map, moduleName=entry, buildMode=release
+[2026-03-28T18:00:08.030] [DEBUG] debug-file - Target 'default' config initialized
+[2026-03-28T18:00:08.030] [DEBUG] debug-file - Module 'entry' target 'default' build option initialized
+[2026-03-28T18:00:08.030] [DEBUG] debug-file - End initialize module-target build option map, moduleName=entry
+[2026-03-28T18:00:08.030] [DEBUG] debug-file - Start initialize module-target build option map, moduleName=entry, buildMode=debug
+[2026-03-28T18:00:08.030] [DEBUG] debug-file - Target 'default' config initialized
+[2026-03-28T18:00:08.030] [DEBUG] debug-file - Module 'entry' target 'default' build option initialized
+[2026-03-28T18:00:08.031] [DEBUG] debug-file - End initialize module-target build option map, moduleName=entry
+[2026-03-28T18:00:08.031] [DEBUG] debug-file - Obtain build option for module 'entry' target 'default'in this build.
+[2026-03-28T18:00:08.033] [DEBUG] debug-file - Module entry task initialization takes 2 ms 
+[2026-03-28T18:00:08.033] [DEBUG] debug-file - Hap plugin register hook start...
+[2026-03-28T18:00:08.034] [DEBUG] debug-file - Hap plugin register hook end...
+[2026-03-28T18:00:08.034] [DEBUG] debug-file - Plugin build process completed
+[2026-03-28T18:00:08.034] [DEBUG] debug-file - hvigorfile, binding custom plugins []
+[2026-03-28T18:00:08.034] [DEBUG] debug-file - hvigorfile, no custom plugins were found in D:\devecoStudioDriector\SomeDemo\LocalReading\entry\hvigorfile.ts
+[2026-03-28T18:00:08.034] [DEBUG] debug-file - hvigorfile, resolve finished D:\devecoStudioDriector\SomeDemo\LocalReading\entry\hvigorfile.ts
+[2026-03-28T18:00:08.036] [DEBUG] debug-file - hvigorfile, resolving D:\devecoStudioDriector\SomeDemo\LocalReading\exfeature\note\hvigorfile.ts
+[2026-03-28T18:00:08.040] [DEBUG] debug-file - hvigorfile, require result:  { default: { plugins: [] } }
+[2026-03-28T18:00:08.040] [DEBUG] debug-file - hvigorfile, binding system plugins null
+[2026-03-28T18:00:08.040] [DEBUG] debug-file - Starting plugin build process
+[2026-03-28T18:00:08.040] [DEBUG] debug-file - Har plugin creating...
+[2026-03-28T18:00:08.041] [DEBUG] debug-file - failed to load cangjie to dynamically generate schemas: Error: Cannot find module '@ohos/cangjie-build-support/index'
+Require stack:
+- D:\what down\vediodown\tool\devecostudio\DevEco Studio\tools\hvigor\hvigor-ohos-plugin\src\plugin\hooks\cangjie-register.js
+- D:\what down\vediodown\tool\devecostudio\DevEco Studio\tools\hvigor\hvigor-ohos-plugin\src\plugin\strategy\stage-init-strategy.js
+- D:\what down\vediodown\tool\devecostudio\DevEco Studio\tools\hvigor\hvigor-ohos-plugin\src\plugin\builder\abstract-plugin-builder.js
+- D:\what down\vediodown\tool\devecostudio\DevEco Studio\tools\hvigor\hvigor-ohos-plugin\src\plugin\builder\app-plugin-builder.js
+- D:\what down\vediodown\tool\devecostudio\DevEco Studio\tools\hvigor\hvigor-ohos-plugin\src\plugin\factory\plugin-factory.js
+- D:\what down\vediodown\tool\devecostudio\DevEco Studio\tools\hvigor\hvigor-ohos-plugin\index.js
+- D:\devecoStudioDriector\SomeDemo\LocalReading\hvigorfile.ts
+- D:\what down\vediodown\tool\devecostudio\DevEco Studio\tools\hvigor\hvigor\src\base\internal\lifecycle\configuration.js
+- D:\what down\vediodown\tool\devecostudio\DevEco Studio\tools\hvigor\hvigor\src\base\boot\index.js
+- D:\what down\vediodown\tool\devecostudio\DevEco Studio\tools\hvigor\hvigor\src\base\daemon\cluster\worker-process-lifecycle.js
+- D:\what down\vediodown\tool\devecostudio\DevEco Studio\tools\hvigor\hvigor\src\base\daemon\process\daemon-process-boot-script.js
+[2026-03-28T18:00:08.043] [DEBUG] debug-file - Start initialize module-target build option map, moduleName=note, buildMode=debug
+[2026-03-28T18:00:08.043] [DEBUG] debug-file - Target 'default' config initialized
+[2026-03-28T18:00:08.043] [DEBUG] debug-file - Target 'ohosTest' config initialized
+[2026-03-28T18:00:08.043] [DEBUG] debug-file - Module 'note' target 'default' build option initialized
+[2026-03-28T18:00:08.043] [DEBUG] debug-file - Module 'note' target 'ohosTest' build option initialized
+[2026-03-28T18:00:08.043] [DEBUG] debug-file - End initialize module-target build option map, moduleName=note
+[2026-03-28T18:00:08.043] [DEBUG] debug-file - Start initialize module-target build option map, moduleName=note, buildMode=release
+[2026-03-28T18:00:08.043] [DEBUG] debug-file - Target 'default' config initialized
+[2026-03-28T18:00:08.044] [DEBUG] debug-file - Target 'ohosTest' config initialized
+[2026-03-28T18:00:08.044] [DEBUG] debug-file - Module 'note' target 'default' build option initialized
+[2026-03-28T18:00:08.044] [DEBUG] debug-file - Module 'note' target 'ohosTest' build option initialized
+[2026-03-28T18:00:08.044] [DEBUG] debug-file - End initialize module-target build option map, moduleName=note
+[2026-03-28T18:00:08.044] [DEBUG] debug-file - Start initialize module-target build option map, moduleName=note, buildMode=debug
+[2026-03-28T18:00:08.044] [DEBUG] debug-file - Target 'default' config initialized
+[2026-03-28T18:00:08.044] [DEBUG] debug-file - Target 'ohosTest' config initialized
+[2026-03-28T18:00:08.044] [DEBUG] debug-file - Module 'note' target 'default' build option initialized
+[2026-03-28T18:00:08.044] [DEBUG] debug-file - Module 'note' target 'ohosTest' build option initialized
+[2026-03-28T18:00:08.044] [DEBUG] debug-file - End initialize module-target build option map, moduleName=note
+[2026-03-28T18:00:08.044] [DEBUG] debug-file - Obtain build option for module 'note' target 'default'in this build.
+[2026-03-28T18:00:08.046] [DEBUG] debug-file - Module note task initialization takes 1 ms 
+[2026-03-28T18:00:08.046] [DEBUG] debug-file - Har plugin register hook start...
+[2026-03-28T18:00:08.046] [DEBUG] debug-file - Har plugin register hook end...
+[2026-03-28T18:00:08.046] [DEBUG] debug-file - Plugin build process completed
+[2026-03-28T18:00:08.046] [DEBUG] debug-file - hvigorfile, binding custom plugins []
+[2026-03-28T18:00:08.046] [DEBUG] debug-file - hvigorfile, no custom plugins were found in D:\devecoStudioDriector\SomeDemo\LocalReading\exfeature\note\hvigorfile.ts
+[2026-03-28T18:00:08.046] [DEBUG] debug-file - hvigorfile, resolve finished D:\devecoStudioDriector\SomeDemo\LocalReading\exfeature\note\hvigorfile.ts
+[2026-03-28T18:00:08.076] [DEBUG] debug-file - hvigorfile, resolve hvigorfile dependencies in 30 ms 
+[2026-03-28T18:00:08.077] [DEBUG] debug-file - project has submodules:entry,note
+[2026-03-28T18:00:08.077] [DEBUG] debug-file - module:note no need to execute packageHap
+[2026-03-28T18:00:08.078] [DEBUG] debug-file - start to load updatedOhPackageInfo to the disk
+[2026-03-28T18:00:08.084] [DEBUG] debug-file - load to the disk finished
+[2026-03-28T18:00:08.085] [DEBUG] debug-file - Start to initialize dependency information.
+[2026-03-28T18:00:08.085] [DEBUG] debug-file - Module LocalReading Collected Dependency: 
+[2026-03-28T18:00:08.085] [DEBUG] debug-file - Module LocalReading's total dependency: 0
+[2026-03-28T18:00:08.086] [DEBUG] debug-file - Start to initialize dependency information.
+[2026-03-28T18:00:08.088] [DEBUG] debug-file - Module entry Collected Dependency: D:\devecoStudioDriector\SomeDemo\LocalReading\exfeature\note
+[2026-03-28T18:00:08.088] [DEBUG] debug-file - Module entry's total dependency: 1
+[2026-03-28T18:00:08.091] [DEBUG] debug-file - Start to initialize dependency information.
+[2026-03-28T18:00:08.093] [DEBUG] debug-file - Module note Collected Dependency: 
+[2026-03-28T18:00:08.093] [DEBUG] debug-file - Module note's total dependency: 0
+[2026-03-28T18:00:08.094] [DEBUG] debug-file - Configuration phase cost:177 ms 
+[2026-03-28T18:00:08.096] [DEBUG] debug-file - Configuration task cost before running: 196 ms 
+[2026-03-28T18:00:08.101] [DEBUG] debug-file - Executing task :entry:default@PreBuild
+[2026-03-28T18:00:08.103] [DEBUG] debug-file - Task 'entry:default@PreBuild' cost while wrapping incremental declarations: 1 ms 
+[2026-03-28T18:00:08.107] [DEBUG] debug-file - entry:default@PreBuild is not up-to-date, since the task snapshots are different.
+[2026-03-28T18:00:08.108] [DEBUG] debug-file - Incremental task entry:default@PreBuild pre-execution cost: 4 ms .
+[2026-03-28T18:00:08.346] [DEBUG] debug-file - current product is not Atomic service.
+[2026-03-28T18:00:08.346] [DEBUG] debug-file - Use tool [win32: JAVA_HOME, CLASSPATH]
+ [
+  {
+    JAVA_HOME: 'D:\\what down\\vediodown\\tool\\devecostudio\\DevEco Studio\\jbr'
+  },
+  {
+    CLASSPATH: '.;D:\\what down\\vediodown\\tool\\devecostudio\\DevEco Studio\\jbr\\lib;D:\\what down\\vediodown\\tool\\devecostudio\\DevEco Studio\\jbr\\lib\\dt.jar;D:\\what down\\vediodown\\tool\\devecostudio\\DevEco Studio\\jbr\\lib\\tools.jar'
+  }
+]
+[2026-03-28T18:00:08.349] [DEBUG] debug-file - Use tool [win32: NODE_HOME]
+ [
+  {
+    NODE_HOME: 'D:\\what down\\vediodown\\tool\\devecostudio\\DevEco Studio\\tools\\node'
+  }
+]
+[2026-03-28T18:00:08.350] [DEBUG] debug-file - entry : default@PreBuild cost memory -0.5099105834960938
+[2026-03-28T18:00:08.351] [DEBUG] debug-file - runTaskFromQueue task cost before running: 451 ms 
+[2026-03-28T18:00:08.352] [INFO] debug-file - Finished :entry:default@PreBuild... after 250 ms 
+[2026-03-28T18:00:08.354] [DEBUG] debug-file - Executing task :note:default@PreBuild
+[2026-03-28T18:00:08.354] [DEBUG] debug-file - Task 'note:default@PreBuild' cost while wrapping incremental declarations: 1 ms 
+[2026-03-28T18:00:08.357] [DEBUG] debug-file - note:default@PreBuild is not up-to-date, since the task snapshots are different.
+[2026-03-28T18:00:08.358] [DEBUG] debug-file - Incremental task note:default@PreBuild pre-execution cost: 3 ms .
+[2026-03-28T18:00:08.393] [DEBUG] debug-file - current product is not Atomic service.
+[2026-03-28T18:00:08.393] [DEBUG] debug-file - Use tool [win32: JAVA_HOME, CLASSPATH]
+ [
+  {
+    JAVA_HOME: 'D:\\what down\\vediodown\\tool\\devecostudio\\DevEco Studio\\jbr'
+  },
+  {
+    CLASSPATH: '.;D:\\what down\\vediodown\\tool\\devecostudio\\DevEco Studio\\jbr\\lib;D:\\what down\\vediodown\\tool\\devecostudio\\DevEco Studio\\jbr\\lib\\dt.jar;D:\\what down\\vediodown\\tool\\devecostudio\\DevEco Studio\\jbr\\lib\\tools.jar'
+  }
+]
+[2026-03-28T18:00:08.394] [DEBUG] debug-file - Use tool [win32: NODE_HOME]
+ [
+  {
+    NODE_HOME: 'D:\\what down\\vediodown\\tool\\devecostudio\\DevEco Studio\\tools\\node'
+  }
+]
+[2026-03-28T18:00:08.396] [DEBUG] debug-file - note : default@PreBuild cost memory 9.777290344238281
+[2026-03-28T18:00:08.396] [DEBUG] debug-file - runTaskFromQueue task cost before running: 496 ms 
+[2026-03-28T18:00:08.397] [INFO] debug-file - Finished :note:default@PreBuild... after 42 ms 
+[2026-03-28T18:00:08.398] [DEBUG] debug-file - Executing task :entry:default@CreateModuleInfo
+[2026-03-28T18:00:08.398] [DEBUG] debug-file - Task 'entry:default@CreateModuleInfo' cost while wrapping incremental declarations: 1 ms 
+[2026-03-28T18:00:08.398] [DEBUG] debug-file - entry : default@CreateModuleInfo cost memory 0.03981781005859375
+[2026-03-28T18:00:08.398] [DEBUG] debug-file - runTaskFromQueue task cost before running: 499 ms 
+[2026-03-28T18:00:08.398] [INFO] debug-file - Finished :entry:default@CreateModuleInfo... after 1 ms 
+[2026-03-28T18:00:08.401] [DEBUG] debug-file - Executing task :entry:default@GenerateMetadata
+[2026-03-28T18:00:08.401] [DEBUG] debug-file - Task 'entry:default@GenerateMetadata' cost while wrapping incremental declarations: 1 ms 
+[2026-03-28T18:00:08.402] [DEBUG] debug-file - Incremental task entry:default@GenerateMetadata pre-execution cost: 1 ms .
+[2026-03-28T18:00:08.402] [DEBUG] debug-file - entry : default@GenerateMetadata cost memory 0.083343505859375
+[2026-03-28T18:00:08.402] [INFO] debug-file - UP-TO-DATE :entry:default@GenerateMetadata...  
+[2026-03-28T18:00:08.403] [DEBUG] debug-file - Executing task :entry:default@PreCheckSyscap
+[2026-03-28T18:00:08.403] [DEBUG] debug-file - entry : default@PreCheckSyscap cost memory 0.014373779296875
+[2026-03-28T18:00:08.403] [DEBUG] debug-file - runTaskFromQueue task cost before running: 504 ms 
+[2026-03-28T18:00:08.404] [INFO] debug-file - Finished :entry:default@PreCheckSyscap... after 1 ms 
+[2026-03-28T18:00:08.405] [DEBUG] debug-file - Executing task :entry:default@GeneratePkgContextInfo
+[2026-03-28T18:00:08.407] [DEBUG] debug-file - Task 'entry:default@GeneratePkgContextInfo' cost while wrapping incremental declarations: 1 ms 
+[2026-03-28T18:00:08.408] [DEBUG] debug-file - entry : default@GeneratePkgContextInfo cost memory 0.2866363525390625
+[2026-03-28T18:00:08.408] [DEBUG] debug-file - runTaskFromQueue task cost before running: 508 ms 
+[2026-03-28T18:00:08.408] [INFO] debug-file - Finished :entry:default@GeneratePkgContextInfo... after 4 ms 
+[2026-03-28T18:00:08.411] [DEBUG] debug-file - Executing task :entry:default@ProcessIntegratedHsp
+[2026-03-28T18:00:08.412] [DEBUG] debug-file - entry:default@ProcessIntegratedHsp is not up-to-date, since the output file 'D:\devecoStudioDriector\SomeDemo\LocalReading\build\cache\default\integrated_hsp\integratedHspCache.json' does not exist.
+[2026-03-28T18:00:08.412] [DEBUG] debug-file - Incremental task entry:default@ProcessIntegratedHsp pre-execution cost: 1 ms .
+[2026-03-28T18:00:08.412] [DEBUG] debug-file - entry : default@ProcessIntegratedHsp cost memory 0.0563812255859375
+[2026-03-28T18:00:08.412] [DEBUG] debug-file - runTaskFromQueue task cost before running: 512 ms 
+[2026-03-28T18:00:08.412] [INFO] debug-file - Finished :entry:default@ProcessIntegratedHsp... after 1 ms 
+[2026-03-28T18:00:08.414] [DEBUG] debug-file - Executing task :note:default@CreateHarBuildProfile
+[2026-03-28T18:00:08.414] [DEBUG] debug-file - Task 'note:default@CreateHarBuildProfile' cost while wrapping incremental declarations: 1 ms 
+[2026-03-28T18:00:08.415] [DEBUG] debug-file - Incremental task note:default@CreateHarBuildProfile pre-execution cost: 1 ms .
+[2026-03-28T18:00:08.415] [DEBUG] debug-file - note : default@CreateHarBuildProfile cost memory 0.091888427734375
+[2026-03-28T18:00:08.415] [INFO] debug-file - UP-TO-DATE :note:default@CreateHarBuildProfile...  
+[2026-03-28T18:00:08.416] [DEBUG] debug-file - Executing task :note:default@ConfigureCmake
+[2026-03-28T18:00:08.416] [DEBUG] debug-file - note : default@ConfigureCmake cost memory 0.01554107666015625
+[2026-03-28T18:00:08.416] [DEBUG] debug-file - runTaskFromQueue task cost before running: 516 ms 
+[2026-03-28T18:00:08.416] [INFO] debug-file - Finished :note:default@ConfigureCmake... after 1 ms 
+[2026-03-28T18:00:08.417] [DEBUG] debug-file - Executing task :note:default@MergeProfile
+[2026-03-28T18:00:08.417] [DEBUG] debug-file - Task 'note:default@MergeProfile' cost while wrapping incremental declarations: 1 ms 
+[2026-03-28T18:00:08.418] [DEBUG] debug-file - Incremental task note:default@MergeProfile pre-execution cost: 1 ms .
+[2026-03-28T18:00:08.418] [DEBUG] debug-file - note : default@MergeProfile cost memory 0.1204986572265625
+[2026-03-28T18:00:08.419] [INFO] debug-file - UP-TO-DATE :note:default@MergeProfile...  
+[2026-03-28T18:00:08.419] [DEBUG] debug-file - Executing task :entry:default@SyscapTransform
+[2026-03-28T18:00:08.420] [DEBUG] debug-file - File: 'D:\devecoStudioDriector\SomeDemo\LocalReading\entry\src\main\syscap.json' from 'sysCapJsonPath' is not exists, just ignore.
+[2026-03-28T18:00:08.420] [DEBUG] debug-file - Task 'entry:default@SyscapTransform' cost while wrapping incremental declarations: 1 ms 
+[2026-03-28T18:00:08.421] [DEBUG] debug-file - entry:default@SyscapTransform is not up-to-date, since the output file 'D:\devecoStudioDriector\SomeDemo\LocalReading\entry\build\default\intermediates\syscap\default\rpcid.sc' does not exist.
+[2026-03-28T18:00:08.422] [DEBUG] debug-file - Incremental task entry:default@SyscapTransform pre-execution cost: 2 ms .
+[2026-03-28T18:00:08.422] [DEBUG] debug-file - entry : default@SyscapTransform cost memory 0.162139892578125
+[2026-03-28T18:00:08.422] [DEBUG] debug-file - runTaskFromQueue task cost before running: 522 ms 
+[2026-03-28T18:00:08.422] [INFO] debug-file - Finished :entry:default@SyscapTransform... after 3 ms 
+[2026-03-28T18:00:08.423] [DEBUG] debug-file - Executing task :entry:default@ProcessRouterMap
+[2026-03-28T18:00:08.425] [DEBUG] debug-file - Incremental task entry:default@ProcessRouterMap pre-execution cost: 2 ms .
+[2026-03-28T18:00:08.425] [DEBUG] debug-file - entry : default@ProcessRouterMap cost memory 0.13581085205078125
+[2026-03-28T18:00:08.426] [INFO] debug-file - UP-TO-DATE :entry:default@ProcessRouterMap...  
+[2026-03-28T18:00:08.427] [DEBUG] debug-file - Executing task :entry:default@ProcessShareConfig
+[2026-03-28T18:00:08.429] [DEBUG] debug-file - Incremental task entry:default@ProcessShareConfig pre-execution cost: 2 ms .
+[2026-03-28T18:00:08.429] [DEBUG] debug-file - entry : default@ProcessShareConfig cost memory 0.113311767578125
+[2026-03-28T18:00:08.430] [INFO] debug-file - UP-TO-DATE :entry:default@ProcessShareConfig...  
+[2026-03-28T18:00:08.431] [DEBUG] debug-file - Executing task :entry:default@ProcessStartupConfig
+[2026-03-28T18:00:08.431] [DEBUG] debug-file - Task 'entry:default@ProcessStartupConfig' cost while wrapping incremental declarations: 1 ms 
+[2026-03-28T18:00:08.431] [DEBUG] debug-file - entry:default@ProcessStartupConfig is not up-to-date, since the output file 'D:\devecoStudioDriector\SomeDemo\LocalReading\entry\build\default\intermediates\startup\default\startup_config.json' does not exist.
+[2026-03-28T18:00:08.431] [DEBUG] debug-file - Incremental task entry:default@ProcessStartupConfig pre-execution cost: 1 ms .
+[2026-03-28T18:00:08.432] [DEBUG] debug-file - entry : default@ProcessStartupConfig cost memory 0.09702301025390625
+[2026-03-28T18:00:08.432] [DEBUG] debug-file - runTaskFromQueue task cost before running: 532 ms 
+[2026-03-28T18:00:08.432] [INFO] debug-file - Finished :entry:default@ProcessStartupConfig... after 2 ms 
+[2026-03-28T18:00:08.433] [DEBUG] debug-file - Executing task :entry:default@CreateBuildProfile
+[2026-03-28T18:00:08.433] [DEBUG] debug-file - Task 'entry:default@CreateBuildProfile' cost while wrapping incremental declarations: 1 ms 
+[2026-03-28T18:00:08.434] [DEBUG] debug-file - Incremental task entry:default@CreateBuildProfile pre-execution cost: 1 ms .
+[2026-03-28T18:00:08.434] [DEBUG] debug-file - entry : default@CreateBuildProfile cost memory 0.08889007568359375
+[2026-03-28T18:00:08.434] [INFO] debug-file - UP-TO-DATE :entry:default@CreateBuildProfile...  
+[2026-03-28T18:00:08.435] [DEBUG] debug-file - Executing task :note:default@BuildNativeWithCmake
+[2026-03-28T18:00:08.435] [DEBUG] debug-file - note : default@BuildNativeWithCmake cost memory 0.01685333251953125
+[2026-03-28T18:00:08.435] [DEBUG] debug-file - runTaskFromQueue task cost before running: 535 ms 
+[2026-03-28T18:00:08.435] [INFO] debug-file - Finished :note:default@BuildNativeWithCmake... after 1 ms 
+[2026-03-28T18:00:08.436] [DEBUG] debug-file - Executing task :entry:default@MergeProfile
+[2026-03-28T18:00:08.436] [DEBUG] debug-file - Task 'entry:default@MergeProfile' cost while wrapping incremental declarations: 1 ms 
+[2026-03-28T18:00:08.438] [DEBUG] debug-file - Incremental task entry:default@MergeProfile pre-execution cost: 2 ms .
+[2026-03-28T18:00:08.438] [DEBUG] debug-file - entry : default@MergeProfile cost memory 0.16550445556640625
+[2026-03-28T18:00:08.438] [INFO] debug-file - UP-TO-DATE :entry:default@MergeProfile...  
+[2026-03-28T18:00:08.439] [DEBUG] debug-file - Obtain build option for module 'note' target 'default'in this build.
+[2026-03-28T18:00:08.439] [DEBUG] debug-file - Executing task :entry:default@GenerateLoaderJson
+[2026-03-28T18:00:08.440] [DEBUG] debug-file - Task 'entry:default@GenerateLoaderJson' cost while wrapping incremental declarations: 1 ms 
+[2026-03-28T18:00:08.441] [DEBUG] debug-file - Obtain build option for module 'note' target 'default'in this build.
+[2026-03-28T18:00:08.443] [DEBUG] debug-file - Obtain build option for module 'note' target 'default'in this build.
+[2026-03-28T18:00:08.444] [DEBUG] debug-file - Obtain build option for module 'note' target 'default'in this build.
+[2026-03-28T18:00:08.445] [DEBUG] debug-file - Obtain build option for module 'note' target 'default'in this build.
+[2026-03-28T18:00:08.445] [DEBUG] debug-file - Obtain build option for module 'note' target 'default'in this build.
+[2026-03-28T18:00:08.446] [DEBUG] debug-file - Incremental task entry:default@GenerateLoaderJson pre-execution cost: 4 ms .
+[2026-03-28T18:00:08.446] [DEBUG] debug-file - entry : default@GenerateLoaderJson cost memory 0.524566650390625
+[2026-03-28T18:00:08.448] [DEBUG] debug-file - Obtain build option for module 'note' target 'default'in this build.
+[2026-03-28T18:00:08.448] [DEBUG] debug-file - Obtain build option for module 'note' target 'default'in this build.
+[2026-03-28T18:00:08.449] [INFO] debug-file - UP-TO-DATE :entry:default@GenerateLoaderJson...  
+[2026-03-28T18:00:08.449] [DEBUG] debug-file - Executing task :entry:default@ConfigureCmake
+[2026-03-28T18:00:08.449] [DEBUG] debug-file - entry : default@ConfigureCmake cost memory 0.01415252685546875
+[2026-03-28T18:00:08.450] [DEBUG] debug-file - runTaskFromQueue task cost before running: 550 ms 
+[2026-03-28T18:00:08.450] [INFO] debug-file - Finished :entry:default@ConfigureCmake... after 1 ms 
+[2026-03-28T18:00:08.451] [DEBUG] debug-file - Executing task :note:default@BuildNativeWithNinja
+[2026-03-28T18:00:08.451] [DEBUG] debug-file - note : default@BuildNativeWithNinja cost memory 0.02393341064453125
+[2026-03-28T18:00:08.451] [DEBUG] debug-file - runTaskFromQueue task cost before running: 552 ms 
+[2026-03-28T18:00:08.452] [INFO] debug-file - Finished :note:default@BuildNativeWithNinja... after 1 ms 
+[2026-03-28T18:00:08.452] [DEBUG] debug-file - Executing task :entry:default@MakePackInfo
+[2026-03-28T18:00:08.455] [DEBUG] debug-file - Incremental task entry:default@MakePackInfo pre-execution cost: 2 ms .
+[2026-03-28T18:00:08.455] [DEBUG] debug-file - entry : default@MakePackInfo cost memory 0.13800811767578125
+[2026-03-28T18:00:08.456] [INFO] debug-file - UP-TO-DATE :entry:default@MakePackInfo...  
+[2026-03-28T18:00:08.457] [DEBUG] debug-file - Executing task :entry:default@ProcessProfile
+[2026-03-28T18:00:08.459] [DEBUG] debug-file - Task 'entry:default@ProcessProfile' cost while wrapping incremental declarations: 1 ms 
+[2026-03-28T18:00:08.460] [DEBUG] debug-file - Incremental task entry:default@ProcessProfile pre-execution cost: 1 ms .
+[2026-03-28T18:00:08.460] [DEBUG] debug-file - entry : default@ProcessProfile cost memory 0.14937591552734375
+[2026-03-28T18:00:08.460] [INFO] debug-file - UP-TO-DATE :entry:default@ProcessProfile...  
+[2026-03-28T18:00:08.461] [DEBUG] debug-file - Executing task :entry:default@BuildNativeWithCmake
+[2026-03-28T18:00:08.464] [DEBUG] debug-file - entry : default@BuildNativeWithCmake cost memory 0.00650787353515625
+[2026-03-28T18:00:08.464] [DEBUG] debug-file - runTaskFromQueue task cost before running: 564 ms 
+[2026-03-28T18:00:08.464] [INFO] debug-file - Finished :entry:default@BuildNativeWithCmake... after 4 ms 
+[2026-03-28T18:00:08.465] [DEBUG] debug-file - Executing task :note:default@ProcessLibs
+[2026-03-28T18:00:08.467] [DEBUG] debug-file - Incremental task note:default@ProcessLibs pre-execution cost: 1 ms .
+[2026-03-28T18:00:08.467] [DEBUG] debug-file - note : default@ProcessLibs cost memory 0.10933685302734375
+[2026-03-28T18:00:08.467] [INFO] debug-file - UP-TO-DATE :note:default@ProcessLibs...  
+[2026-03-28T18:00:08.468] [DEBUG] debug-file - restool module names: entry,note; moduleName=entry, taskName=default@ProcessResource
+[2026-03-28T18:00:08.470] [DEBUG] debug-file - Executing task :entry:default@ProcessResource
+[2026-03-28T18:00:08.470] [DEBUG] debug-file - Task 'entry:default@ProcessResource' cost while wrapping incremental declarations: 1 ms 
+[2026-03-28T18:00:08.471] [DEBUG] debug-file - Incremental task entry:default@ProcessResource pre-execution cost: 1 ms .
+[2026-03-28T18:00:08.471] [DEBUG] debug-file - entry : default@ProcessResource cost memory 0.13471221923828125
+[2026-03-28T18:00:08.473] [INFO] debug-file - UP-TO-DATE :entry:default@ProcessResource...  
+[2026-03-28T18:00:08.474] [DEBUG] debug-file - Executing task :note:default@DoNativeStrip
+[2026-03-28T18:00:08.474] [DEBUG] debug-file - Task 'note:default@DoNativeStrip' cost while wrapping incremental declarations: 1 ms 
+[2026-03-28T18:00:08.475] [DEBUG] debug-file - Incremental task note:default@DoNativeStrip pre-execution cost: 1 ms .
+[2026-03-28T18:00:08.475] [DEBUG] debug-file - note : default@DoNativeStrip cost memory 0.0876312255859375
+[2026-03-28T18:00:08.475] [INFO] debug-file - UP-TO-DATE :note:default@DoNativeStrip...  
+[2026-03-28T18:00:08.476] [DEBUG] debug-file - restool module names: entry,note; moduleName=entry, taskName=default@CompileResource
+[2026-03-28T18:00:08.477] [DEBUG] debug-file - Executing task :entry:default@CompileResource
+[2026-03-28T18:00:08.502] [DEBUG] debug-file - Incremental task entry:default@CompileResource pre-execution cost: 25 ms .
+[2026-03-28T18:00:08.503] [DEBUG] debug-file - entry : default@CompileResource cost memory 1.55169677734375
+[2026-03-28T18:00:08.504] [INFO] debug-file - UP-TO-DATE :entry:default@CompileResource...  
+[2026-03-28T18:00:08.504] [DEBUG] debug-file - Executing task :entry:default@BuildNativeWithNinja
+[2026-03-28T18:00:08.504] [DEBUG] debug-file - entry : default@BuildNativeWithNinja cost memory 0.020721435546875
+[2026-03-28T18:00:08.505] [DEBUG] debug-file - runTaskFromQueue task cost before running: 605 ms 
+[2026-03-28T18:00:08.505] [INFO] debug-file - Finished :entry:default@BuildNativeWithNinja... after 1 ms 
+[2026-03-28T18:00:08.506] [DEBUG] debug-file - Executing task :entry:default@CompileArkTS
+[2026-03-28T18:00:08.506] [DEBUG] debug-file - obfuscationOptions: undefined
+[2026-03-28T18:00:08.509] [DEBUG] debug-file - Task 'entry:default@CompileArkTS' cost while wrapping incremental declarations: 1 ms 
+[2026-03-28T18:00:08.521] [DEBUG] debug-file - entry:default@CompileArkTS is not up-to-date, since the input file 'D:\devecoStudioDriector\SomeDemo\LocalReading\entry\src\main\ets' has been changed.
+[2026-03-28T18:00:08.521] [DEBUG] debug-file - Incremental task entry:default@CompileArkTS pre-execution cost: 12 ms .
+[2026-03-28T18:00:08.531] [DEBUG] debug-file - build config:
+[2026-03-28T18:00:08.532] [DEBUG] debug-file - {
+  moduleType: 'entry',
+  perf: 0,
+  targetName: '.default',
+  packageManagerType: 'ohpm',
+  localPropertiesPath: 'D:\\devecoStudioDriector\\SomeDemo\\LocalReading\\local.properties',
+  isPreview: false,
+  isOhosTest: false,
+  isLocalTest: false,
+  buildMode: 'Debug',
+  hotReloadBuild: undefined,
+  watchMode: 'false',
+  aceProfilePath: 'D:\\devecoStudioDriector\\SomeDemo\\LocalReading\\entry\\build\\default\\intermediates\\res\\default\\resources\\base\\profile',
+  etsLoaderPath: 'D:\\what down\\vediodown\\tool\\devecostudio\\DevEco Studio\\sdk\\default\\openharmony\\ets\\build-tools\\ets-loader',
+  modulePath: 'D:\\devecoStudioDriector\\SomeDemo\\LocalReading\\entry',
+  testFrameworkPar: {
+    testMode: undefined,
+    coveragePathFilter: undefined,
+    coverageMode: undefined
+  },
+  needCoverageInsert: false,
+  debugLine: false,
+  projectTopDir: 'D:\\devecoStudioDriector\\SomeDemo\\LocalReading',
+  compileSdkVersion: 22,
+  compatibleSdkVersion: 16,
+  originCompatibleSdkVersion: '5.0.4(16)',
+  compatibleSdkVersionStage: undefined,
+  bundleName: 'c***o',
+  etsLoaderVersion: '6.0.2.130',
+  etsLoaderReleaseType: 'Release',
+  aotCompileMode: 'type',
+  apPath: 'D:\\devecoStudioDriector\\SomeDemo\\LocalReading\\entry\\modules.ap',
+  entryModuleName: 'entry',
+  entryModuleVersion: '1.0.0',
+  entryPackageName: 'entry',
+  allModuleNameHash: 'eca55519d380f9b27bff24bf2d2c8720a51c26ed5f9d62149a1ac288afe9ed7b',
+  externalApiPaths: [
+    'D:\\what down\\vediodown\\tool\\devecostudio\\DevEco Studio\\sdk\\default\\hms\\ets'
+  ],
+  compilerTypes: [],
+  isCrossplatform: false,
+  hvigorPluginFile: undefined,
+  compilePluginPath: undefined,
+  buildGeneratedProfilePath: 'D:\\devecoStudioDriector\\SomeDemo\\LocalReading\\entry\\build\\default\\generated\\profile\\default',
+  bundleType: 'app',
+  arkTSVersion: undefined,
+  apiVersion: 22,
+  needCompleteSourcesMap: false,
+  isFaMode: false,
+  buildDir: 'D:\\devecoStudioDriector\\SomeDemo\\LocalReading\\entry\\build',
+  deviceTypes: [ 'phone', 'tablet', '2in1' ],
+  pkgContextInfo: undefined,
+  ohPackagePathMap: {},
+  dependencyAliasMap: {},
+  permission: {
+    requestPermissions: [ [Object], [Object], [Object] ],
+    definePermissions: undefined
+  },
+  useGetCurrentBundleName: false,
+  projectArkOption: undefined,
+  sourceMapDir: undefined,
+  branchElimination: false,
+  transformLib: undefined,
+  tsImportSendable: false,
+  resolveConflictMode: true,
+  depName2RootPath: {},
+  depName2DepInfo: {},
+  rootPathSet: [ 'D:\\devecoStudioDriector\\SomeDemo\\LocalReading' ],
+  useNativeResolver: true,
+  shouldEmitJs: true,
+  useTscResolve: false,
+  singleFileEmit: false,
+  userProjectConfig: {
+    autoLazyImport: false,
+    allowEmptyBundleName: false,
+    reExportCheckMode: 'noCheck',
+    executionMode: 'memory',
+    usePathPlaceholder: false,
+    writeRollupCache: true,
+    isExpandImportEnabled: false,
+    expandImportExclude: '',
+    lazyImportExclude: '',
+    lazyImportInclude: '',
+    ignoreCrossplatformCheck: false,
+    isHarDeduplicateEnabled: false,
+    skipOhModulesLint: false,
+    enableStrictCheckOHModule: false,
+    disableSendableCheckRules: [],
+    useDeclarationFileSignature: false,
+    customizedOptions: undefined,
+    integratedHsp: false,
+    isPreloadSoEnabled: false
+  },
+  executionMode: 'memory',
+  arkCompileCachePath: 'D:\\devecoStudioDriector\\SomeDemo\\LocalReading\\entry\\build\\default\\cache\\default\\default@CompileArkTS\\esmodule',
+  autoLazyFilter: undefined,
+  isHarDeduplicateEnabled: false,
+  intermediateHarDuplicateDirPath: 'D:\\devecoStudioDriector\\SomeDemo\\LocalReading\\entry\\build\\default\\intermediates\\har_duplicate\\default',
+  autoLazyImport: false,
+  allowEmptyBundleName: false,
+  reExportCheckMode: 'noCheck',
+  usePathPlaceholder: false,
+  writeRollupCache: true,
+  isExpandImportEnabled: false,
+  expandImportExclude: '',
+  lazyImportExclude: '',
+  lazyImportInclude: '',
+  ignoreCrossplatformCheck: false,
+  skipOhModulesLint: false,
+  enableStrictCheckOHModule: false,
+  disableSendableCheckRules: [],
+  useDeclarationFileSignature: false,
+  customizedOptions: undefined,
+  integratedHsp: false,
+  isPreloadSoEnabled: false,
+  strictMode: undefined,
+  useNormalizedOHMUrl: false,
+  caseSensitiveCheck: false,
+  aceModuleJsonPath: 'D:\\devecoStudioDriector\\SomeDemo\\LocalReading\\entry\\build\\default\\intermediates\\res\\default\\ark_module.json',
+  appResource: 'D:\\devecoStudioDriector\\SomeDemo\\LocalReading\\entry\\build\\default\\intermediates\\res\\default\\ResourceTable.txt',
+  rawFileResource: 'D:\\devecoStudioDriector\\SomeDemo\\LocalReading\\entry\\build\\default\\intermediates\\res\\default\\resources\\rawfile',
+  resourceTableHash: '857f1b79fb597d1cf93c985811e8c7131aee66648552a7faf6d343945b6350cd',
+  runtimeOS: 'HarmonyOS',
+  sdkInfo: 'false:22:6.0.2.130:Release',
+  aceModuleRoot: 'D:\\devecoStudioDriector\\SomeDemo\\LocalReading\\entry\\src\\main\\ets',
+  compileMode: 'esmodule',
+  aceSuperVisualPath: 'D:\\devecoStudioDriector\\SomeDemo\\LocalReading\\entry\\src\\main\\supervisual',
+  aceBuildJson: 'D:\\devecoStudioDriector\\SomeDemo\\LocalReading\\entry\\build\\default\\intermediates\\loader\\default\\loader.json',
+  cachePath: 'D:\\devecoStudioDriector\\SomeDemo\\LocalReading\\entry\\build\\default\\cache\\default\\default@CompileArkTS\\esmodule\\debug',
+  aceModuleBuild: 'D:\\devecoStudioDriector\\SomeDemo\\LocalReading\\entry\\build\\default\\intermediates\\loader_out\\default\\ets',
+  supportChunks: true,
+  declaredFilesPath: undefined,
+  shouldCollectDirectImportees: false,
+  isByteCodeHarOptimize: false,
+  expandImportPath: undefined,
+  pkgNameToPkgBriefInfo: {
+    note: {
+      pkgRoot: 'D:\\devecoStudioDriector\\SomeDemo\\LocalReading\\exfeature\\note',
+      pkgName: 'note',
+      sourceRoots: [Array],
+      originalSourceRoots: undefined
+    },
+    entry: {
+      pkgRoot: 'D:\\devecoStudioDriector\\SomeDemo\\LocalReading\\entry',
+      originalSourceRoots: undefined,
+      sourceRoots: [Array],
+      pkgName: 'entry'
+    }
+  },
+  projectModel: {
+    'D:\\devecoStudioDriector\\SomeDemo\\LocalReading\\entry\\src\\main': {
+      moduleName: 'entry',
+      modulePkgPath: 'D:\\devecoStudioDriector\\SomeDemo\\LocalReading\\entry',
+      belongProjectPath: 'D:\\devecoStudioDriector\\SomeDemo\\LocalReading'
+    },
+    'D:\\devecoStudioDriector\\SomeDemo\\LocalReading\\entry': {
+      moduleName: 'entry',
+      modulePkgPath: 'D:\\devecoStudioDriector\\SomeDemo\\LocalReading\\entry',
+      belongProjectPath: 'D:\\devecoStudioDriector\\SomeDemo\\LocalReading'
+    },
+    'D:\\devecoStudioDriector\\SomeDemo\\LocalReading\\exfeature\\note\\src\\main': {
+      moduleName: 'note',
+      modulePkgPath: 'D:\\devecoStudioDriector\\SomeDemo\\LocalReading\\exfeature\\note',
+      belongProjectPath: 'D:\\devecoStudioDriector\\SomeDemo\\LocalReading'
+    },
+    'D:\\devecoStudioDriector\\SomeDemo\\LocalReading\\exfeature\\note\\build\\default\\intermediates\\src\\ohosTest\\ets': {
+      moduleName: 'node_test',
+      modulePkgPath: 'D:\\devecoStudioDriector\\SomeDemo\\LocalReading\\exfeature\\note',
+      belongProjectPath: 'D:\\devecoStudioDriector\\SomeDemo\\LocalReading'
+    },
+    'D:\\devecoStudioDriector\\SomeDemo\\LocalReading\\exfeature\\note\\src\\ohosTest': {
+      moduleName: 'node_test',
+      modulePkgPath: 'D:\\devecoStudioDriector\\SomeDemo\\LocalReading\\exfeature\\note',
+      belongProjectPath: 'D:\\devecoStudioDriector\\SomeDemo\\LocalReading'
+    },
+    'D:\\devecoStudioDriector\\SomeDemo\\LocalReading\\exfeature\\note': {
+      moduleName: 'note',
+      modulePkgPath: 'D:\\devecoStudioDriector\\SomeDemo\\LocalReading\\exfeature\\note',
+      belongProjectPath: 'D:\\devecoStudioDriector\\SomeDemo\\LocalReading'
+    },
+    'D:\\devecoStudioDriector\\SomeDemo\\LocalReading': {
+      moduleName: 'LocalReading',
+      modulePkgPath: 'D:\\devecoStudioDriector\\SomeDemo\\LocalReading',
+      belongProjectPath: 'D:\\devecoStudioDriector\\SomeDemo\\LocalReading'
+    }
+  },
+  pkgJsonFileHash: 'a2c3c143637d4202bd97bc68ca7a8ffd2fb576a844c87cb081af1d4148172181',
+  allModulePaths: [
+    'D:\\devecoStudioDriector\\SomeDemo\\LocalReading\\entry',
+    'D:\\devecoStudioDriector\\SomeDemo\\LocalReading\\exfeature\\note'
+  ],
+  routerMap: {},
+  obfuscationOptions: undefined,
+  byteCodeHarToDependencyKeys: undefined,
+  compileBlockPkg: [],
+  mockParams: {
+    decorator: '@MockSetup',
+    packageName: '@ohos/hamock',
+    etsSourceRootPath: 'src/main/ets',
+    mockConfigPath: undefined,
+    mockConfigKey2ModuleInfo: {},
+    source2ModuleIdMap: {}
+  },
+  copyCodeResourceEnable: true,
+  copyCodeResourceExcludes: [],
+  copyCodeResourceIncludes: undefined,
+  uiTransformOptimization: false,
+  sdkPath: 'D:/what down/vediodown/tool/devecostudio/DevEco Studio/sdk',
+  needPreloadSoFileSet: {},
+  preloadSoFilePath: 'D:\\devecoStudioDriector\\SomeDemo\\LocalReading\\entry\\build\\default\\intermediates\\preload\\default\\preload.json',
+  useSourceHash: false,
+  localModuleParamMap: {},
+  otherPaths: {
+    'note/*': [
+      '..\\..\\..\\..\\exfeature\\note\\src\\main\\*',
+      '..\\..\\..\\..\\exfeature\\note\\build\\default\\generated\\profile\\default\\*'
+    ],
+    'entry/*': [
+      '..\\*',
+      '..\\..\\..\\build\\default\\generated\\profile\\default\\*'
+    ]
+  },
+  collectImportersConfig: undefined
+}
+[2026-03-28T18:00:08.532] [DEBUG] debug-file - Compile arkts with external api path: D:\what down\vediodown\tool\devecostudio\DevEco Studio\sdk\default\hms\ets
+[2026-03-28T18:00:08.533] [DEBUG] debug-file - default@CompileArkTS work[12] is submitted.
+[2026-03-28T18:00:08.533] [DEBUG] debug-file - default@CompileArkTS work[12] is pushed to ready queue.
+[2026-03-28T18:00:08.533] [DEBUG] debug-file - A work dispatched to worker[15] failed because unable to get work from ready queue.
+[2026-03-28T18:00:08.533] [DEBUG] debug-file - A work dispatched to worker[14] failed because unable to get work from ready queue.
+[2026-03-28T18:00:08.534] [DEBUG] debug-file - A work dispatched to worker[13] failed because unable to get work from ready queue.
+[2026-03-28T18:00:08.534] [DEBUG] debug-file - A work dispatched to worker[12] failed because unable to get work from ready queue.
+[2026-03-28T18:00:08.534] [DEBUG] debug-file - A work dispatched to worker[11] failed because unable to get work from ready queue.
+[2026-03-28T18:00:08.534] [DEBUG] debug-file - A work dispatched to worker[10] failed because unable to get work from ready queue.
+[2026-03-28T18:00:08.534] [DEBUG] debug-file - A work dispatched to worker[9] failed because unable to get work from ready queue.
+[2026-03-28T18:00:08.534] [DEBUG] debug-file - A work dispatched to worker[8] failed because unable to get work from ready queue.
+[2026-03-28T18:00:08.534] [DEBUG] debug-file - A work dispatched to worker[7] failed because unable to get work from ready queue.
+[2026-03-28T18:00:08.534] [DEBUG] debug-file - A work dispatched to worker[6] failed because unable to get work from ready queue.
+[2026-03-28T18:00:08.534] [DEBUG] debug-file - A work dispatched to worker[5] failed because unable to get work from ready queue.
+[2026-03-28T18:00:08.535] [DEBUG] debug-file - default@CompileArkTS work[12] has been dispatched to worker[4].
+[2026-03-28T18:00:08.535] [DEBUG] debug-file - default@CompileArkTS work[12] is dispatched.
+[2026-03-28T18:00:08.535] [DEBUG] debug-file - CopyResources startTime: 1417734626394400
+[2026-03-28T18:00:08.535] [DEBUG] debug-file - default@CompileArkTS work[13] is submitted.
+[2026-03-28T18:00:08.535] [DEBUG] debug-file - default@CompileArkTS work[13] is pushed to ready queue.
+[2026-03-28T18:00:08.535] [DEBUG] debug-file - A work dispatched to worker[15] failed because unable to get work from ready queue.
+[2026-03-28T18:00:08.535] [DEBUG] debug-file - Create  resident worker with id: 14.
+[2026-03-28T18:00:08.537] [DEBUG] debug-file - default@CompileArkTS work[13] has been dispatched to worker[14].
+[2026-03-28T18:00:08.538] [DEBUG] debug-file - default@CompileArkTS work[13] is dispatched.
+[2026-03-28T18:00:08.538] [DEBUG] debug-file - entry : default@CompileArkTS cost memory 2.0027999877929688
+[2026-03-28T18:00:08.540] [DEBUG] debug-file - Executing task :entry:default@BuildJS
+[2026-03-28T18:00:08.540] [DEBUG] debug-file - Task 'entry:default@BuildJS' cost while wrapping incremental declarations: 1 ms 
+[2026-03-28T18:00:08.543] [DEBUG] debug-file - entry : default@BuildJS cost memory 0.1732635498046875
+[2026-03-28T18:00:08.543] [DEBUG] debug-file - runTaskFromQueue task cost before running: 644 ms 
+[2026-03-28T18:00:08.544] [INFO] debug-file - Finished :entry:default@BuildJS... after 4 ms 
+[2026-03-28T18:00:08.544] [DEBUG] debug-file - Executing task :entry:default@ProcessLibs
+[2026-03-28T18:00:08.549] [DEBUG] debug-file - Incremental task entry:default@ProcessLibs pre-execution cost: 2 ms .
+[2026-03-28T18:00:08.549] [DEBUG] debug-file - entry : default@ProcessLibs cost memory 0.246337890625
+[2026-03-28T18:00:08.549] [INFO] debug-file - UP-TO-DATE :entry:default@ProcessLibs...  
+[2026-03-28T18:00:08.550] [DEBUG] debug-file - Executing task :entry:default@DoNativeStrip
+[2026-03-28T18:00:08.550] [DEBUG] debug-file - Task 'entry:default@DoNativeStrip' cost while wrapping incremental declarations: 1 ms 
+[2026-03-28T18:00:08.551] [DEBUG] debug-file - Incremental task entry:default@DoNativeStrip pre-execution cost: 1 ms .
+[2026-03-28T18:00:08.551] [DEBUG] debug-file - entry : default@DoNativeStrip cost memory 0.07491302490234375
+[2026-03-28T18:00:08.552] [INFO] debug-file - UP-TO-DATE :entry:default@DoNativeStrip...  
+[2026-03-28T18:00:08.553] [DEBUG] debug-file - Executing task :entry:default@CacheNativeLibs
+[2026-03-28T18:00:08.553] [DEBUG] debug-file - Task 'entry:default@CacheNativeLibs' cost while wrapping incremental declarations: 1 ms 
+[2026-03-28T18:00:08.554] [DEBUG] debug-file - Incremental task entry:default@CacheNativeLibs pre-execution cost: 2 ms .
+[2026-03-28T18:00:08.555] [DEBUG] debug-file - entry : default@CacheNativeLibs cost memory 0.09218597412109375
+[2026-03-28T18:00:08.555] [INFO] debug-file - UP-TO-DATE :entry:default@CacheNativeLibs...  
+[2026-03-28T18:00:09.728] [DEBUG] debug-file - worker[14] has one work done.
+[2026-03-28T18:00:09.728] [DEBUG] debug-file - CopyResources is end, endTime: 1417735819958700
+[2026-03-28T18:00:09.729] [DEBUG] debug-file - default@CompileArkTS work[13] done.
+[2026-03-28T18:00:09.729] [DEBUG] debug-file - A work dispatched to worker[14] failed because unable to get work from ready queue.
+[2026-03-28T18:00:14.599] [WARN] debug-file - [33mWARN: [33m[33mArkTS:WARN File: D:/devecoStudioDriector/SomeDemo/LocalReading/entry/src/main/ets/utils/Speaker.ets:10:3
+ Definite assignment assertions are not supported (arkts-no-definite-assignment)
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/devecoStudioDriector/SomeDemo/LocalReading/entry/src/main/ets/utils/Speaker.ets:11:3
+ Definite assignment assertions are not supported (arkts-no-definite-assignment)
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN: For details about ArkTS syntax errors, see FAQs[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/devecoStudioDriector/SomeDemo/LocalReading/entry/src/main/ets/entryability/WindowAbility.ets:161:5
+ Function may throw exceptions. Special handling is required.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/devecoStudioDriector/SomeDemo/LocalReading/entry/src/main/ets/common/ProgressStorage.ets:30:24
+ Function may throw exceptions. Special handling is required.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/devecoStudioDriector/SomeDemo/LocalReading/entry/src/main/ets/common/ProgressStorage.ets:31:11
+ Function may throw exceptions. Special handling is required.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/devecoStudioDriector/SomeDemo/LocalReading/entry/src/main/ets/common/ProgressStorage.ets:32:11
+ Function may throw exceptions. Special handling is required.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/devecoStudioDriector/SomeDemo/LocalReading/entry/src/main/ets/common/ProgressStorage.ets:41:24
+ Function may throw exceptions. Special handling is required.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/devecoStudioDriector/SomeDemo/LocalReading/entry/src/main/ets/common/ProgressStorage.ets:42:24
+ Function may throw exceptions. Special handling is required.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/devecoStudioDriector/SomeDemo/LocalReading/entry/src/main/ets/common/BookStorage.ets:29:24
+ Function may throw exceptions. Special handling is required.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/devecoStudioDriector/SomeDemo/LocalReading/entry/src/main/ets/common/BookStorage.ets:45:11
+ Function may throw exceptions. Special handling is required.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/devecoStudioDriector/SomeDemo/LocalReading/entry/src/main/ets/common/BookStorage.ets:46:11
+ Function may throw exceptions. Special handling is required.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/devecoStudioDriector/SomeDemo/LocalReading/entry/src/main/ets/common/BookStorage.ets:54:24
+ Function may throw exceptions. Special handling is required.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/devecoStudioDriector/SomeDemo/LocalReading/entry/src/main/ets/common/BookStorage.ets:55:24
+ Function may throw exceptions. Special handling is required.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/devecoStudioDriector/SomeDemo/LocalReading/entry/src/main/ets/common/BookStorage.ets:80:24
+ Function may throw exceptions. Special handling is required.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/devecoStudioDriector/SomeDemo/LocalReading/entry/src/main/ets/common/BookStorage.ets:84:11
+ Function may throw exceptions. Special handling is required.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/devecoStudioDriector/SomeDemo/LocalReading/entry/src/main/ets/common/BookStorage.ets:101:11
+ Function may throw exceptions. Special handling is required.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/devecoStudioDriector/SomeDemo/LocalReading/entry/src/main/ets/utils/DistributedSyncManager.ets:108:5
+ Function may throw exceptions. Special handling is required.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/devecoStudioDriector/SomeDemo/LocalReading/entry/src/main/ets/pages/Welcome.ets:23:5
+ Function may throw exceptions. Special handling is required.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/devecoStudioDriector/SomeDemo/LocalReading/entry/src/main/ets/pages/Welcome.ets:23:12
+ 'replaceUrl' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/devecoStudioDriector/SomeDemo/LocalReading/entry/src/main/ets/utils/FileUtils.ets:106:43
+ 'packing' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/devecoStudioDriector/SomeDemo/LocalReading/entry/src/main/ets/utils/FileUtils.ets:108:16
+ Function may throw exceptions. Special handling is required.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/devecoStudioDriector/SomeDemo/LocalReading/entry/src/main/ets/utils/FileUtils.ets:109:5
+ Function may throw exceptions. Special handling is required.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/devecoStudioDriector/SomeDemo/LocalReading/entry/src/main/ets/utils/FileUtils.ets:110:5
+ Function may throw exceptions. Special handling is required.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/devecoStudioDriector/SomeDemo/LocalReading/entry/src/main/ets/utils/LocalBookImporter.ets:89:9
+ Function may throw exceptions. Special handling is required.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/devecoStudioDriector/SomeDemo/LocalReading/entry/src/main/ets/pages/Index.ets:294:7
+ Function may throw exceptions. Special handling is required.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/devecoStudioDriector/SomeDemo/LocalReading/entry/src/main/ets/pages/Index.ets:547:17
+ 'show' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/devecoStudioDriector/SomeDemo/LocalReading/entry/src/main/ets/pages/Mine.ets:141:20
+ 'showToast' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/devecoStudioDriector/SomeDemo/LocalReading/entry/src/main/ets/pages/Mine.ets:144:7
+ Function may throw exceptions. Special handling is required.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/devecoStudioDriector/SomeDemo/LocalReading/entry/src/main/ets/pages/Mine.ets:144:20
+ 'showToast' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/devecoStudioDriector/SomeDemo/LocalReading/entry/src/main/ets/pages/Mine.ets:259:34
+ 'showToast' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/devecoStudioDriector/SomeDemo/LocalReading/entry/src/main/ets/pages/Mine.ets:267:28
+ 'pushUrl' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/devecoStudioDriector/SomeDemo/LocalReading/entry/src/main/ets/pages/Mine.ets:312:18
+ 'pushUrl' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/devecoStudioDriector/SomeDemo/LocalReading/entry/src/main/ets/pages/Mine.ets:359:18
+ 'pushUrl' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/devecoStudioDriector/SomeDemo/LocalReading/exfeature/note/src/main/ets/model/NotePreferenceModel.ets:7:24
+ 'getContext' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/devecoStudioDriector/SomeDemo/LocalReading/exfeature/note/src/main/ets/model/NotePreferenceModel.ets:12:24
+ Function may throw exceptions. Special handling is required.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/devecoStudioDriector/SomeDemo/LocalReading/exfeature/note/src/main/ets/model/NotePreferenceModel.ets:15:13
+ Function may throw exceptions. Special handling is required.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/devecoStudioDriector/SomeDemo/LocalReading/exfeature/note/src/main/ets/model/NotePreferenceModel.ets:17:11
+ Function may throw exceptions. Special handling is required.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/devecoStudioDriector/SomeDemo/LocalReading/exfeature/note/src/main/ets/model/NotePreferenceModel.ets:21:24
+ Function may throw exceptions. Special handling is required.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/devecoStudioDriector/SomeDemo/LocalReading/exfeature/note/src/main/ets/model/NotePreferenceModel.ets:22:25
+ Function may throw exceptions. Special handling is required.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/devecoStudioDriector/SomeDemo/LocalReading/exfeature/note/src/main/ets/model/NotePreferenceModel.ets:38:24
+ Function may throw exceptions. Special handling is required.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/devecoStudioDriector/SomeDemo/LocalReading/exfeature/note/src/main/ets/model/NotePreferenceModel.ets:39:11
+ Function may throw exceptions. Special handling is required.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/devecoStudioDriector/SomeDemo/LocalReading/exfeature/note/src/main/ets/model/NotePreferenceModel.ets:40:11
+ Function may throw exceptions. Special handling is required.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/devecoStudioDriector/SomeDemo/LocalReading/exfeature/note/src/main/ets/model/NotePreferenceModel.ets:44:11
+ Function may throw exceptions. Special handling is required.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/devecoStudioDriector/SomeDemo/LocalReading/exfeature/note/src/main/ets/model/NotePreferenceModel.ets:45:11
+ Function may throw exceptions. Special handling is required.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/devecoStudioDriector/SomeDemo/LocalReading/entry/src/main/ets/pages/Login.ets:23:20
+ 'back' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/devecoStudioDriector/SomeDemo/LocalReading/entry/src/main/ets/pages/Login.ets:124:7
+ Function may throw exceptions. Special handling is required.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/devecoStudioDriector/SomeDemo/LocalReading/entry/src/main/ets/pages/Login.ets:124:20
+ 'showToast' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/devecoStudioDriector/SomeDemo/LocalReading/entry/src/main/ets/pages/Login.ets:137:9
+ Function may throw exceptions. Special handling is required.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/devecoStudioDriector/SomeDemo/LocalReading/entry/src/main/ets/pages/Login.ets:137:22
+ 'showToast' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/devecoStudioDriector/SomeDemo/LocalReading/entry/src/main/ets/pages/Login.ets:143:7
+ Function may throw exceptions. Special handling is required.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/devecoStudioDriector/SomeDemo/LocalReading/entry/src/main/ets/pages/Login.ets:143:20
+ 'showToast' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/devecoStudioDriector/SomeDemo/LocalReading/entry/src/main/ets/pages/Login.ets:276:26
+ 'showToast' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/devecoStudioDriector/SomeDemo/LocalReading/entry/src/main/ets/pages/Login.ets:280:22
+ 'back' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/devecoStudioDriector/SomeDemo/LocalReading/entry/src/main/ets/pages/Login.ets:283:26
+ 'showToast' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/devecoStudioDriector/SomeDemo/LocalReading/entry/src/main/ets/pages/About.ets:61:20
+ 'back' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/devecoStudioDriector/SomeDemo/LocalReading/entry/src/main/ets/pages/About.ets:116:26
+ 'showToast' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/devecoStudioDriector/SomeDemo/LocalReading/entry/src/main/ets/pages/About.ets:206:18
+ 'pushUrl' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/devecoStudioDriector/SomeDemo/LocalReading/entry/src/main/ets/pages/ReadingRecord.ets:129:33
+ 'back' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/devecoStudioDriector/SomeDemo/LocalReading/entry/src/main/ets/pages/ReadingRecord.ets:280:16
+ 'pushUrl' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/devecoStudioDriector/SomeDemo/LocalReading/entry/src/main/ets/pages/ReadingRecord.ets:289:16
+ 'pushUrl' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/devecoStudioDriector/SomeDemo/LocalReading/entry/src/main/ets/common/DebugStorage.ets:26:5
+ Function may throw exceptions. Special handling is required.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/devecoStudioDriector/SomeDemo/LocalReading/entry/src/main/ets/common/DebugStorage.ets:26:18
+ 'showToast' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/devecoStudioDriector/SomeDemo/LocalReading/entry/src/main/ets/common/DebugStorage.ets:64:24
+ 'showToast' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/devecoStudioDriector/SomeDemo/LocalReading/entry/src/main/ets/common/DebugStorage.ets:80:18
+ 'pushUrl' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/devecoStudioDriector/SomeDemo/LocalReading/entry/src/main/ets/common/DebugStorage.ets:87:18
+ 'back' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/devecoStudioDriector/SomeDemo/LocalReading/entry/src/main/ets/pages/SyncSettings.ets:415:20
+ 'showToast' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/devecoStudioDriector/SomeDemo/LocalReading/entry/src/main/ets/pages/SyncSettings.ets:497:22
+ 'showToast' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/devecoStudioDriector/SomeDemo/LocalReading/entry/src/main/ets/pages/SyncSettings.ets:521:9
+ Function may throw exceptions. Special handling is required.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/devecoStudioDriector/SomeDemo/LocalReading/entry/src/main/ets/pages/SyncSettings.ets:521:22
+ 'showToast' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/devecoStudioDriector/SomeDemo/LocalReading/entry/src/main/ets/pages/SyncSettings.ets:526:9
+ Function may throw exceptions. Special handling is required.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/devecoStudioDriector/SomeDemo/LocalReading/entry/src/main/ets/pages/SyncSettings.ets:526:22
+ 'showToast' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/devecoStudioDriector/SomeDemo/LocalReading/entry/src/main/ets/pages/SyncSettings.ets:554:22
+ 'showToast' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/devecoStudioDriector/SomeDemo/LocalReading/entry/src/main/ets/pages/SyncSettings.ets:560:22
+ 'showToast' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/devecoStudioDriector/SomeDemo/LocalReading/entry/src/main/ets/pages/SyncSettings.ets:590:22
+ 'showToast' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/devecoStudioDriector/SomeDemo/LocalReading/entry/src/main/ets/pages/SyncSettings.ets:596:22
+ 'showToast' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/devecoStudioDriector/SomeDemo/LocalReading/entry/src/main/ets/pages/SyncSettings.ets:621:22
+ 'showToast' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/devecoStudioDriector/SomeDemo/LocalReading/entry/src/main/ets/pages/SyncSettings.ets:627:22
+ 'showToast' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/devecoStudioDriector/SomeDemo/LocalReading/entry/src/main/ets/pages/SyncSettings.ets:634:7
+ Function may throw exceptions. Special handling is required.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/devecoStudioDriector/SomeDemo/LocalReading/entry/src/main/ets/pages/SyncSettings.ets:634:20
+ 'showToast' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/devecoStudioDriector/SomeDemo/LocalReading/entry/src/main/ets/pages/SyncSettings.ets:647:19
+ 'show' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/devecoStudioDriector/SomeDemo/LocalReading/entry/src/main/ets/pages/SyncSettings.ets:666:30
+ 'showToast' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/devecoStudioDriector/SomeDemo/LocalReading/entry/src/main/ets/pages/SyncSettings.ets:676:32
+ 'showToast' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/devecoStudioDriector/SomeDemo/LocalReading/entry/src/main/ets/pages/SyncSettings.ets:684:28
+ 'showToast' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/devecoStudioDriector/SomeDemo/LocalReading/entry/src/main/ets/pages/SyncSettings.ets:694:7
+ Function may throw exceptions. Special handling is required.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: D:/devecoStudioDriector/SomeDemo/LocalReading/entry/src/main/ets/pages/SyncSettings.ets:694:20
+ 'showToast' has been deprecated.
+[39m[39m
+[33mWARN: [33mArkTS:WARN File: D:/devecoStudioDriector/SomeDemo/LocalReading/entry/src/main/ets/pages/Mine.ets:29:1
+ It's not a recommended way to export struct with '@Entry' decorator, which may cause ACE Engine error in component preview mode.[39m[39m
+
+[2026-03-28T18:00:14.599] [DEBUG] debug-file - Ark compile task finished.finished time is 1417740690735300
+[2026-03-28T18:00:14.599] [DEBUG] debug-file - worker[4] has one work done.
+[2026-03-28T18:00:14.600] [DEBUG] debug-file - default@CompileArkTS work[12] done.
+[2026-03-28T18:00:14.600] [DEBUG] debug-file - A work dispatched to worker[4] failed because unable to get work from ready queue.
+[2026-03-28T18:00:14.602] [INFO] debug-file - Finished :entry:default@CompileArkTS... after 6 s 93 ms 
+[2026-03-28T18:00:14.603] [DEBUG] debug-file - Executing task :entry:default@GeneratePkgModuleJson
+[2026-03-28T18:00:14.603] [DEBUG] debug-file - File: 'D:\devecoStudioDriector\SomeDemo\LocalReading\entry\build\default\intermediates\preload\default\preload.json' from 'preloadSoJsonPath' is not exists, just ignore.
+[2026-03-28T18:00:14.604] [DEBUG] debug-file - Error occurs while handling @Input 'shouldDeduplicateHar': The "data" argument must be of type string or an instance of Buffer, TypedArray, or DataView. Received undefined
+[2026-03-28T18:00:14.604] [DEBUG] debug-file - Task 'entry:default@GeneratePkgModuleJson' cost while wrapping incremental declarations: 1 ms 
+[2026-03-28T18:00:14.604] [DEBUG] debug-file - Incremental task entry:default@GeneratePkgModuleJson pre-execution cost: 1 ms .
+[2026-03-28T18:00:14.604] [DEBUG] debug-file - entry : default@GeneratePkgModuleJson cost memory 0.1007080078125
+[2026-03-28T18:00:14.605] [INFO] debug-file - UP-TO-DATE :entry:default@GeneratePkgModuleJson...  
+[2026-03-28T18:00:14.605] [DEBUG] debug-file - Executing task :entry:default@ProcessCompiledResources
+[2026-03-28T18:00:14.605] [DEBUG] debug-file - File: 'D:\devecoStudioDriector\SomeDemo\LocalReading\entry\build\default\intermediates\preload\default\preload.json' from 'preloadSoJsonPath' is not exists, just ignore.
+[2026-03-28T18:00:14.606] [DEBUG] debug-file - Task 'entry:default@ProcessCompiledResources' cost while wrapping incremental declarations: 1 ms 
+[2026-03-28T18:00:14.606] [DEBUG] debug-file - entry : default@ProcessCompiledResources cost memory 0.05804443359375
+[2026-03-28T18:00:14.606] [DEBUG] debug-file - runTaskFromQueue task cost before running: 6 s 706 ms 
+[2026-03-28T18:00:14.606] [INFO] debug-file - Finished :entry:default@ProcessCompiledResources... after 1 ms 
+[2026-03-28T18:00:14.607] [DEBUG] debug-file - Executing task :entry:default@PackageHap
+[2026-03-28T18:00:14.615] [DEBUG] debug-file - entry:default@PackageHap is not up-to-date, since the input file 'D:\devecoStudioDriector\SomeDemo\LocalReading\entry\build\default\intermediates\loader_out\default\ets' has been changed.
+[2026-03-28T18:00:14.616] [DEBUG] debug-file - Incremental task entry:default@PackageHap pre-execution cost: 8 ms .
+[2026-03-28T18:00:14.617] [DEBUG] debug-file - Use tool [D:\what down\vediodown\tool\devecostudio\DevEco Studio\sdk\default\openharmony\toolchains\lib\app_packing_tool.jar]
+ [
+  'java',
+  '-Dfile.encoding=GBK',
+  '-jar',
+  'D:\\what down\\vediodown\\tool\\devecostudio\\DevEco Studio\\sdk\\default\\openharmony\\toolchains\\lib\\app_packing_tool.jar',
+  '--mode',
+  'hap',
+  '--force',
+  'true',
+  '--lib-path',
+  'D:\\devecoStudioDriector\\SomeDemo\\LocalReading\\entry\\build\\default\\intermediates\\stripped_native_libs\\default',
+  '--json-path',
+  'D:\\devecoStudioDriector\\SomeDemo\\LocalReading\\entry\\build\\default\\intermediates\\package\\default\\module.json',
+  '--resources-path',
+  'D:\\devecoStudioDriector\\SomeDemo\\LocalReading\\entry\\build\\default\\intermediates\\res\\default\\resources',
+  '--index-path',
+  'D:\\devecoStudioDriector\\SomeDemo\\LocalReading\\entry\\build\\default\\intermediates\\res\\default\\resources.index',
+  '--pack-info-path',
+  'D:\\devecoStudioDriector\\SomeDemo\\LocalReading\\entry\\build\\default\\outputs\\default\\pack.info',
+  '--out-path',
+  'D:\\devecoStudioDriector\\SomeDemo\\LocalReading\\entry\\build\\default\\outputs\\default\\entry-default-unsigned.hap',
+  '--ets-path',
+  'D:\\devecoStudioDriector\\SomeDemo\\LocalReading\\entry\\build\\default\\intermediates\\loader_out\\default\\ets'
+]
+[2026-03-28T18:00:14.848] [DEBUG] debug-file - java daemon socket received message:{"code":0,"message":"pack success"}
+[2026-03-28T18:00:14.853] [DEBUG] debug-file - entry : default@PackageHap cost memory 1.0398483276367188
+[2026-03-28T18:00:14.853] [DEBUG] debug-file - runTaskFromQueue task cost before running: 6 s 953 ms 
+[2026-03-28T18:00:14.854] [INFO] debug-file - Finished :entry:default@PackageHap... after 246 ms 
+[2026-03-28T18:00:14.856] [DEBUG] debug-file - Executing task :entry:default@PackingCheck
+[2026-03-28T18:00:14.862] [DEBUG] debug-file - entry : default@PackingCheck cost memory 0.5144729614257812
+[2026-03-28T18:00:14.862] [DEBUG] debug-file - runTaskFromQueue task cost before running: 6 s 963 ms 
+[2026-03-28T18:00:14.863] [INFO] debug-file - Finished :entry:default@PackingCheck... after 7 ms 
+[2026-03-28T18:00:14.864] [DEBUG] debug-file - Executing task :entry:default@SignHap
+[2026-03-28T18:00:14.868] [DEBUG] debug-file - entry:default@SignHap is not up-to-date, since the input file 'D:\devecoStudioDriector\SomeDemo\LocalReading\entry\build\default\outputs\default\entry-default-unsigned.hap' has been changed.
+[2026-03-28T18:00:14.868] [DEBUG] debug-file - Incremental task entry:default@SignHap pre-execution cost: 4 ms .
+[2026-03-28T18:00:14.888] [DEBUG] debug-file - java daemon socket close code:1000 reason:close by user
+[2026-03-28T18:00:14.911] [DEBUG] debug-file - java daemon socket received message:{"code":0,"message":"verify profile success"}
+[2026-03-28T18:00:14.915] [DEBUG] debug-file - java daemon socket close code:1000 reason:close by user
+[2026-03-28T18:00:15.264] [DEBUG] debug-file - java daemon socket received message:{"code":0,"message":"sign app success"}
+[2026-03-28T18:00:15.265] [DEBUG] debug-file - entry : default@SignHap cost memory 0.5727310180664062
+[2026-03-28T18:00:15.265] [DEBUG] debug-file - runTaskFromQueue task cost before running: 7 s 365 ms 
+[2026-03-28T18:00:15.266] [INFO] debug-file - Finished :entry:default@SignHap... after 401 ms 
+[2026-03-28T18:00:15.267] [DEBUG] debug-file - Executing task :entry:default@CollectDebugSymbol
+[2026-03-28T18:00:15.267] [DEBUG] debug-file - entry : default@CollectDebugSymbol cost memory 0.091064453125
+[2026-03-28T18:00:15.268] [DEBUG] debug-file - runTaskFromQueue task cost before running: 7 s 368 ms 
+[2026-03-28T18:00:15.268] [INFO] debug-file - Finished :entry:default@CollectDebugSymbol... after 1 ms 
+[2026-03-28T18:00:15.268] [DEBUG] debug-file - Executing task :entry:assembleHap
+[2026-03-28T18:00:15.268] [DEBUG] debug-file - entry : assembleHap cost memory 0.01230621337890625
+[2026-03-28T18:00:15.268] [DEBUG] debug-file - runTaskFromQueue task cost before running: 7 s 369 ms 
+[2026-03-28T18:00:15.269] [INFO] debug-file - Finished :entry:assembleHap... after 1 ms 
+[2026-03-28T18:00:15.279] [INFO] debug-file - BUILD SUCCESSFUL in 7 s 379 ms 
+[2026-03-28T18:00:15.280] [DEBUG] debug-file - Update task entry:default@PreBuild input file:D:\devecoStudioDriector\SomeDemo\LocalReading\AppScope\app.json5 cache by regenerate.
+[2026-03-28T18:00:15.280] [DEBUG] debug-file - Update task entry:default@PreBuild input file:D:\devecoStudioDriector\SomeDemo\LocalReading\entry\src\main\module.json5 cache by regenerate.
+[2026-03-28T18:00:15.280] [DEBUG] debug-file - Update task entry:default@PreBuild input file:D:\devecoStudioDriector\SomeDemo\LocalReading\build-profile.json5 cache by regenerate.
+[2026-03-28T18:00:15.281] [DEBUG] debug-file - Update task entry:default@PreBuild input file:D:\devecoStudioDriector\SomeDemo\LocalReading\entry\build-profile.json5 cache by regenerate.
+[2026-03-28T18:00:15.281] [DEBUG] debug-file - Update task entry:default@PreBuild input file:D:\devecoStudioDriector\SomeDemo\LocalReading\entry\src\main\resources\base\profile\main_pages.json cache by regenerate.
+[2026-03-28T18:00:15.281] [DEBUG] debug-file - Update task entry:default@PreBuild input file:D:\devecoStudioDriector\SomeDemo\LocalReading\hvigor\hvigor-config.json5 cache by regenerate.
+[2026-03-28T18:00:15.281] [DEBUG] debug-file - Update task entry:default@PreBuild input file:D:\devecoStudioDriector\SomeDemo\LocalReading\entry\oh-package.json5 cache by regenerate.
+[2026-03-28T18:00:15.281] [DEBUG] debug-file - Update task entry:default@PreBuild input file:D:\devecoStudioDriector\SomeDemo\LocalReading\oh-package.json5 cache by regenerate.
+[2026-03-28T18:00:15.282] [DEBUG] debug-file - Incremental task entry:default@PreBuild post-execution cost:3 ms .
+[2026-03-28T18:00:15.282] [DEBUG] debug-file - Update task note:default@PreBuild input file:D:\devecoStudioDriector\SomeDemo\LocalReading\AppScope\app.json5 cache by regenerate.
+[2026-03-28T18:00:15.282] [DEBUG] debug-file - Update task note:default@PreBuild input file:D:\devecoStudioDriector\SomeDemo\LocalReading\exfeature\note\src\main\module.json5 cache by regenerate.
+[2026-03-28T18:00:15.282] [DEBUG] debug-file - Update task note:default@PreBuild input file:D:\devecoStudioDriector\SomeDemo\LocalReading\build-profile.json5 cache by regenerate.
+[2026-03-28T18:00:15.283] [DEBUG] debug-file - Update task note:default@PreBuild input file:D:\devecoStudioDriector\SomeDemo\LocalReading\exfeature\note\build-profile.json5 cache by regenerate.
+[2026-03-28T18:00:15.283] [DEBUG] debug-file - Update task note:default@PreBuild input file:D:\devecoStudioDriector\SomeDemo\LocalReading\hvigor\hvigor-config.json5 cache by regenerate.
+[2026-03-28T18:00:15.283] [DEBUG] debug-file - Update task note:default@PreBuild input file:D:\devecoStudioDriector\SomeDemo\LocalReading\exfeature\note\oh-package.json5 cache by regenerate.
+[2026-03-28T18:00:15.283] [DEBUG] debug-file - Update task note:default@PreBuild input file:D:\devecoStudioDriector\SomeDemo\LocalReading\oh-package.json5 cache by regenerate.
+[2026-03-28T18:00:15.283] [DEBUG] debug-file - Incremental task note:default@PreBuild post-execution cost:2 ms .
+[2026-03-28T18:00:15.283] [DEBUG] debug-file - Update task entry:default@CreateModuleInfo output file:D:\devecoStudioDriector\SomeDemo\LocalReading\entry\build\default\generated\profile\default\ModuleInfo.ts cache.
+[2026-03-28T18:00:15.284] [DEBUG] debug-file - Incremental task entry:default@CreateModuleInfo post-execution cost:1 ms .
+[2026-03-28T18:00:15.284] [DEBUG] debug-file - There is no need to refresh cache, since the incremental task entry:default@GenerateMetadata is up-to-date.
+[2026-03-28T18:00:15.284] [DEBUG] debug-file - Update task entry:default@GeneratePkgContextInfo output file:D:\devecoStudioDriector\SomeDemo\LocalReading\entry\build\default\intermediates\loader\default\pkgContextInfo.json cache.
+[2026-03-28T18:00:15.284] [DEBUG] debug-file - Incremental task entry:default@GeneratePkgContextInfo post-execution cost:1 ms .
+[2026-03-28T18:00:15.284] [DEBUG] debug-file - Update task entry:default@ProcessIntegratedHsp output file:D:\devecoStudioDriector\SomeDemo\LocalReading\build\cache\default\integrated_hsp\integratedHspCache.json cache.
+[2026-03-28T18:00:15.284] [DEBUG] debug-file - Incremental task entry:default@ProcessIntegratedHsp post-execution cost:1 ms .
+[2026-03-28T18:00:15.284] [DEBUG] debug-file - There is no need to refresh cache, since the incremental task note:default@CreateHarBuildProfile is up-to-date.
+[2026-03-28T18:00:15.284] [DEBUG] debug-file - There is no need to refresh cache, since the incremental task note:default@MergeProfile is up-to-date.
+[2026-03-28T18:00:15.284] [DEBUG] debug-file - Update task entry:default@SyscapTransform input file:D:\what down\vediodown\tool\devecostudio\DevEco Studio\sdk\default\openharmony\toolchains\syscap_tool.exe cache by regenerate.
+[2026-03-28T18:00:15.285] [DEBUG] debug-file - Update task entry:default@SyscapTransform input file:D:\what down\vediodown\tool\devecostudio\DevEco Studio\sdk\default\openharmony\ets\api\device-define cache by regenerate.
+[2026-03-28T18:00:15.285] [DEBUG] debug-file - Update task entry:default@SyscapTransform output file:D:\devecoStudioDriector\SomeDemo\LocalReading\entry\build\default\intermediates\syscap\default\rpcid.sc cache.
+[2026-03-28T18:00:15.286] [DEBUG] debug-file - Incremental task entry:default@SyscapTransform post-execution cost:2 ms .
+[2026-03-28T18:00:15.286] [DEBUG] debug-file - There is no need to refresh cache, since the incremental task entry:default@ProcessRouterMap is up-to-date.
+[2026-03-28T18:00:15.286] [DEBUG] debug-file - There is no need to refresh cache, since the incremental task entry:default@ProcessShareConfig is up-to-date.
+[2026-03-28T18:00:15.286] [DEBUG] debug-file - Update task entry:default@ProcessStartupConfig output file:D:\devecoStudioDriector\SomeDemo\LocalReading\entry\build\default\intermediates\startup\default\startup_config.json cache.
+[2026-03-28T18:00:15.286] [DEBUG] debug-file - Incremental task entry:default@ProcessStartupConfig post-execution cost:1 ms .
+[2026-03-28T18:00:15.286] [DEBUG] debug-file - There is no need to refresh cache, since the incremental task entry:default@CreateBuildProfile is up-to-date.
+[2026-03-28T18:00:15.286] [DEBUG] debug-file - There is no need to refresh cache, since the incremental task entry:default@MergeProfile is up-to-date.
+[2026-03-28T18:00:15.286] [DEBUG] debug-file - There is no need to refresh cache, since the incremental task entry:default@GenerateLoaderJson is up-to-date.
+[2026-03-28T18:00:15.286] [DEBUG] debug-file - There is no need to refresh cache, since the incremental task entry:default@MakePackInfo is up-to-date.
+[2026-03-28T18:00:15.286] [DEBUG] debug-file - There is no need to refresh cache, since the incremental task entry:default@ProcessProfile is up-to-date.
+[2026-03-28T18:00:15.286] [DEBUG] debug-file - There is no need to refresh cache, since the incremental task note:default@ProcessLibs is up-to-date.
+[2026-03-28T18:00:15.286] [DEBUG] debug-file - There is no need to refresh cache, since the incremental task entry:default@ProcessResource is up-to-date.
+[2026-03-28T18:00:15.286] [DEBUG] debug-file - There is no need to refresh cache, since the incremental task note:default@DoNativeStrip is up-to-date.
+[2026-03-28T18:00:15.286] [DEBUG] debug-file - There is no need to refresh cache, since the incremental task entry:default@CompileResource is up-to-date.
+[2026-03-28T18:00:15.287] [DEBUG] debug-file - Update task entry:default@CompileArkTS input file:D:\devecoStudioDriector\SomeDemo\LocalReading\entry\build\default\intermediates\loader\default cache by regenerate.
+[2026-03-28T18:00:15.288] [DEBUG] debug-file - Update task entry:default@CompileArkTS input file:D:\devecoStudioDriector\SomeDemo\LocalReading\exfeature\note\Index.ets cache by regenerate.
+[2026-03-28T18:00:15.288] [DEBUG] debug-file - Update task entry:default@CompileArkTS input file:D:\devecoStudioDriector\SomeDemo\LocalReading\exfeature\note\src\main\ets cache by regenerate.
+[2026-03-28T18:00:15.289] [DEBUG] debug-file - Update task entry:default@CompileArkTS input file:D:\devecoStudioDriector\SomeDemo\LocalReading\entry\build\default\intermediates\res\default\resources\rawfile cache by regenerate.
+[2026-03-28T18:00:15.290] [DEBUG] debug-file - Update task entry:default@CompileArkTS input file:D:\devecoStudioDriector\SomeDemo\LocalReading\entry\build\default\intermediates\res\default\ResourceTable.txt cache by regenerate.
+[2026-03-28T18:00:15.290] [DEBUG] debug-file - Update task entry:default@CompileArkTS input file:D:\devecoStudioDriector\SomeDemo\LocalReading\entry\build\default\intermediates\res\default\ark_module.json cache by regenerate.
+[2026-03-28T18:00:15.290] [DEBUG] debug-file - Update task entry:default@CompileArkTS input file:D:\devecoStudioDriector\SomeDemo\LocalReading\entry\build\default\intermediates\res\default\resources\base\profile cache by regenerate.
+[2026-03-28T18:00:15.291] [DEBUG] debug-file - Update task entry:default@CompileArkTS input file:D:\devecoStudioDriector\SomeDemo\LocalReading\entry\src\main\ets cache from map.
+[2026-03-28T18:00:15.291] [DEBUG] debug-file - Update task entry:default@CompileArkTS input file:D:\devecoStudioDriector\SomeDemo\LocalReading\entry\build\default\generated\profile\default\BuildProfile.ets cache by regenerate.
+[2026-03-28T18:00:15.291] [DEBUG] debug-file - Update task entry:default@CompileArkTS input file:D:\devecoStudioDriector\SomeDemo\LocalReading\exfeature\note\BuildProfile.ets cache by regenerate.
+[2026-03-28T18:00:15.291] [DEBUG] debug-file - Update task entry:default@CompileArkTS output file:D:\devecoStudioDriector\SomeDemo\LocalReading\entry\build\default\intermediates\loader_out\default\ets cache.
+[2026-03-28T18:00:15.292] [DEBUG] debug-file - Incremental task entry:default@CompileArkTS post-execution cost:6 ms .
+[2026-03-28T18:00:15.292] [DEBUG] debug-file - Update task entry:default@BuildJS input file:D:\devecoStudioDriector\SomeDemo\LocalReading\entry\build\default\intermediates\loader\default cache by regenerate.
+[2026-03-28T18:00:15.293] [DEBUG] debug-file - Update task entry:default@BuildJS input file:D:\devecoStudioDriector\SomeDemo\LocalReading\exfeature\note\Index.ets cache by regenerate.
+[2026-03-28T18:00:15.293] [DEBUG] debug-file - Update task entry:default@BuildJS input file:D:\devecoStudioDriector\SomeDemo\LocalReading\entry\build\default\intermediates\res\default\resources\rawfile cache by regenerate.
+[2026-03-28T18:00:15.294] [DEBUG] debug-file - Update task entry:default@BuildJS input file:D:\devecoStudioDriector\SomeDemo\LocalReading\entry\build\default\intermediates\res\default\ResourceTable.txt cache by regenerate.
+[2026-03-28T18:00:15.294] [DEBUG] debug-file - Update task entry:default@BuildJS input file:D:\devecoStudioDriector\SomeDemo\LocalReading\entry\build\default\intermediates\res\default\ark_module.json cache by regenerate.
+[2026-03-28T18:00:15.294] [DEBUG] debug-file - Update task entry:default@BuildJS input file:D:\devecoStudioDriector\SomeDemo\LocalReading\entry\build\default\intermediates\res\default\resources\base\profile cache by regenerate.
+[2026-03-28T18:00:15.295] [DEBUG] debug-file - Update task entry:default@BuildJS output file:D:\devecoStudioDriector\SomeDemo\LocalReading\entry\build\default\intermediates\loader_out\default\js cache.
+[2026-03-28T18:00:15.295] [DEBUG] debug-file - Incremental task entry:default@BuildJS post-execution cost:4 ms .
+[2026-03-28T18:00:15.295] [DEBUG] debug-file - There is no need to refresh cache, since the incremental task entry:default@ProcessLibs is up-to-date.
+[2026-03-28T18:00:15.295] [DEBUG] debug-file - There is no need to refresh cache, since the incremental task entry:default@DoNativeStrip is up-to-date.
+[2026-03-28T18:00:15.295] [DEBUG] debug-file - There is no need to refresh cache, since the incremental task entry:default@CacheNativeLibs is up-to-date.
+[2026-03-28T18:00:15.295] [DEBUG] debug-file - There is no need to refresh cache, since the incremental task entry:default@GeneratePkgModuleJson is up-to-date.
+[2026-03-28T18:00:15.295] [DEBUG] debug-file - Incremental task entry:default@ProcessCompiledResources post-execution cost:1 ms .
+[2026-03-28T18:00:15.296] [DEBUG] debug-file - Update task entry:default@PackageHap input file:D:\devecoStudioDriector\SomeDemo\LocalReading\entry\build\default\intermediates\stripped_native_libs\default cache by regenerate.
+[2026-03-28T18:00:15.296] [DEBUG] debug-file - Update task entry:default@PackageHap input file:D:\devecoStudioDriector\SomeDemo\LocalReading\entry\build\default\intermediates\res\default\module.json cache by regenerate.
+[2026-03-28T18:00:15.296] [DEBUG] debug-file - Update task entry:default@PackageHap input file:D:\devecoStudioDriector\SomeDemo\LocalReading\entry\build\default\intermediates\res\default\resources cache by regenerate.
+[2026-03-28T18:00:15.302] [DEBUG] debug-file - Update task entry:default@PackageHap input file:D:\devecoStudioDriector\SomeDemo\LocalReading\entry\build\default\intermediates\res\default\resources.index cache by regenerate.
+[2026-03-28T18:00:15.302] [DEBUG] debug-file - Update task entry:default@PackageHap input file:D:\devecoStudioDriector\SomeDemo\LocalReading\entry\build\default\outputs\default\pack.info cache by regenerate.
+[2026-03-28T18:00:15.302] [DEBUG] debug-file - Update task entry:default@PackageHap input file:D:\devecoStudioDriector\SomeDemo\LocalReading\entry\build\default\intermediates\loader_out\default\ets cache from map.
+[2026-03-28T18:00:15.302] [DEBUG] debug-file - Update task entry:default@PackageHap input file:D:\devecoStudioDriector\SomeDemo\LocalReading\entry\build\default\intermediates\loader_out\default\ets\sourceMaps.map cache by regenerate.
+[2026-03-28T18:00:15.302] [DEBUG] debug-file - Update task entry:default@PackageHap input file:D:\devecoStudioDriector\SomeDemo\LocalReading\entry\build\default\generated\profile\default\BuildProfile.ets cache by regenerate.
+[2026-03-28T18:00:15.302] [DEBUG] debug-file - Update task entry:default@PackageHap output file:D:\devecoStudioDriector\SomeDemo\LocalReading\entry\build\default\outputs\default\entry-default-unsigned.hap cache.
+[2026-03-28T18:00:15.303] [DEBUG] debug-file - Update task entry:default@PackageHap output file:D:\devecoStudioDriector\SomeDemo\LocalReading\entry\build\default\intermediates\source_map\default\sourceMaps.map cache.
+[2026-03-28T18:00:15.303] [DEBUG] debug-file - Update task entry:default@PackageHap output file:D:\devecoStudioDriector\SomeDemo\LocalReading\entry\build\default\outputs\default\mapping\sourceMaps.map cache.
+[2026-03-28T18:00:15.303] [DEBUG] debug-file - Incremental task entry:default@PackageHap post-execution cost:8 ms .
+[2026-03-28T18:00:15.304] [DEBUG] debug-file - Update task entry:default@SignHap input file:C:\Users\ASUS\.ohos\config\default_LocalReading_bniFhpUI_UZBMG7NLSz5HKcZZ6RwePKGdP0c5d4rQ2c=.cer cache by regenerate.
+[2026-03-28T18:00:15.304] [DEBUG] debug-file - Update task entry:default@SignHap input file:C:\Users\ASUS\.ohos\config\default_LocalReading_bniFhpUI_UZBMG7NLSz5HKcZZ6RwePKGdP0c5d4rQ2c=.p7b cache by regenerate.
+[2026-03-28T18:00:15.304] [DEBUG] debug-file - Update task entry:default@SignHap input file:C:\Users\ASUS\.ohos\config\default_LocalReading_bniFhpUI_UZBMG7NLSz5HKcZZ6RwePKGdP0c5d4rQ2c=.p12 cache by regenerate.
+[2026-03-28T18:00:15.304] [DEBUG] debug-file - Update task entry:default@SignHap input file:D:\devecoStudioDriector\SomeDemo\LocalReading\entry\build\default\outputs\default\entry-default-unsigned.hap cache from map.
+[2026-03-28T18:00:15.304] [DEBUG] debug-file - Update task entry:default@SignHap output file:D:\devecoStudioDriector\SomeDemo\LocalReading\entry\build\default\outputs\default\entry-default-signed.hap cache.
+[2026-03-28T18:00:15.304] [DEBUG] debug-file - Incremental task entry:default@SignHap post-execution cost:2 ms .
+[2026-03-28T18:00:15.305] [DEBUG] debug-file - Update task entry:default@CollectDebugSymbol input file:D:\devecoStudioDriector\SomeDemo\LocalReading\entry\build\default\intermediates\loader_out\default\ets\sourceMaps.map cache by regenerate.
+[2026-03-28T18:00:15.305] [DEBUG] debug-file - Update task entry:default@CollectDebugSymbol input file:D:\devecoStudioDriector\SomeDemo\LocalReading\entry\build\default\intermediates\libs\default cache by regenerate.
+[2026-03-28T18:00:15.305] [DEBUG] debug-file - Update task entry:default@CollectDebugSymbol output file:D:\devecoStudioDriector\SomeDemo\LocalReading\entry\build\default\outputs\default\symbol cache.
+[2026-03-28T18:00:15.305] [DEBUG] debug-file - Incremental task entry:default@CollectDebugSymbol post-execution cost:1 ms .
+[2026-03-28T18:00:15.332] [DEBUG] debug-file - Cleanup worker 14.
+[2026-03-28T18:00:15.333] [DEBUG] debug-file - Worker 14 has been cleaned up.
+[2026-03-28T18:00:15.333] [DEBUG] debug-file - Current idle worker size: 1.
+[2026-03-28T18:00:15.333] [DEBUG] debug-file - Current resident worker size: 2.
+[2026-03-28T18:00:15.333] [DEBUG] debug-file - hvigor build process will be closed.
+[2026-03-28T18:00:15.334] [DEBUG] debug-file - java daemon socket close code:1000 reason:close by user
+[2026-03-28T18:00:15.341] [DEBUG] debug-file - session manager: send message to worker process.
+[2026-03-28T18:00:15.341] [DEBUG] debug-file - session manager: send message to worker process.
+[2026-03-28T18:00:15.341] [DEBUG] debug-file - watch worker: worker id should be larger than 0. Nothing will be sent to any worker thread.
+[2026-03-28T18:00:15.341] [DEBUG] debug-file - watch worker: worker id should be larger than 0. Nothing will be sent to any worker thread.
+[2026-03-28T18:00:15.343] [DEBUG] debug-file - worker[14] exits with exit code 1.
+[2026-03-28T18:01:06.802] [DEBUG] debug-file - session manager: set active socket. socketId=qavTUgzIdFlR7b5-AAAP
+[2026-03-28T18:01:06.806] [DEBUG] debug-file - watch worker: worker id should be larger than 0. Nothing will be sent to any worker thread.
+[2026-03-28T18:01:06.810] [DEBUG] debug-file - Workers' log level updated to INFO
+[2026-03-28T18:01:06.817] [DEBUG] debug-file - Hvigor init with startParameters:{
+  hvigorfileTypeCheck: false,
+  parallelExecution: true,
+  incrementalExecution: true,
+  printStackTrace: false,
+  daemon: true,
+  analyze: 0,
+  logLevel: Level { level: 20000, levelStr: 'INFO', colour: 'green' },
+  optimizationStrategy: 'memory',
+  hotCompile: undefined,
+  hotReloadBuild: undefined,
+  customizedParam: undefined
+}
+[2026-03-28T18:01:06.825] [DEBUG] debug-file - Cache service initialization finished in 9 ms 
+[2026-03-28T18:01:06.827] [DEBUG] debug-file - hvigorfile, resolving D:\devecoStudioDriector\SomeDemo\LocalReading\hvigorfile.ts
+[2026-03-28T18:01:06.850] [DEBUG] debug-file - hvigorfile, require result:  { default: { plugins: [] } }
+[2026-03-28T18:01:06.850] [DEBUG] debug-file - hvigorfile, binding system plugins null
+[2026-03-28T18:01:06.851] [DEBUG] debug-file - Starting plugin build process
+[2026-03-28T18:01:06.851] [DEBUG] debug-file - App plugin prepare start...
+[2026-03-28T18:01:06.851] [DEBUG] debug-file - App plugin prepare end...
+[2026-03-28T18:01:06.851] [DEBUG] debug-file - App plugin creating...
+[2026-03-28T18:01:06.888] [DEBUG] debug-file - App plugin register hook start...
+[2026-03-28T18:01:06.889] [DEBUG] debug-file - App plugin register hook end...
+[2026-03-28T18:01:06.889] [DEBUG] debug-file - Plugin build process completed
+[2026-03-28T18:01:06.890] [DEBUG] debug-file - Start initialize project's product build option map with build mode debug.
+[2026-03-28T18:01:06.890] [DEBUG] debug-file - Picking option from product 'default' with build mode 'debug'.
+[2026-03-28T18:01:06.890] [DEBUG] debug-file - Product 'default' build option initialized
+[2026-03-28T18:01:06.890] [DEBUG] debug-file - End initialize project's product build option map with build mode 'debug'.
+[2026-03-28T18:01:06.892] [DEBUG] debug-file - Obtain build option for product 'default'in this build.
+[2026-03-28T18:01:06.899] [DEBUG] debug-file - D:\devecoStudioDriector\SomeDemo\LocalReading\build\cache\default\remote_hsp\remoteHspCache.json not exists.
+[2026-03-28T18:01:06.903] [DEBUG] debug-file - Start recording SDK configuration permission data.
+[2026-03-28T18:01:06.935] [DEBUG] debug-file - Sdk init in 35 ms 
+[2026-03-28T18:01:06.939] [DEBUG] debug-file - Project task initialization takes 4 ms 
+[2026-03-28T18:01:06.939] [DEBUG] debug-file - hvigorfile, binding custom plugins []
+[2026-03-28T18:01:06.939] [DEBUG] debug-file - hvigorfile, no custom plugins were found in D:\devecoStudioDriector\SomeDemo\LocalReading\hvigorfile.ts
+[2026-03-28T18:01:06.939] [DEBUG] debug-file - hvigorfile, resolve finished D:\devecoStudioDriector\SomeDemo\LocalReading\hvigorfile.ts
+[2026-03-28T18:01:06.940] [DEBUG] debug-file - hvigorfile, resolving D:\devecoStudioDriector\SomeDemo\LocalReading\entry\hvigorfile.ts
+[2026-03-28T18:01:06.944] [DEBUG] debug-file - hvigorfile, require result:  { default: { plugins: [] } }
+[2026-03-28T18:01:06.944] [DEBUG] debug-file - hvigorfile, binding system plugins null
+[2026-03-28T18:01:06.944] [DEBUG] debug-file - Starting plugin build process
+[2026-03-28T18:01:06.944] [DEBUG] debug-file - Hap plugin creating...
+[2026-03-28T18:01:06.945] [DEBUG] debug-file - failed to load cangjie to dynamically generate schemas: Error: Cannot find module '@ohos/cangjie-build-support/index'
+Require stack:
+- D:\what down\vediodown\tool\devecostudio\DevEco Studio\tools\hvigor\hvigor-ohos-plugin\src\plugin\hooks\cangjie-register.js
+- D:\what down\vediodown\tool\devecostudio\DevEco Studio\tools\hvigor\hvigor-ohos-plugin\src\plugin\strategy\stage-init-strategy.js
+- D:\what down\vediodown\tool\devecostudio\DevEco Studio\tools\hvigor\hvigor-ohos-plugin\src\plugin\builder\abstract-plugin-builder.js
+- D:\what down\vediodown\tool\devecostudio\DevEco Studio\tools\hvigor\hvigor-ohos-plugin\src\plugin\builder\app-plugin-builder.js
+- D:\what down\vediodown\tool\devecostudio\DevEco Studio\tools\hvigor\hvigor-ohos-plugin\src\plugin\factory\plugin-factory.js
+- D:\what down\vediodown\tool\devecostudio\DevEco Studio\tools\hvigor\hvigor-ohos-plugin\index.js
+- D:\devecoStudioDriector\SomeDemo\LocalReading\hvigorfile.ts
+- D:\what down\vediodown\tool\devecostudio\DevEco Studio\tools\hvigor\hvigor\src\base\internal\lifecycle\configuration.js
+- D:\what down\vediodown\tool\devecostudio\DevEco Studio\tools\hvigor\hvigor\src\base\boot\index.js
+- D:\what down\vediodown\tool\devecostudio\DevEco Studio\tools\hvigor\hvigor\src\base\daemon\cluster\worker-process-lifecycle.js
+- D:\what down\vediodown\tool\devecostudio\DevEco Studio\tools\hvigor\hvigor\src\base\daemon\process\daemon-process-boot-script.js
+[2026-03-28T18:01:06.955] [DEBUG] debug-file - Start initialize module-target build option map, moduleName=entry, buildMode=debug
+[2026-03-28T18:01:06.956] [DEBUG] debug-file - Target 'default' config initialized
+[2026-03-28T18:01:06.956] [DEBUG] debug-file - Module 'entry' target 'default' build option initialized
+[2026-03-28T18:01:06.956] [DEBUG] debug-file - End initialize module-target build option map, moduleName=entry
+[2026-03-28T18:01:06.956] [DEBUG] debug-file - Start initialize module-target build option map, moduleName=entry, buildMode=release
+[2026-03-28T18:01:06.956] [DEBUG] debug-file - Target 'default' config initialized
+[2026-03-28T18:01:06.957] [DEBUG] debug-file - Module 'entry' target 'default' build option initialized
+[2026-03-28T18:01:06.957] [DEBUG] debug-file - End initialize module-target build option map, moduleName=entry
+[2026-03-28T18:01:06.957] [DEBUG] debug-file - Start initialize module-target build option map, moduleName=entry, buildMode=debug
+[2026-03-28T18:01:06.957] [DEBUG] debug-file - Target 'default' config initialized
+[2026-03-28T18:01:06.957] [DEBUG] debug-file - Module 'entry' target 'default' build option initialized
+[2026-03-28T18:01:06.957] [DEBUG] debug-file - End initialize module-target build option map, moduleName=entry
+[2026-03-28T18:01:06.957] [DEBUG] debug-file - Obtain build option for module 'entry' target 'default'in this build.
+[2026-03-28T18:01:06.962] [DEBUG] debug-file - Module entry task initialization takes 3 ms 
+[2026-03-28T18:01:06.962] [DEBUG] debug-file - Hap plugin register hook start...
+[2026-03-28T18:01:06.962] [DEBUG] debug-file - Hap plugin register hook end...
+[2026-03-28T18:01:06.963] [DEBUG] debug-file - Plugin build process completed
+[2026-03-28T18:01:06.963] [DEBUG] debug-file - hvigorfile, binding custom plugins []
+[2026-03-28T18:01:06.963] [DEBUG] debug-file - hvigorfile, no custom plugins were found in D:\devecoStudioDriector\SomeDemo\LocalReading\entry\hvigorfile.ts
+[2026-03-28T18:01:06.963] [DEBUG] debug-file - hvigorfile, resolve finished D:\devecoStudioDriector\SomeDemo\LocalReading\entry\hvigorfile.ts
+[2026-03-28T18:01:06.964] [DEBUG] debug-file - hvigorfile, resolving D:\devecoStudioDriector\SomeDemo\LocalReading\exfeature\note\hvigorfile.ts
+[2026-03-28T18:01:06.968] [DEBUG] debug-file - hvigorfile, require result:  { default: { plugins: [] } }
+[2026-03-28T18:01:06.968] [DEBUG] debug-file - hvigorfile, binding system plugins null
+[2026-03-28T18:01:06.968] [DEBUG] debug-file - Starting plugin build process
+[2026-03-28T18:01:06.968] [DEBUG] debug-file - Har plugin creating...
+[2026-03-28T18:01:06.969] [DEBUG] debug-file - failed to load cangjie to dynamically generate schemas: Error: Cannot find module '@ohos/cangjie-build-support/index'
+Require stack:
+- D:\what down\vediodown\tool\devecostudio\DevEco Studio\tools\hvigor\hvigor-ohos-plugin\src\plugin\hooks\cangjie-register.js
+- D:\what down\vediodown\tool\devecostudio\DevEco Studio\tools\hvigor\hvigor-ohos-plugin\src\plugin\strategy\stage-init-strategy.js
+- D:\what down\vediodown\tool\devecostudio\DevEco Studio\tools\hvigor\hvigor-ohos-plugin\src\plugin\builder\abstract-plugin-builder.js
+- D:\what down\vediodown\tool\devecostudio\DevEco Studio\tools\hvigor\hvigor-ohos-plugin\src\plugin\builder\app-plugin-builder.js
+- D:\what down\vediodown\tool\devecostudio\DevEco Studio\tools\hvigor\hvigor-ohos-plugin\src\plugin\factory\plugin-factory.js
+- D:\what down\vediodown\tool\devecostudio\DevEco Studio\tools\hvigor\hvigor-ohos-plugin\index.js
+- D:\devecoStudioDriector\SomeDemo\LocalReading\hvigorfile.ts
+- D:\what down\vediodown\tool\devecostudio\DevEco Studio\tools\hvigor\hvigor\src\base\internal\lifecycle\configuration.js
+- D:\what down\vediodown\tool\devecostudio\DevEco Studio\tools\hvigor\hvigor\src\base\boot\index.js
+- D:\what down\vediodown\tool\devecostudio\DevEco Studio\tools\hvigor\hvigor\src\base\daemon\cluster\worker-process-lifecycle.js
+- D:\what down\vediodown\tool\devecostudio\DevEco Studio\tools\hvigor\hvigor\src\base\daemon\process\daemon-process-boot-script.js
+[2026-03-28T18:01:06.978] [DEBUG] debug-file - Start initialize module-target build option map, moduleName=note, buildMode=debug
+[2026-03-28T18:01:06.978] [DEBUG] debug-file - Target 'default' config initialized
+[2026-03-28T18:01:06.979] [DEBUG] debug-file - Target 'ohosTest' config initialized
+[2026-03-28T18:01:06.979] [DEBUG] debug-file - Module 'note' target 'default' build option initialized
+[2026-03-28T18:01:06.979] [DEBUG] debug-file - Module 'note' target 'ohosTest' build option initialized
+[2026-03-28T18:01:06.979] [DEBUG] debug-file - End initialize module-target build option map, moduleName=note
+[2026-03-28T18:01:06.979] [DEBUG] debug-file - Start initialize module-target build option map, moduleName=note, buildMode=release
+[2026-03-28T18:01:06.979] [DEBUG] debug-file - Target 'default' config initialized
+[2026-03-28T18:01:06.980] [DEBUG] debug-file - Target 'ohosTest' config initialized
+[2026-03-28T18:01:06.980] [DEBUG] debug-file - Module 'note' target 'default' build option initialized
+[2026-03-28T18:01:06.980] [DEBUG] debug-file - Module 'note' target 'ohosTest' build option initialized
+[2026-03-28T18:01:06.980] [DEBUG] debug-file - End initialize module-target build option map, moduleName=note
+[2026-03-28T18:01:06.980] [DEBUG] debug-file - Start initialize module-target build option map, moduleName=note, buildMode=debug
+[2026-03-28T18:01:06.980] [DEBUG] debug-file - Target 'default' config initialized
+[2026-03-28T18:01:06.980] [DEBUG] debug-file - Target 'ohosTest' config initialized
+[2026-03-28T18:01:06.980] [DEBUG] debug-file - Module 'note' target 'default' build option initialized
+[2026-03-28T18:01:06.980] [DEBUG] debug-file - Module 'note' target 'ohosTest' build option initialized
+[2026-03-28T18:01:06.980] [DEBUG] debug-file - End initialize module-target build option map, moduleName=note
+[2026-03-28T18:01:06.981] [DEBUG] debug-file - Obtain build option for module 'note' target 'default'in this build.
+[2026-03-28T18:01:06.982] [DEBUG] debug-file - Module note task initialization takes 2 ms 
+[2026-03-28T18:01:06.983] [DEBUG] debug-file - Har plugin register hook start...
+[2026-03-28T18:01:06.983] [DEBUG] debug-file - Har plugin register hook end...
+[2026-03-28T18:01:06.983] [DEBUG] debug-file - Plugin build process completed
+[2026-03-28T18:01:06.983] [DEBUG] debug-file - hvigorfile, binding custom plugins []
+[2026-03-28T18:01:06.983] [DEBUG] debug-file - hvigorfile, no custom plugins were found in D:\devecoStudioDriector\SomeDemo\LocalReading\exfeature\note\hvigorfile.ts
+[2026-03-28T18:01:06.983] [DEBUG] debug-file - hvigorfile, resolve finished D:\devecoStudioDriector\SomeDemo\LocalReading\exfeature\note\hvigorfile.ts
+[2026-03-28T18:01:07.009] [DEBUG] debug-file - hvigorfile, resolve hvigorfile dependencies in 26 ms 
+[2026-03-28T18:01:07.009] [DEBUG] debug-file - project has submodules:entry,note
+[2026-03-28T18:01:07.009] [DEBUG] debug-file - module:note no need to execute packageHap
+[2026-03-28T18:01:07.011] [DEBUG] debug-file - start to load updatedOhPackageInfo to the disk
+[2026-03-28T18:01:07.015] [DEBUG] debug-file - load to the disk finished
+[2026-03-28T18:01:07.016] [DEBUG] debug-file - Start to initialize dependency information.
+[2026-03-28T18:01:07.016] [DEBUG] debug-file - Module LocalReading Collected Dependency: 
+[2026-03-28T18:01:07.017] [DEBUG] debug-file - Module LocalReading's total dependency: 0
+[2026-03-28T18:01:07.018] [DEBUG] debug-file - Start to initialize dependency information.
+[2026-03-28T18:01:07.021] [DEBUG] debug-file - Module entry Collected Dependency: D:\devecoStudioDriector\SomeDemo\LocalReading\exfeature\note
+[2026-03-28T18:01:07.021] [DEBUG] debug-file - Module entry's total dependency: 1
+[2026-03-28T18:01:07.024] [DEBUG] debug-file - Start to initialize dependency information.
+[2026-03-28T18:01:07.025] [DEBUG] debug-file - Module note Collected Dependency: 
+[2026-03-28T18:01:07.025] [DEBUG] debug-file - Module note's total dependency: 0
+[2026-03-28T18:01:07.026] [DEBUG] debug-file - Configuration phase cost:201 ms 
+[2026-03-28T18:01:07.027] [DEBUG] debug-file - Configuration task cost before running: 217 ms 
+[2026-03-28T18:01:07.030] [DEBUG] debug-file - Executing task :entry:default@PreBuild
+[2026-03-28T18:01:07.033] [DEBUG] debug-file - Task 'entry:default@PreBuild' cost while wrapping incremental declarations: 1 ms 
+[2026-03-28T18:01:07.036] [DEBUG] debug-file - entry:default@PreBuild is not up-to-date, since the task snapshots are different.
+[2026-03-28T18:01:07.037] [DEBUG] debug-file - Incremental task entry:default@PreBuild pre-execution cost: 3 ms .
+[2026-03-28T18:01:07.046] [DEBUG] debug-file - current product is not Atomic service.
+[2026-03-28T18:01:07.046] [DEBUG] debug-file - Use tool [win32: JAVA_HOME, CLASSPATH]
+ [
+  {
+    JAVA_HOME: 'D:\\what down\\vediodown\\tool\\devecostudio\\DevEco Studio\\jbr'
+  },
+  {
+    CLASSPATH: '.;D:\\what down\\vediodown\\tool\\devecostudio\\DevEco Studio\\jbr\\lib;D:\\what down\\vediodown\\tool\\devecostudio\\DevEco Studio\\jbr\\lib\\dt.jar;D:\\what down\\vediodown\\tool\\devecostudio\\DevEco Studio\\jbr\\lib\\tools.jar'
+  }
+]
+[2026-03-28T18:01:07.046] [DEBUG] debug-file - Use tool [win32: NODE_HOME]
+ [
+  {
+    NODE_HOME: 'D:\\what down\\vediodown\\tool\\devecostudio\\DevEco Studio\\tools\\node'
+  }
+]
+[2026-03-28T18:01:07.047] [DEBUG] debug-file - entry : default@PreBuild cost memory 1.0758590698242188
+[2026-03-28T18:01:07.047] [DEBUG] debug-file - runTaskFromQueue task cost before running: 236 ms 
+[2026-03-28T18:01:07.050] [INFO] debug-file - Finished :entry:default@PreBuild... after 17 ms 
+[2026-03-28T18:01:07.052] [DEBUG] debug-file - Executing task :note:default@PreBuild
+[2026-03-28T18:01:07.053] [DEBUG] debug-file - Task 'note:default@PreBuild' cost while wrapping incremental declarations: 1 ms 
+[2026-03-28T18:01:07.057] [DEBUG] debug-file - note:default@PreBuild is not up-to-date, since the task snapshots are different.
+[2026-03-28T18:01:07.057] [DEBUG] debug-file - Incremental task note:default@PreBuild pre-execution cost: 4 ms .
+[2026-03-28T18:01:07.061] [DEBUG] debug-file - current product is not Atomic service.
+[2026-03-28T18:01:07.062] [DEBUG] debug-file - Use tool [win32: JAVA_HOME, CLASSPATH]
+ [
+  {
+    JAVA_HOME: 'D:\\what down\\vediodown\\tool\\devecostudio\\DevEco Studio\\jbr'
+  },
+  {
+    CLASSPATH: '.;D:\\what down\\vediodown\\tool\\devecostudio\\DevEco Studio\\jbr\\lib;D:\\what down\\vediodown\\tool\\devecostudio\\DevEco Studio\\jbr\\lib\\dt.jar;D:\\what down\\vediodown\\tool\\devecostudio\\DevEco Studio\\jbr\\lib\\tools.jar'
+  }
+]
+[2026-03-28T18:01:07.062] [DEBUG] debug-file - Use tool [win32: NODE_HOME]
+ [
+  {
+    NODE_HOME: 'D:\\what down\\vediodown\\tool\\devecostudio\\DevEco Studio\\tools\\node'
+  }
+]
+[2026-03-28T18:01:07.063] [DEBUG] debug-file - note : default@PreBuild cost memory 0.43561553955078125
+[2026-03-28T18:01:07.063] [DEBUG] debug-file - runTaskFromQueue task cost before running: 253 ms 
+[2026-03-28T18:01:07.065] [INFO] debug-file - Finished :note:default@PreBuild... after 12 ms 
+[2026-03-28T18:01:07.065] [DEBUG] debug-file - Executing task :entry:default@CreateModuleInfo
+[2026-03-28T18:01:07.065] [DEBUG] debug-file - Task 'entry:default@CreateModuleInfo' cost while wrapping incremental declarations: 1 ms 
+[2026-03-28T18:01:07.066] [DEBUG] debug-file - entry : default@CreateModuleInfo cost memory 0.03972625732421875
+[2026-03-28T18:01:07.066] [DEBUG] debug-file - runTaskFromQueue task cost before running: 255 ms 
+[2026-03-28T18:01:07.066] [INFO] debug-file - Finished :entry:default@CreateModuleInfo... after 1 ms 
+[2026-03-28T18:01:07.068] [DEBUG] debug-file - Executing task :entry:default@GenerateMetadata
+[2026-03-28T18:01:07.068] [DEBUG] debug-file - Task 'entry:default@GenerateMetadata' cost while wrapping incremental declarations: 1 ms 
+[2026-03-28T18:01:07.069] [DEBUG] debug-file - Incremental task entry:default@GenerateMetadata pre-execution cost: 1 ms .
+[2026-03-28T18:01:07.069] [DEBUG] debug-file - entry : default@GenerateMetadata cost memory 0.08495330810546875
+[2026-03-28T18:01:07.069] [INFO] debug-file - UP-TO-DATE :entry:default@GenerateMetadata...  
+[2026-03-28T18:01:07.070] [DEBUG] debug-file - Executing task :entry:default@PreCheckSyscap
+[2026-03-28T18:01:07.070] [DEBUG] debug-file - entry : default@PreCheckSyscap cost memory 0.01427459716796875
+[2026-03-28T18:01:07.070] [DEBUG] debug-file - runTaskFromQueue task cost before running: 259 ms 
+[2026-03-28T18:01:07.070] [INFO] debug-file - Finished :entry:default@PreCheckSyscap... after 1 ms 
+[2026-03-28T18:01:07.071] [DEBUG] debug-file - Executing task :entry:default@GeneratePkgContextInfo
+[2026-03-28T18:01:07.073] [DEBUG] debug-file - Task 'entry:default@GeneratePkgContextInfo' cost while wrapping incremental declarations: 1 ms 
+[2026-03-28T18:01:07.074] [DEBUG] debug-file - entry : default@GeneratePkgContextInfo cost memory 0.23177337646484375
+[2026-03-28T18:01:07.074] [DEBUG] debug-file - runTaskFromQueue task cost before running: 263 ms 
+[2026-03-28T18:01:07.074] [INFO] debug-file - Finished :entry:default@GeneratePkgContextInfo... after 3 ms 
+[2026-03-28T18:01:07.076] [DEBUG] debug-file - Executing task :entry:default@ProcessIntegratedHsp
+[2026-03-28T18:01:07.076] [DEBUG] debug-file - entry:default@ProcessIntegratedHsp is not up-to-date, since the output file 'D:\devecoStudioDriector\SomeDemo\LocalReading\build\cache\default\integrated_hsp\integratedHspCache.json' does not exist.
+[2026-03-28T18:01:07.077] [DEBUG] debug-file - Incremental task entry:default@ProcessIntegratedHsp pre-execution cost: 1 ms .
+[2026-03-28T18:01:07.077] [DEBUG] debug-file - entry : default@ProcessIntegratedHsp cost memory -1.5036087036132812
+[2026-03-28T18:01:07.077] [DEBUG] debug-file - runTaskFromQueue task cost before running: 266 ms 
+[2026-03-28T18:01:07.077] [INFO] debug-file - Finished :entry:default@ProcessIntegratedHsp... after 2 ms 
+[2026-03-28T18:01:07.078] [DEBUG] debug-file - Executing task :note:default@CreateHarBuildProfile
+[2026-03-28T18:01:07.079] [DEBUG] debug-file - Task 'note:default@CreateHarBuildProfile' cost while wrapping incremental declarations: 1 ms 
+[2026-03-28T18:01:07.080] [DEBUG] debug-file - Incremental task note:default@CreateHarBuildProfile pre-execution cost: 1 ms .
+[2026-03-28T18:01:07.080] [DEBUG] debug-file - note : default@CreateHarBuildProfile cost memory 0.09299468994140625
+[2026-03-28T18:01:07.080] [INFO] debug-file - UP-TO-DATE :note:default@CreateHarBuildProfile...  
+[2026-03-28T18:01:07.080] [DEBUG] debug-file - Executing task :note:default@ConfigureCmake
+[2026-03-28T18:01:07.081] [DEBUG] debug-file - note : default@ConfigureCmake cost memory 0.01546478271484375
+[2026-03-28T18:01:07.081] [DEBUG] debug-file - runTaskFromQueue task cost before running: 270 ms 
+[2026-03-28T18:01:07.081] [INFO] debug-file - Finished :note:default@ConfigureCmake... after 1 ms 
+[2026-03-28T18:01:07.082] [DEBUG] debug-file - Executing task :note:default@MergeProfile
+[2026-03-28T18:01:07.082] [DEBUG] debug-file - Task 'note:default@MergeProfile' cost while wrapping incremental declarations: 1 ms 
+[2026-03-28T18:01:07.083] [DEBUG] debug-file - Incremental task note:default@MergeProfile pre-execution cost: 2 ms .
+[2026-03-28T18:01:07.083] [DEBUG] debug-file - note : default@MergeProfile cost memory 0.12372589111328125
+[2026-03-28T18:01:07.084] [INFO] debug-file - UP-TO-DATE :note:default@MergeProfile...  
+[2026-03-28T18:01:07.084] [DEBUG] debug-file - Executing task :entry:default@SyscapTransform
+[2026-03-28T18:01:07.085] [DEBUG] debug-file - File: 'D:\devecoStudioDriector\SomeDemo\LocalReading\entry\src\main\syscap.json' from 'sysCapJsonPath' is not exists, just ignore.
+[2026-03-28T18:01:07.085] [DEBUG] debug-file - Task 'entry:default@SyscapTransform' cost while wrapping incremental declarations: 1 ms 
+[2026-03-28T18:01:07.086] [DEBUG] debug-file - entry:default@SyscapTransform is not up-to-date, since the output file 'D:\devecoStudioDriector\SomeDemo\LocalReading\entry\build\default\intermediates\syscap\default\rpcid.sc' does not exist.
+[2026-03-28T18:01:07.086] [DEBUG] debug-file - Incremental task entry:default@SyscapTransform pre-execution cost: 2 ms .
+[2026-03-28T18:01:07.086] [DEBUG] debug-file - entry : default@SyscapTransform cost memory 0.16063690185546875
+[2026-03-28T18:01:07.086] [DEBUG] debug-file - runTaskFromQueue task cost before running: 276 ms 
+[2026-03-28T18:01:07.087] [INFO] debug-file - Finished :entry:default@SyscapTransform... after 2 ms 
+[2026-03-28T18:01:07.088] [DEBUG] debug-file - Executing task :entry:default@ProcessRouterMap
+[2026-03-28T18:01:07.089] [DEBUG] debug-file - Incremental task entry:default@ProcessRouterMap pre-execution cost: 2 ms .
+[2026-03-28T18:01:07.089] [DEBUG] debug-file - entry : default@ProcessRouterMap cost memory 0.13820648193359375
+[2026-03-28T18:01:07.089] [INFO] debug-file - UP-TO-DATE :entry:default@ProcessRouterMap...  
+[2026-03-28T18:01:07.090] [DEBUG] debug-file - Executing task :entry:default@ProcessShareConfig
+[2026-03-28T18:01:07.091] [DEBUG] debug-file - Incremental task entry:default@ProcessShareConfig pre-execution cost: 1 ms .
+[2026-03-28T18:01:07.092] [DEBUG] debug-file - entry : default@ProcessShareConfig cost memory 0.11083984375
+[2026-03-28T18:01:07.093] [INFO] debug-file - UP-TO-DATE :entry:default@ProcessShareConfig...  
+[2026-03-28T18:01:07.094] [DEBUG] debug-file - Executing task :entry:default@ProcessStartupConfig
+[2026-03-28T18:01:07.094] [DEBUG] debug-file - Task 'entry:default@ProcessStartupConfig' cost while wrapping incremental declarations: 1 ms 
+[2026-03-28T18:01:07.094] [DEBUG] debug-file - entry:default@ProcessStartupConfig is not up-to-date, since the output file 'D:\devecoStudioDriector\SomeDemo\LocalReading\entry\build\default\intermediates\startup\default\startup_config.json' does not exist.
+[2026-03-28T18:01:07.094] [DEBUG] debug-file - Incremental task entry:default@ProcessStartupConfig pre-execution cost: 1 ms .
+[2026-03-28T18:01:07.094] [DEBUG] debug-file - entry : default@ProcessStartupConfig cost memory 0.09644317626953125
+[2026-03-28T18:01:07.095] [DEBUG] debug-file - runTaskFromQueue task cost before running: 284 ms 
+[2026-03-28T18:01:07.095] [INFO] debug-file - Finished :entry:default@ProcessStartupConfig... after 1 ms 
+[2026-03-28T18:01:07.096] [DEBUG] debug-file - Executing task :entry:default@CreateBuildProfile
+[2026-03-28T18:01:07.096] [DEBUG] debug-file - Task 'entry:default@CreateBuildProfile' cost while wrapping incremental declarations: 1 ms 
+[2026-03-28T18:01:07.097] [DEBUG] debug-file - Incremental task entry:default@CreateBuildProfile pre-execution cost: 1 ms .
+[2026-03-28T18:01:07.097] [DEBUG] debug-file - entry : default@CreateBuildProfile cost memory 0.08983612060546875
+[2026-03-28T18:01:07.097] [INFO] debug-file - UP-TO-DATE :entry:default@CreateBuildProfile...  
+[2026-03-28T18:01:07.099] [DEBUG] debug-file - Executing task :note:default@BuildNativeWithCmake
+[2026-03-28T18:01:07.099] [DEBUG] debug-file - note : default@BuildNativeWithCmake cost memory 0.01650238037109375
+[2026-03-28T18:01:07.099] [DEBUG] debug-file - runTaskFromQueue task cost before running: 288 ms 
+[2026-03-28T18:01:07.099] [INFO] debug-file - Finished :note:default@BuildNativeWithCmake... after 1 ms 
+[2026-03-28T18:01:07.100] [DEBUG] debug-file - Executing task :entry:default@MergeProfile
+[2026-03-28T18:01:07.101] [DEBUG] debug-file - Task 'entry:default@MergeProfile' cost while wrapping incremental declarations: 1 ms 
+[2026-03-28T18:01:07.103] [DEBUG] debug-file - Incremental task entry:default@MergeProfile pre-execution cost: 2 ms .
+[2026-03-28T18:01:07.103] [DEBUG] debug-file - entry : default@MergeProfile cost memory 0.1705474853515625
+[2026-03-28T18:01:07.103] [INFO] debug-file - UP-TO-DATE :entry:default@MergeProfile...  
+[2026-03-28T18:01:07.104] [DEBUG] debug-file - Obtain build option for module 'note' target 'default'in this build.
+[2026-03-28T18:01:07.104] [DEBUG] debug-file - Executing task :entry:default@GenerateLoaderJson
+[2026-03-28T18:01:07.105] [DEBUG] debug-file - Task 'entry:default@GenerateLoaderJson' cost while wrapping incremental declarations: 1 ms 
+[2026-03-28T18:01:07.106] [DEBUG] debug-file - Obtain build option for module 'note' target 'default'in this build.
+[2026-03-28T18:01:07.107] [DEBUG] debug-file - Obtain build option for module 'note' target 'default'in this build.
+[2026-03-28T18:01:07.109] [DEBUG] debug-file - Obtain build option for module 'note' target 'default'in this build.
+[2026-03-28T18:01:07.109] [DEBUG] debug-file - Obtain build option for module 'note' target 'default'in this build.
+[2026-03-28T18:01:07.110] [DEBUG] debug-file - Obtain build option for module 'note' target 'default'in this build.
+[2026-03-28T18:01:07.111] [DEBUG] debug-file - Incremental task entry:default@GenerateLoaderJson pre-execution cost: 4 ms .
+[2026-03-28T18:01:07.111] [DEBUG] debug-file - entry : default@GenerateLoaderJson cost memory 0.52294921875
+[2026-03-28T18:01:07.112] [DEBUG] debug-file - Obtain build option for module 'note' target 'default'in this build.
+[2026-03-28T18:01:07.113] [DEBUG] debug-file - Obtain build option for module 'note' target 'default'in this build.
+[2026-03-28T18:01:07.113] [INFO] debug-file - UP-TO-DATE :entry:default@GenerateLoaderJson...  
+[2026-03-28T18:01:07.113] [DEBUG] debug-file - Executing task :entry:default@ConfigureCmake
+[2026-03-28T18:01:07.113] [DEBUG] debug-file - entry : default@ConfigureCmake cost memory 0.0140533447265625
+[2026-03-28T18:01:07.114] [DEBUG] debug-file - runTaskFromQueue task cost before running: 303 ms 
+[2026-03-28T18:01:07.114] [INFO] debug-file - Finished :entry:default@ConfigureCmake... after 1 ms 
+[2026-03-28T18:01:07.115] [DEBUG] debug-file - Executing task :note:default@BuildNativeWithNinja
+[2026-03-28T18:01:07.115] [DEBUG] debug-file - note : default@BuildNativeWithNinja cost memory 0.023834228515625
+[2026-03-28T18:01:07.115] [DEBUG] debug-file - runTaskFromQueue task cost before running: 304 ms 
+[2026-03-28T18:01:07.115] [INFO] debug-file - Finished :note:default@BuildNativeWithNinja... after 1 ms 
+[2026-03-28T18:01:07.117] [DEBUG] debug-file - Executing task :entry:default@MakePackInfo
+[2026-03-28T18:01:07.118] [DEBUG] debug-file - Incremental task entry:default@MakePackInfo pre-execution cost: 2 ms .
+[2026-03-28T18:01:07.119] [DEBUG] debug-file - entry : default@MakePackInfo cost memory 0.1393280029296875
+[2026-03-28T18:01:07.119] [INFO] debug-file - UP-TO-DATE :entry:default@MakePackInfo...  
+[2026-03-28T18:01:07.121] [DEBUG] debug-file - Executing task :entry:default@ProcessProfile
+[2026-03-28T18:01:07.122] [DEBUG] debug-file - Task 'entry:default@ProcessProfile' cost while wrapping incremental declarations: 1 ms 
+[2026-03-28T18:01:07.123] [DEBUG] debug-file - Incremental task entry:default@ProcessProfile pre-execution cost: 1 ms .
+[2026-03-28T18:01:07.123] [DEBUG] debug-file - entry : default@ProcessProfile cost memory 0.138916015625
+[2026-03-28T18:01:07.123] [INFO] debug-file - UP-TO-DATE :entry:default@ProcessProfile...  
+[2026-03-28T18:01:07.124] [DEBUG] debug-file - Executing task :entry:default@BuildNativeWithCmake
+[2026-03-28T18:01:07.124] [DEBUG] debug-file - entry : default@BuildNativeWithCmake cost memory 0.014068603515625
+[2026-03-28T18:01:07.124] [DEBUG] debug-file - runTaskFromQueue task cost before running: 313 ms 
+[2026-03-28T18:01:07.124] [INFO] debug-file - Finished :entry:default@BuildNativeWithCmake... after 1 ms 
+[2026-03-28T18:01:07.125] [DEBUG] debug-file - Executing task :note:default@ProcessLibs
+[2026-03-28T18:01:07.127] [DEBUG] debug-file - Incremental task note:default@ProcessLibs pre-execution cost: 1 ms .
+[2026-03-28T18:01:07.127] [DEBUG] debug-file - note : default@ProcessLibs cost memory 0.10868072509765625
+[2026-03-28T18:01:07.127] [INFO] debug-file - UP-TO-DATE :note:default@ProcessLibs...  
+[2026-03-28T18:01:07.128] [DEBUG] debug-file - restool module names: entry,note; moduleName=entry, taskName=default@ProcessResource
+[2026-03-28T18:01:07.129] [DEBUG] debug-file - Executing task :entry:default@ProcessResource
+[2026-03-28T18:01:07.129] [DEBUG] debug-file - Task 'entry:default@ProcessResource' cost while wrapping incremental declarations: 1 ms 
+[2026-03-28T18:01:07.130] [DEBUG] debug-file - Incremental task entry:default@ProcessResource pre-execution cost: 1 ms .
+[2026-03-28T18:01:07.130] [DEBUG] debug-file - entry : default@ProcessResource cost memory 0.13404083251953125
+[2026-03-28T18:01:07.131] [INFO] debug-file - UP-TO-DATE :entry:default@ProcessResource...  
+[2026-03-28T18:01:07.132] [DEBUG] debug-file - Executing task :note:default@DoNativeStrip
+[2026-03-28T18:01:07.132] [DEBUG] debug-file - Task 'note:default@DoNativeStrip' cost while wrapping incremental declarations: 1 ms 
+[2026-03-28T18:01:07.133] [DEBUG] debug-file - Incremental task note:default@DoNativeStrip pre-execution cost: 1 ms .
+[2026-03-28T18:01:07.133] [DEBUG] debug-file - note : default@DoNativeStrip cost memory 0.08448028564453125
+[2026-03-28T18:01:07.133] [INFO] debug-file - UP-TO-DATE :note:default@DoNativeStrip...  
+[2026-03-28T18:01:07.134] [DEBUG] debug-file - restool module names: entry,note; moduleName=entry, taskName=default@CompileResource
+[2026-03-28T18:01:07.135] [DEBUG] debug-file - Executing task :entry:default@CompileResource
+[2026-03-28T18:01:07.153] [DEBUG] debug-file - Incremental task entry:default@CompileResource pre-execution cost: 18 ms .
+[2026-03-28T18:01:07.153] [DEBUG] debug-file - entry : default@CompileResource cost memory -0.1104583740234375
+[2026-03-28T18:01:07.154] [INFO] debug-file - UP-TO-DATE :entry:default@CompileResource...  
+[2026-03-28T18:01:07.155] [DEBUG] debug-file - Executing task :entry:default@BuildNativeWithNinja
+[2026-03-28T18:01:07.155] [DEBUG] debug-file - entry : default@BuildNativeWithNinja cost memory 0.02062225341796875
+[2026-03-28T18:01:07.155] [DEBUG] debug-file - runTaskFromQueue task cost before running: 344 ms 
+[2026-03-28T18:01:07.155] [INFO] debug-file - Finished :entry:default@BuildNativeWithNinja... after 1 ms 
+[2026-03-28T18:01:07.156] [DEBUG] debug-file - Executing task :entry:default@CompileArkTS
+[2026-03-28T18:01:07.156] [DEBUG] debug-file - obfuscationOptions: undefined
+[2026-03-28T18:01:07.158] [DEBUG] debug-file - Task 'entry:default@CompileArkTS' cost while wrapping incremental declarations: 1 ms 
+[2026-03-28T18:01:07.170] [DEBUG] debug-file - Incremental task entry:default@CompileArkTS pre-execution cost: 11 ms .
+[2026-03-28T18:01:07.170] [DEBUG] debug-file - entry : default@CompileArkTS cost memory -0.657989501953125
+[2026-03-28T18:01:07.171] [INFO] debug-file - UP-TO-DATE :entry:default@CompileArkTS...  
+[2026-03-28T18:01:07.172] [DEBUG] debug-file - Executing task :entry:default@BuildJS
+[2026-03-28T18:01:07.172] [DEBUG] debug-file - Task 'entry:default@BuildJS' cost while wrapping incremental declarations: 1 ms 
+[2026-03-28T18:01:07.174] [DEBUG] debug-file - entry : default@BuildJS cost memory 0.15522003173828125
+[2026-03-28T18:01:07.174] [DEBUG] debug-file - runTaskFromQueue task cost before running: 363 ms 
+[2026-03-28T18:01:07.174] [INFO] debug-file - Finished :entry:default@BuildJS... after 2 ms 
+[2026-03-28T18:01:07.174] [DEBUG] debug-file - Executing task :entry:default@ProcessLibs
+[2026-03-28T18:01:07.177] [DEBUG] debug-file - Incremental task entry:default@ProcessLibs pre-execution cost: 2 ms .
+[2026-03-28T18:01:07.177] [DEBUG] debug-file - entry : default@ProcessLibs cost memory 0.24954986572265625
+[2026-03-28T18:01:07.177] [INFO] debug-file - UP-TO-DATE :entry:default@ProcessLibs...  
+[2026-03-28T18:01:07.178] [DEBUG] debug-file - Executing task :entry:default@DoNativeStrip
+[2026-03-28T18:01:07.178] [DEBUG] debug-file - Task 'entry:default@DoNativeStrip' cost while wrapping incremental declarations: 1 ms 
+[2026-03-28T18:01:07.179] [DEBUG] debug-file - Incremental task entry:default@DoNativeStrip pre-execution cost: 1 ms .
+[2026-03-28T18:01:07.179] [DEBUG] debug-file - entry : default@DoNativeStrip cost memory 0.075653076171875
+[2026-03-28T18:01:07.179] [INFO] debug-file - UP-TO-DATE :entry:default@DoNativeStrip...  
+[2026-03-28T18:01:07.180] [DEBUG] debug-file - Executing task :entry:default@CacheNativeLibs
+[2026-03-28T18:01:07.180] [DEBUG] debug-file - Task 'entry:default@CacheNativeLibs' cost while wrapping incremental declarations: 1 ms 
+[2026-03-28T18:01:07.181] [DEBUG] debug-file - Incremental task entry:default@CacheNativeLibs pre-execution cost: 1 ms .
+[2026-03-28T18:01:07.181] [DEBUG] debug-file - entry : default@CacheNativeLibs cost memory 0.09900665283203125
+[2026-03-28T18:01:07.181] [INFO] debug-file - UP-TO-DATE :entry:default@CacheNativeLibs...  
+[2026-03-28T18:01:07.182] [DEBUG] debug-file - Executing task :entry:default@GeneratePkgModuleJson
+[2026-03-28T18:01:07.182] [DEBUG] debug-file - File: 'D:\devecoStudioDriector\SomeDemo\LocalReading\entry\build\default\intermediates\preload\default\preload.json' from 'preloadSoJsonPath' is not exists, just ignore.
+[2026-03-28T18:01:07.182] [DEBUG] debug-file - Error occurs while handling @Input 'shouldDeduplicateHar': The "data" argument must be of type string or an instance of Buffer, TypedArray, or DataView. Received undefined
+[2026-03-28T18:01:07.183] [DEBUG] debug-file - Task 'entry:default@GeneratePkgModuleJson' cost while wrapping incremental declarations: 1 ms 
+[2026-03-28T18:01:07.183] [DEBUG] debug-file - Incremental task entry:default@GeneratePkgModuleJson pre-execution cost: 1 ms .
+[2026-03-28T18:01:07.183] [DEBUG] debug-file - entry : default@GeneratePkgModuleJson cost memory 0.1051483154296875
+[2026-03-28T18:01:07.184] [INFO] debug-file - UP-TO-DATE :entry:default@GeneratePkgModuleJson...  
+[2026-03-28T18:01:07.184] [DEBUG] debug-file - Executing task :entry:default@ProcessCompiledResources
+[2026-03-28T18:01:07.184] [DEBUG] debug-file - File: 'D:\devecoStudioDriector\SomeDemo\LocalReading\entry\build\default\intermediates\preload\default\preload.json' from 'preloadSoJsonPath' is not exists, just ignore.
+[2026-03-28T18:01:07.184] [DEBUG] debug-file - Task 'entry:default@ProcessCompiledResources' cost while wrapping incremental declarations: 1 ms 
+[2026-03-28T18:01:07.185] [DEBUG] debug-file - entry : default@ProcessCompiledResources cost memory 0.05770111083984375
+[2026-03-28T18:01:07.185] [DEBUG] debug-file - runTaskFromQueue task cost before running: 374 ms 
+[2026-03-28T18:01:07.185] [INFO] debug-file - Finished :entry:default@ProcessCompiledResources... after 1 ms 
+[2026-03-28T18:01:07.187] [DEBUG] debug-file - Executing task :entry:default@PackageHap
+[2026-03-28T18:01:07.194] [DEBUG] debug-file - Incremental task entry:default@PackageHap pre-execution cost: 8 ms .
+[2026-03-28T18:01:07.195] [DEBUG] debug-file - entry : default@PackageHap cost memory 0.8649978637695312
+[2026-03-28T18:01:07.195] [INFO] debug-file - UP-TO-DATE :entry:default@PackageHap...  
+[2026-03-28T18:01:07.196] [DEBUG] debug-file - Executing task :entry:default@PackingCheck
+[2026-03-28T18:01:07.200] [DEBUG] debug-file - entry : default@PackingCheck cost memory 0.5833740234375
+[2026-03-28T18:01:07.201] [DEBUG] debug-file - runTaskFromQueue task cost before running: 390 ms 
+[2026-03-28T18:01:07.201] [INFO] debug-file - Finished :entry:default@PackingCheck... after 5 ms 
+[2026-03-28T18:01:07.202] [DEBUG] debug-file - Executing task :entry:default@SignHap
+[2026-03-28T18:01:07.204] [DEBUG] debug-file - Incremental task entry:default@SignHap pre-execution cost: 2 ms .
+[2026-03-28T18:01:07.204] [DEBUG] debug-file - entry : default@SignHap cost memory 0.11251068115234375
+[2026-03-28T18:01:07.205] [INFO] debug-file - UP-TO-DATE :entry:default@SignHap...  
+[2026-03-28T18:01:07.206] [DEBUG] debug-file - Executing task :entry:default@CollectDebugSymbol
+[2026-03-28T18:01:07.207] [DEBUG] debug-file - entry : default@CollectDebugSymbol cost memory 0.09096527099609375
+[2026-03-28T18:01:07.207] [DEBUG] debug-file - runTaskFromQueue task cost before running: 396 ms 
+[2026-03-28T18:01:07.207] [INFO] debug-file - Finished :entry:default@CollectDebugSymbol... after 1 ms 
+[2026-03-28T18:01:07.207] [DEBUG] debug-file - Executing task :entry:assembleHap
+[2026-03-28T18:01:07.207] [DEBUG] debug-file - entry : assembleHap cost memory 0.01220703125
+[2026-03-28T18:01:07.207] [DEBUG] debug-file - runTaskFromQueue task cost before running: 397 ms 
+[2026-03-28T18:01:07.208] [INFO] debug-file - Finished :entry:assembleHap... after 1 ms 
+[2026-03-28T18:01:07.218] [INFO] debug-file - BUILD SUCCESSFUL in 407 ms 
+[2026-03-28T18:01:07.219] [DEBUG] debug-file - Update task entry:default@PreBuild input file:D:\devecoStudioDriector\SomeDemo\LocalReading\AppScope\app.json5 cache by regenerate.
+[2026-03-28T18:01:07.219] [DEBUG] debug-file - Update task entry:default@PreBuild input file:D:\devecoStudioDriector\SomeDemo\LocalReading\entry\src\main\module.json5 cache by regenerate.
+[2026-03-28T18:01:07.219] [DEBUG] debug-file - Update task entry:default@PreBuild input file:D:\devecoStudioDriector\SomeDemo\LocalReading\build-profile.json5 cache by regenerate.
+[2026-03-28T18:01:07.220] [DEBUG] debug-file - Update task entry:default@PreBuild input file:D:\devecoStudioDriector\SomeDemo\LocalReading\entry\build-profile.json5 cache by regenerate.
+[2026-03-28T18:01:07.220] [DEBUG] debug-file - Update task entry:default@PreBuild input file:D:\devecoStudioDriector\SomeDemo\LocalReading\entry\src\main\resources\base\profile\main_pages.json cache by regenerate.
+[2026-03-28T18:01:07.220] [DEBUG] debug-file - Update task entry:default@PreBuild input file:D:\devecoStudioDriector\SomeDemo\LocalReading\hvigor\hvigor-config.json5 cache by regenerate.
+[2026-03-28T18:01:07.220] [DEBUG] debug-file - Update task entry:default@PreBuild input file:D:\devecoStudioDriector\SomeDemo\LocalReading\entry\oh-package.json5 cache by regenerate.
+[2026-03-28T18:01:07.220] [DEBUG] debug-file - Update task entry:default@PreBuild input file:D:\devecoStudioDriector\SomeDemo\LocalReading\oh-package.json5 cache by regenerate.
+[2026-03-28T18:01:07.220] [DEBUG] debug-file - Incremental task entry:default@PreBuild post-execution cost:3 ms .
+[2026-03-28T18:01:07.221] [DEBUG] debug-file - Update task note:default@PreBuild input file:D:\devecoStudioDriector\SomeDemo\LocalReading\AppScope\app.json5 cache by regenerate.
+[2026-03-28T18:01:07.221] [DEBUG] debug-file - Update task note:default@PreBuild input file:D:\devecoStudioDriector\SomeDemo\LocalReading\exfeature\note\src\main\module.json5 cache by regenerate.
+[2026-03-28T18:01:07.221] [DEBUG] debug-file - Update task note:default@PreBuild input file:D:\devecoStudioDriector\SomeDemo\LocalReading\build-profile.json5 cache by regenerate.
+[2026-03-28T18:01:07.221] [DEBUG] debug-file - Update task note:default@PreBuild input file:D:\devecoStudioDriector\SomeDemo\LocalReading\exfeature\note\build-profile.json5 cache by regenerate.
+[2026-03-28T18:01:07.221] [DEBUG] debug-file - Update task note:default@PreBuild input file:D:\devecoStudioDriector\SomeDemo\LocalReading\hvigor\hvigor-config.json5 cache by regenerate.
+[2026-03-28T18:01:07.222] [DEBUG] debug-file - Update task note:default@PreBuild input file:D:\devecoStudioDriector\SomeDemo\LocalReading\exfeature\note\oh-package.json5 cache by regenerate.
+[2026-03-28T18:01:07.222] [DEBUG] debug-file - Update task note:default@PreBuild input file:D:\devecoStudioDriector\SomeDemo\LocalReading\oh-package.json5 cache by regenerate.
+[2026-03-28T18:01:07.222] [DEBUG] debug-file - Incremental task note:default@PreBuild post-execution cost:2 ms .
+[2026-03-28T18:01:07.222] [DEBUG] debug-file - Update task entry:default@CreateModuleInfo output file:D:\devecoStudioDriector\SomeDemo\LocalReading\entry\build\default\generated\profile\default\ModuleInfo.ts cache.
+[2026-03-28T18:01:07.222] [DEBUG] debug-file - Incremental task entry:default@CreateModuleInfo post-execution cost:1 ms .
+[2026-03-28T18:01:07.222] [DEBUG] debug-file - There is no need to refresh cache, since the incremental task entry:default@GenerateMetadata is up-to-date.
+[2026-03-28T18:01:07.222] [DEBUG] debug-file - Update task entry:default@GeneratePkgContextInfo output file:D:\devecoStudioDriector\SomeDemo\LocalReading\entry\build\default\intermediates\loader\default\pkgContextInfo.json cache.
+[2026-03-28T18:01:07.223] [DEBUG] debug-file - Incremental task entry:default@GeneratePkgContextInfo post-execution cost:1 ms .
+[2026-03-28T18:01:07.223] [DEBUG] debug-file - Update task entry:default@ProcessIntegratedHsp output file:D:\devecoStudioDriector\SomeDemo\LocalReading\build\cache\default\integrated_hsp\integratedHspCache.json cache.
+[2026-03-28T18:01:07.223] [DEBUG] debug-file - Incremental task entry:default@ProcessIntegratedHsp post-execution cost:1 ms .
+[2026-03-28T18:01:07.223] [DEBUG] debug-file - There is no need to refresh cache, since the incremental task note:default@CreateHarBuildProfile is up-to-date.
+[2026-03-28T18:01:07.223] [DEBUG] debug-file - There is no need to refresh cache, since the incremental task note:default@MergeProfile is up-to-date.
+[2026-03-28T18:01:07.223] [DEBUG] debug-file - Update task entry:default@SyscapTransform input file:D:\what down\vediodown\tool\devecostudio\DevEco Studio\sdk\default\openharmony\toolchains\syscap_tool.exe cache by regenerate.
+[2026-03-28T18:01:07.223] [DEBUG] debug-file - Update task entry:default@SyscapTransform input file:D:\what down\vediodown\tool\devecostudio\DevEco Studio\sdk\default\openharmony\ets\api\device-define cache by regenerate.
+[2026-03-28T18:01:07.224] [DEBUG] debug-file - Update task entry:default@SyscapTransform output file:D:\devecoStudioDriector\SomeDemo\LocalReading\entry\build\default\intermediates\syscap\default\rpcid.sc cache.
+[2026-03-28T18:01:07.224] [DEBUG] debug-file - Incremental task entry:default@SyscapTransform post-execution cost:2 ms .
+[2026-03-28T18:01:07.224] [DEBUG] debug-file - There is no need to refresh cache, since the incremental task entry:default@ProcessRouterMap is up-to-date.
+[2026-03-28T18:01:07.224] [DEBUG] debug-file - There is no need to refresh cache, since the incremental task entry:default@ProcessShareConfig is up-to-date.
+[2026-03-28T18:01:07.224] [DEBUG] debug-file - Update task entry:default@ProcessStartupConfig output file:D:\devecoStudioDriector\SomeDemo\LocalReading\entry\build\default\intermediates\startup\default\startup_config.json cache.
+[2026-03-28T18:01:07.224] [DEBUG] debug-file - Incremental task entry:default@ProcessStartupConfig post-execution cost:1 ms .
+[2026-03-28T18:01:07.224] [DEBUG] debug-file - There is no need to refresh cache, since the incremental task entry:default@CreateBuildProfile is up-to-date.
+[2026-03-28T18:01:07.225] [DEBUG] debug-file - There is no need to refresh cache, since the incremental task entry:default@MergeProfile is up-to-date.
+[2026-03-28T18:01:07.225] [DEBUG] debug-file - There is no need to refresh cache, since the incremental task entry:default@GenerateLoaderJson is up-to-date.
+[2026-03-28T18:01:07.225] [DEBUG] debug-file - There is no need to refresh cache, since the incremental task entry:default@MakePackInfo is up-to-date.
+[2026-03-28T18:01:07.225] [DEBUG] debug-file - There is no need to refresh cache, since the incremental task entry:default@ProcessProfile is up-to-date.
+[2026-03-28T18:01:07.225] [DEBUG] debug-file - There is no need to refresh cache, since the incremental task note:default@ProcessLibs is up-to-date.
+[2026-03-28T18:01:07.225] [DEBUG] debug-file - There is no need to refresh cache, since the incremental task entry:default@ProcessResource is up-to-date.
+[2026-03-28T18:01:07.225] [DEBUG] debug-file - There is no need to refresh cache, since the incremental task note:default@DoNativeStrip is up-to-date.
+[2026-03-28T18:01:07.225] [DEBUG] debug-file - There is no need to refresh cache, since the incremental task entry:default@CompileResource is up-to-date.
+[2026-03-28T18:01:07.225] [DEBUG] debug-file - There is no need to refresh cache, since the incremental task entry:default@CompileArkTS is up-to-date.
+[2026-03-28T18:01:07.226] [DEBUG] debug-file - Update task entry:default@BuildJS input file:D:\devecoStudioDriector\SomeDemo\LocalReading\entry\build\default\intermediates\loader\default cache by regenerate.
+[2026-03-28T18:01:07.226] [DEBUG] debug-file - Update task entry:default@BuildJS input file:D:\devecoStudioDriector\SomeDemo\LocalReading\exfeature\note\Index.ets cache by regenerate.
+[2026-03-28T18:01:07.226] [DEBUG] debug-file - Update task entry:default@BuildJS input file:D:\devecoStudioDriector\SomeDemo\LocalReading\entry\build\default\intermediates\res\default\resources\rawfile cache by regenerate.
+[2026-03-28T18:01:07.227] [DEBUG] debug-file - Update task entry:default@BuildJS input file:D:\devecoStudioDriector\SomeDemo\LocalReading\entry\build\default\intermediates\res\default\ResourceTable.txt cache by regenerate.
+[2026-03-28T18:01:07.227] [DEBUG] debug-file - Update task entry:default@BuildJS input file:D:\devecoStudioDriector\SomeDemo\LocalReading\entry\build\default\intermediates\res\default\ark_module.json cache by regenerate.
+[2026-03-28T18:01:07.227] [DEBUG] debug-file - Update task entry:default@BuildJS input file:D:\devecoStudioDriector\SomeDemo\LocalReading\entry\build\default\intermediates\res\default\resources\base\profile cache by regenerate.
+[2026-03-28T18:01:07.228] [DEBUG] debug-file - Update task entry:default@BuildJS output file:D:\devecoStudioDriector\SomeDemo\LocalReading\entry\build\default\intermediates\loader_out\default\js cache.
+[2026-03-28T18:01:07.228] [DEBUG] debug-file - Incremental task entry:default@BuildJS post-execution cost:4 ms .
+[2026-03-28T18:01:07.228] [DEBUG] debug-file - There is no need to refresh cache, since the incremental task entry:default@ProcessLibs is up-to-date.
+[2026-03-28T18:01:07.228] [DEBUG] debug-file - There is no need to refresh cache, since the incremental task entry:default@DoNativeStrip is up-to-date.
+[2026-03-28T18:01:07.228] [DEBUG] debug-file - There is no need to refresh cache, since the incremental task entry:default@CacheNativeLibs is up-to-date.
+[2026-03-28T18:01:07.228] [DEBUG] debug-file - There is no need to refresh cache, since the incremental task entry:default@GeneratePkgModuleJson is up-to-date.
+[2026-03-28T18:01:07.228] [DEBUG] debug-file - Incremental task entry:default@ProcessCompiledResources post-execution cost:1 ms .
+[2026-03-28T18:01:07.228] [DEBUG] debug-file - There is no need to refresh cache, since the incremental task entry:default@PackageHap is up-to-date.
+[2026-03-28T18:01:07.228] [DEBUG] debug-file - There is no need to refresh cache, since the incremental task entry:default@SignHap is up-to-date.
+[2026-03-28T18:01:07.229] [DEBUG] debug-file - Update task entry:default@CollectDebugSymbol input file:D:\devecoStudioDriector\SomeDemo\LocalReading\entry\build\default\intermediates\loader_out\default\ets\sourceMaps.map cache by regenerate.
+[2026-03-28T18:01:07.229] [DEBUG] debug-file - Update task entry:default@CollectDebugSymbol input file:D:\devecoStudioDriector\SomeDemo\LocalReading\entry\build\default\intermediates\libs\default cache by regenerate.
+[2026-03-28T18:01:07.229] [DEBUG] debug-file - Update task entry:default@CollectDebugSymbol output file:D:\devecoStudioDriector\SomeDemo\LocalReading\entry\build\default\outputs\default\symbol cache.
+[2026-03-28T18:01:07.229] [DEBUG] debug-file - Incremental task entry:default@CollectDebugSymbol post-execution cost:1 ms .
+[2026-03-28T18:01:07.251] [DEBUG] debug-file - hvigor build process will be closed.
+[2026-03-28T18:01:07.258] [DEBUG] debug-file - session manager: send message to worker process.
+[2026-03-28T18:01:07.258] [DEBUG] debug-file - session manager: send message to worker process.
+[2026-03-28T18:01:07.257] [DEBUG] debug-file - watch worker: worker id should be larger than 0. Nothing will be sent to any worker thread.
+[2026-03-28T18:01:07.258] [DEBUG] debug-file - watch worker: worker id should be larger than 0. Nothing will be sent to any worker thread.

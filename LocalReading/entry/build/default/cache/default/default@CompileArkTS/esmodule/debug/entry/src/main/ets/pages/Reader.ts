@@ -1954,10 +1954,10 @@ class Reader extends ViewPU {
         });
         this.closeModal();
     }
-    //根据传入的目录项获取该章节在书籍文档中的具体定位标识
+    // 根据传入的目录项获取该章节在书籍文档中的具体定位标识
     private async getDomPos(catalogItem: bookParser.CatalogItem): Promise<string> {
         try {
-            //通过 this.defaultHandler（书籍解析器处理器）调用 getDomPosByCatalogHref 方法，
+            // 通过 this.defaultHandler（书籍解析器处理器）调用 getDomPosByCatalogHref 方法，
             // 并传入目录项的 href 属性（通常指向章节在文档中的唯一标识，如文件名或元素ID）
             const domPos: string = this.defaultHandler?.getDomPosByCatalogHref(catalogItem.href || '') || '';
             return domPos;
@@ -1975,16 +1975,16 @@ class Reader extends ViewPU {
         const resourceItem = this.getResourceItemByCatalog(catalogItem);
         return resourceItem.index === this.currentData.resourceIndex;
     }
-    //更具传入的目录项查找并返回对应的资源项，用于定位和加载内容
+    // 更具传入的目录项查找并返回对应的资源项，用于定位和加载内容
     private getResourceItemByCatalog(catalogItem: bookParser.CatalogItem): bookParser.SpineItem {
-        //获取目标资源文件名
+        // 获取目标资源文件名
         let resourceFile = catalogItem.resourceFile || '';
         try {
-            //获取整个 Spine 列表
+            // 获取整个 Spine 列表
             let spineList: bookParser.SpineItem[] = this.defaultHandler?.getSpineList() || [];
             //按文件名匹配资源项
             let resourceItemArr = spineList.filter(item => item.href === resourceFile);
-            if (resourceItemArr.length > 0) { //返回匹配项或默认项
+            if (resourceItemArr.length > 0) { // 返回匹配项或默认项
                 hilog.info(0x0000, TAG, 'getResourceItemByCatalog get resource ', resourceItemArr[0]);
                 let resourceItem = resourceItemArr[0];
                 return resourceItem;

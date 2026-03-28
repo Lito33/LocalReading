@@ -32,44 +32,13 @@ export class StorageUtil {
   /**
    * 获取所有用户凭证数据
    * 返回对象 {账号: {hash: "xxx", salt: "xxx"}}
-   * 自动迁移旧格式数据（明文密码 → 哈希）
    */
   static async getAllUsers(): Promise<Record<string, StoredUserCredential>> {
     await StorageUtil.initPreferences();
     try {
       const json = await StorageUtil.prefs?.get(StorageUtil.USER_DATA_KEY, '{}');
-      const rawUsers: Record<string, object | string> = JSON.parse(json as string);
-      
-      // 检查是否需要迁移旧格式数据
-      let needMigration = false;
-      const migratedUsers: Record<string, StoredUserCredential> = {};
-      
-      for (const account of Object.keys(rawUsers)) {
-        const value = rawUsers[account];
-        
-        // 判断是老方法（字符串）还是新方法（对象）
-        if (typeof value === 'string') {
-          // 旧格式：明文密码，需要迁移
-          needMigration = true;
-          const password = value as string;
-          const salt = PasswordUtil.generateSalt();
-          const hash = PasswordUtil.hashPassword(password, salt);
-          migratedUsers[account] = { hash, salt };
-          console.info(`StorageUtil: 迁移旧用户数据 [${account}]`);
-        } else {
-          // 新格式：已经是凭证对象
-          const cred = value as StoredUserCredential;
-          migratedUsers[account] = { hash: cred.hash, salt: cred.salt };
-        }
-      }
-      
-      // 如果有迁移，保存新格式数据
-      if (needMigration) {
-        await StorageUtil.saveAllUsers(migratedUsers);
-        console.info('StorageUtil: 用户数据迁移完成（明文 → SHA-256哈希）');
-      }
-      
-      return migratedUsers;
+      const users = JSON.parse(json as string) as Record<string, StoredUserCredential>;
+      return users || {};
     } catch {
       return {};
     }

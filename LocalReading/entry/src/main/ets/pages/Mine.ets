@@ -230,7 +230,7 @@ export struct Mine {
     }) {
       Scroll() {
         Column() {
-          // 自定义下拉刷新指示器 - 只有图片，没有文字
+          // 自定义下拉刷新指示器
           this.customRefreshIndicator()
           
           Row({space:10}){//登录卡片
