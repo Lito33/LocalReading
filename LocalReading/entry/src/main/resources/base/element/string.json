@@ -97,6 +97,18 @@
       "value": "SpeechVolume"
     },
     {
+      "name": "SpeechPitch",
+      "value": "SpeechPitch"
+    },
+    {
+      "name": "SpeechRate",
+      "value": "SpeechRate"
+    },
+    {
+      "name": "PageMode",
+      "value": "PageMode"
+    },
+    {
       "name": "FontSize",
       "value": "Font Size"
     },

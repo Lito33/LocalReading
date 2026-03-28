@@ -86,7 +86,19 @@
     },
     {
       "name": "SpeechVolume",
-      "value": "朗读音量"
+      "value": "音量"
+    },
+    {
+      "name": "SpeechPitch",
+      "value": "音调"
+    },
+    {
+      "name": "SpeechRate",
+      "value": "语速"
+    },
+    {
+      "name": "PageMode",
+      "value": "翻页模式"
     },
     {
       "name": "FontSize",

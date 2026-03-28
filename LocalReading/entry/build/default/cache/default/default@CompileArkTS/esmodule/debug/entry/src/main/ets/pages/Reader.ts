@@ -1263,6 +1263,14 @@ class Reader extends ViewPU {
             Row.margin({ left: 16, top: 16, right: 16 });
         }, Row);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Text.create({ "id": 16777322, "type": 10003, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+            Text.fontColor(Color.Black);
+            Text.fontSize(15);
+            Text.width(65);
+            Text.margin({ left: 5 });
+        }, Text);
+        Text.pop();
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
             Radio.create({
                 value: 'flipMode', group: 'radioGroup'
             });
@@ -1491,7 +1499,7 @@ class Reader extends ViewPU {
             Row.padding({ left: 10, right: 10 });
         }, Row);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Text.create('音调');
+            Text.create({ "id": 16777323, "type": 10003, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
             Text.fontColor(Color.Black);
             Text.fontSize(16);
             Text.width(50);
@@ -1539,7 +1547,7 @@ class Reader extends ViewPU {
             Row.padding({ left: 10, right: 10 });
         }, Row);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Text.create('语速');
+            Text.create({ "id": 16777324, "type": 10003, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
             Text.fontColor(Color.Black);
             Text.fontSize(16);
             Text.width(50);
@@ -1591,13 +1599,13 @@ class Reader extends ViewPU {
             Text.fontColor(Color.Black);
             Text.fontSize(13);
             Text.width(30);
-            Text.margin({ left: 5 });
+            Text.margin({ left: 8 });
         }, Text);
         Text.pop();
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             TextInput.create({ placeholder: { "id": 16777231, "type": 10003, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" }, text: this.fontSize });
             TextInput.margin({
-                left: 16,
+                left: 10,
                 top: 10,
                 right: 16,
                 bottom: 10
@@ -1627,12 +1635,12 @@ class Reader extends ViewPU {
             Text.fontColor(Color.Black);
             Text.fontSize(13);
             Text.width(30);
-            Text.margin({ left: 5 });
+            Text.margin({ left: 8 });
         }, Text);
         Text.pop();
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             TextInput.create({ placeholder: { "id": 16777235, "type": 10003, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" }, text: this.lineHeight });
-            TextInput.margin({ left: 16, right: 16, bottom: 10 });
+            TextInput.margin({ left: 10, right: 16, bottom: 10 });
             TextInput.backgroundColor({ "id": 16777259, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
             TextInput.placeholderColor({ "id": 125829228, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
             TextInput.fontColor({ "id": 125829228, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
@@ -1722,7 +1730,7 @@ class Reader extends ViewPU {
                                 hilog.info(0x0000, TAG, `ReadPageComponent init failed, Code: ${err.code}, message: ${err.message}`);
                             }
                         }
-                    }, undefined, elmtId, () => { }, { page: "entry/src/main/ets/pages/Reader.ets", line: 1244, col: 7 });
+                    }, undefined, elmtId, () => { }, { page: "entry/src/main/ets/pages/Reader.ets", line: 1251, col: 7 });
                     ViewPU.create(componentCall);
                     let paramsLambda = () => {
                         return {

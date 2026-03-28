@@ -885,6 +885,13 @@ struct Reader {
 
       //翻页组件
       Row({ space: 20 }) {
+
+        Text($r('app.string.PageMode'))
+          .fontColor(Color.Black)
+          .fontSize(15)
+          .width(65)
+          .margin({left:5})
+
         Radio({
           value: 'flipMode', group: 'radioGroup'
         })
@@ -1065,7 +1072,7 @@ struct Reader {
 
       //控制播放音调
       Row(){
-        Text('音调')
+        Text($r('app.string.SpeechPitch'))
           .fontColor(Color.Black)
           .fontSize(16)
           .width(50)
@@ -1101,7 +1108,7 @@ struct Reader {
 
       //控制播放语速
       Row(){
-        Text('语速')
+        Text($r('app.string.SpeechRate'))
           .fontColor(Color.Black)
           .fontSize(16)
           .width(50)
@@ -1141,11 +1148,11 @@ struct Reader {
           .fontColor(Color.Black)
           .fontSize(13)
           .width(30)
-          .margin({left:5})
+          .margin({left:8})
 
         TextInput({ placeholder: $r('app.string.font_size_placeholder'), text: this.fontSize })
           .margin({
-            left: 16,
+            left: 10,
             top: 10,
             right: 16,
             bottom: 10
@@ -1171,10 +1178,10 @@ struct Reader {
           .fontColor(Color.Black)
           .fontSize(13)
           .width(30)
-          .margin({left:5})
+          .margin({left:8})
 
         TextInput({ placeholder: $r('app.string.line_height_placeholder'), text: this.lineHeight })
-          .margin({ left: 16, right: 16, bottom: 10 })
+          .margin({ left: 10, right: 16, bottom: 10 })
           .backgroundColor($r('app.color.ic_text_input_bg'))
           .placeholderColor($r('sys.color.ohos_dialog_text_alert'))
           .fontColor($r('sys.color.ohos_dialog_text_alert'))
