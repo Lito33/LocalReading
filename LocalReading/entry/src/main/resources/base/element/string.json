@@ -119,6 +119,14 @@
     {
       "name": "Notice",
       "value": "Notice"
+    },
+    {
+      "name": "SingleMode",
+      "value": "SingleMode"
+    },
+    {
+      "name": "SingleModeDescription",
+      "value": "Click on the left and right to turn to the next page"
     }
   ]
 }

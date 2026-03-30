@@ -111,6 +111,14 @@
     {
       "name": "Notice",
       "value": "通知"
+    },
+    {
+      "name": "SingleMode",
+      "value": "单手模式"
+    },
+    {
+      "name": "SingleModeDescription",
+      "value": "点击左右两侧翻到下一页"
     }
   ]
 }

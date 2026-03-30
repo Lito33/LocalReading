@@ -17,6 +17,8 @@ export interface PersistedReaderSettings {
     ttsVolume: number; // 音量 (0-2)
     ttsPitch: number; // 音调 (0.5-2.0)
     ttsSpeed: number; // 语速 (0.5-2.0)
+    // 单手模式设置
+    singleHandMode: boolean; // 单手模式：点击屏幕左右两侧都翻到下一页
 }
 export class SettingStorage {
     //保存阅读设置到 Preferences;  settings:要保存的设置对象
@@ -44,7 +46,8 @@ export class SettingStorage {
             fontColor: '',
             ttsVolume: 1.0,
             ttsPitch: 1.0,
-            ttsSpeed: 1.0
+            ttsSpeed: 1.0,
+            singleHandMode: false
         };
     }
     //合并设置，用默认值填充缺失字段
@@ -62,7 +65,8 @@ export class SettingStorage {
             fontColor: loaded['fontColor'] as string ?? defaults.fontColor,
             ttsVolume: loaded['ttsVolume'] as number ?? defaults.ttsVolume,
             ttsPitch: loaded['ttsPitch'] as number ?? defaults.ttsPitch,
-            ttsSpeed: loaded['ttsSpeed'] as number ?? defaults.ttsSpeed
+            ttsSpeed: loaded['ttsSpeed'] as number ?? defaults.ttsSpeed,
+            singleHandMode: loaded['singleHandMode'] as boolean ?? defaults.singleHandMode
         };
     }
     //加载阅读设置

@@ -9,15 +9,18 @@ interface Reader_Params {
     eyeMode?: boolean;
     currentIndex?: number;
     catalogItemList?: bookParser.CatalogItem[];
+    fullChapterList?: ChapterItem[];
     currentData?: readerCore.PageDataInfo | null;
     defaultHandler?: bookParser.BookParserHandler | null;
     readerComponentController?: readerCore.ReaderComponentController;
+    currentChapter?: number;
+    totalChapters?: number;
     bookCover?: PixelMap | null;
     bookTitle?: string;
     author?: string;
     loadError?: string;
-    fontSize?: string;
-    lineHeight?: string;
+    fontSize?: number;
+    lineHeight?: number;
     fontList?: Array<FontFileInfo>;
     selectFontPath?: string;
     themeList?: string[];
@@ -25,6 +28,7 @@ interface Reader_Params {
     THEME_PAGE_COLOR?: Record<string, string>;
     themeBorderColor?: Record<number, Resource>;
     themeSelectIndex?: number;
+    singleHandMode?: boolean;
     readerSetting?: readerCore.ReaderSetting;
     screenDensityCallBack?: Callback<number> | null;
     isLoading?: boolean;
@@ -69,6 +73,12 @@ interface AttemptParams {
     index: number;
     path: string;
 }
+// 章节项（用于目录显示）
+interface ChapterItem {
+    index: number; // spine索引
+    name: string; // 章节名称
+    href: string; // 章节路径
+}
 const TAG: string = 'ReaderPage';
 class Reader extends ViewPU {
     constructor(parent, params, __localStorage, elmtId = -1, paramsLambda = undefined, extraInfo) {
@@ -83,15 +93,18 @@ class Reader extends ViewPU {
         this.__eyeMode = this.createStorageLink('eyeMode', false, "eyeMode");
         this.__currentIndex = new ObservedPropertySimplePU(-1, this, "currentIndex");
         this.__catalogItemList = new ObservedPropertyObjectPU([], this, "catalogItemList");
+        this.__fullChapterList = new ObservedPropertyObjectPU([], this, "fullChapterList");
         this.currentData = null;
         this.defaultHandler = null;
         this.readerComponentController = new readerCore.ReaderComponentController();
+        this.__currentChapter = new ObservedPropertySimplePU(1, this, "currentChapter");
+        this.__totalChapters = new ObservedPropertySimplePU(0, this, "totalChapters");
         this.__bookCover = new ObservedPropertyObjectPU(null, this, "bookCover");
         this.__bookTitle = new ObservedPropertySimplePU('', this, "bookTitle");
         this.__author = new ObservedPropertySimplePU('', this, "author");
         this.__loadError = new ObservedPropertySimplePU('', this, "loadError");
-        this.__fontSize = new ObservedPropertySimplePU('18', this, "fontSize");
-        this.__lineHeight = new ObservedPropertySimplePU('', this, "lineHeight");
+        this.__fontSize = new ObservedPropertySimplePU(18, this, "fontSize");
+        this.__lineHeight = new ObservedPropertySimplePU(1.9, this, "lineHeight");
         this.fontList = 
         //BookUtils.getString(context,name)根据资源名称从应用的资源管理器中获取对应的本地化字符串。
         //FontFileInfo 类包括alias：字体的显示名称（如“系统字体”）。path：字体文件的路径。
@@ -135,13 +148,14 @@ class Reader extends ViewPU {
             6: { "id": 16777253, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" }
         };
         this.__themeSelectIndex = new ObservedPropertySimplePU(0, this, "themeSelectIndex");
+        this.__singleHandMode = new ObservedPropertySimplePU(false, this, "singleHandMode");
         this.readerSetting = {
             fontName: BookUtils.getString(this.getUIContext().getHostContext(), 'system_font'),
             fontPath: '',
-            fontSize: Number.parseInt(this.fontSize),
+            fontSize: this.fontSize,
             fontColor: '#000000',
             fontWeight: 400,
-            lineHeight: 1.9,
+            lineHeight: this.lineHeight,
             nightMode: false,
             themeColor: 'rgba(248, 249, 250, 1)',
             themeBgImg: '',
@@ -200,6 +214,9 @@ class Reader extends ViewPU {
         if (params.catalogItemList !== undefined) {
             this.catalogItemList = params.catalogItemList;
         }
+        if (params.fullChapterList !== undefined) {
+            this.fullChapterList = params.fullChapterList;
+        }
         if (params.currentData !== undefined) {
             this.currentData = params.currentData;
         }
@@ -208,6 +225,12 @@ class Reader extends ViewPU {
         }
         if (params.readerComponentController !== undefined) {
             this.readerComponentController = params.readerComponentController;
+        }
+        if (params.currentChapter !== undefined) {
+            this.currentChapter = params.currentChapter;
+        }
+        if (params.totalChapters !== undefined) {
+            this.totalChapters = params.totalChapters;
         }
         if (params.bookCover !== undefined) {
             this.bookCover = params.bookCover;
@@ -247,6 +270,9 @@ class Reader extends ViewPU {
         }
         if (params.themeSelectIndex !== undefined) {
             this.themeSelectIndex = params.themeSelectIndex;
+        }
+        if (params.singleHandMode !== undefined) {
+            this.singleHandMode = params.singleHandMode;
         }
         if (params.readerSetting !== undefined) {
             this.readerSetting = params.readerSetting;
@@ -292,6 +318,9 @@ class Reader extends ViewPU {
         this.__eyeMode.purgeDependencyOnElmtId(rmElmtId);
         this.__currentIndex.purgeDependencyOnElmtId(rmElmtId);
         this.__catalogItemList.purgeDependencyOnElmtId(rmElmtId);
+        this.__fullChapterList.purgeDependencyOnElmtId(rmElmtId);
+        this.__currentChapter.purgeDependencyOnElmtId(rmElmtId);
+        this.__totalChapters.purgeDependencyOnElmtId(rmElmtId);
         this.__bookCover.purgeDependencyOnElmtId(rmElmtId);
         this.__bookTitle.purgeDependencyOnElmtId(rmElmtId);
         this.__author.purgeDependencyOnElmtId(rmElmtId);
@@ -301,6 +330,7 @@ class Reader extends ViewPU {
         this.__selectFontPath.purgeDependencyOnElmtId(rmElmtId);
         this.__themeList.purgeDependencyOnElmtId(rmElmtId);
         this.__themeSelectIndex.purgeDependencyOnElmtId(rmElmtId);
+        this.__singleHandMode.purgeDependencyOnElmtId(rmElmtId);
         this.__isLoading.purgeDependencyOnElmtId(rmElmtId);
         this.__isClicked.purgeDependencyOnElmtId(rmElmtId);
         this.__ttsVolume.purgeDependencyOnElmtId(rmElmtId);
@@ -315,6 +345,9 @@ class Reader extends ViewPU {
         this.__eyeMode.aboutToBeDeleted();
         this.__currentIndex.aboutToBeDeleted();
         this.__catalogItemList.aboutToBeDeleted();
+        this.__fullChapterList.aboutToBeDeleted();
+        this.__currentChapter.aboutToBeDeleted();
+        this.__totalChapters.aboutToBeDeleted();
         this.__bookCover.aboutToBeDeleted();
         this.__bookTitle.aboutToBeDeleted();
         this.__author.aboutToBeDeleted();
@@ -324,6 +357,7 @@ class Reader extends ViewPU {
         this.__selectFontPath.aboutToBeDeleted();
         this.__themeList.aboutToBeDeleted();
         this.__themeSelectIndex.aboutToBeDeleted();
+        this.__singleHandMode.aboutToBeDeleted();
         this.__isLoading.aboutToBeDeleted();
         this.__isClicked.aboutToBeDeleted();
         this.__ttsVolume.aboutToBeDeleted();
@@ -391,12 +425,35 @@ class Reader extends ViewPU {
     set catalogItemList(newValue: bookParser.CatalogItem[]) {
         this.__catalogItemList.set(newValue);
     }
+    // 完整章节列表（基于spine，包含所有章节）
+    private __fullChapterList: ObservedPropertyObjectPU<ChapterItem[]>;
+    get fullChapterList() {
+        return this.__fullChapterList.get();
+    }
+    set fullChapterList(newValue: ChapterItem[]) {
+        this.__fullChapterList.set(newValue);
+    }
     //readerCore.PageDataInfo包含当前页内容、页码、章节信息等关键数据
     private currentData: readerCore.PageDataInfo | null;
     //书籍解析器处理器
     private defaultHandler: bookParser.BookParserHandler | null;
     //阅读控制器:例如翻页、跳转章节、获取当前阅读进度等
     private readerComponentController: readerCore.ReaderComponentController;
+    // 章节显示相关状态
+    private __currentChapter: ObservedPropertySimplePU<number>; // 当前章节（从1开始）
+    get currentChapter() {
+        return this.__currentChapter.get();
+    }
+    set currentChapter(newValue: number) {
+        this.__currentChapter.set(newValue);
+    }
+    private __totalChapters: ObservedPropertySimplePU<number>; // 总章节数
+    get totalChapters() {
+        return this.__totalChapters.get();
+    }
+    set totalChapters(newValue: number) {
+        this.__totalChapters.set(newValue);
+    }
     private __bookCover: ObservedPropertyObjectPU<PixelMap | null>;
     get bookCover() {
         return this.__bookCover.get();
@@ -425,18 +482,18 @@ class Reader extends ViewPU {
     set loadError(newValue: string) {
         this.__loadError.set(newValue);
     }
-    private __fontSize: ObservedPropertySimplePU<string>;
+    private __fontSize: ObservedPropertySimplePU<number>; // 字体大小 (12-32)
     get fontSize() {
         return this.__fontSize.get();
     }
-    set fontSize(newValue: string) {
+    set fontSize(newValue: number) {
         this.__fontSize.set(newValue);
     }
-    private __lineHeight: ObservedPropertySimplePU<string>;
+    private __lineHeight: ObservedPropertySimplePU<number>; // 行间距 (1.0-3.0)
     get lineHeight() {
         return this.__lineHeight.get();
     }
-    set lineHeight(newValue: string) {
+    set lineHeight(newValue: number) {
         this.__lineHeight.set(newValue);
     }
     //初始化字体列表
@@ -466,6 +523,14 @@ class Reader extends ViewPU {
     }
     set themeSelectIndex(newValue: number) {
         this.__themeSelectIndex.set(newValue);
+    }
+    // 单手模式：点击屏幕左右两侧都翻到下一页
+    private __singleHandMode: ObservedPropertySimplePU<boolean>;
+    get singleHandMode() {
+        return this.__singleHandMode.get();
+    }
+    set singleHandMode(newValue: boolean) {
+        this.__singleHandMode.set(newValue);
     }
     //阅读相关设置
     private readerSetting: readerCore.ReaderSetting;
@@ -529,8 +594,8 @@ class Reader extends ViewPU {
                 this.themeSelectIndex = saved.themeSelectIndex ?? 0;
                 // 更新 UI 状态变量
                 this.selectFontPath = saved.fontPath ?? '';
-                this.fontSize = (saved.fontSize ?? 18).toString();
-                this.lineHeight = (saved.lineHeight ?? 1.9).toString();
+                this.fontSize = saved.fontSize ?? 18;
+                this.lineHeight = saved.lineHeight ?? 1.9;
                 // 优先使用保存的字体颜色和夜间模式设置
                 // 如果保存的设置中有有效的 fontColor（非空字符串），直接使用
                 // themeList: ['white', 'yellow', 'pink', 'green', 'dark', 'whiteSky', 'darkSky']
@@ -582,6 +647,10 @@ class Reader extends ViewPU {
                 }
                 else {
                     this.ttsSpeed = 1.0;
+                }
+                // 加载单手模式设置
+                if (saved.singleHandMode !== undefined) {
+                    this.singleHandMode = saved.singleHandMode;
                 }
                 // 如果保存的字体路径在字体列表中，可能需要高亮（字体选择按钮已经通过 selectFontPath 处理）
             }
@@ -679,9 +748,51 @@ class Reader extends ViewPU {
     //资源请求回调。字体文件和主题背景图像可以存储在resources/rawfile目录或应用沙盒路径中。
     //前面这一坨表示一个接收字符串参数（文件路径）并返回 ArrayBuffer 的回调。
     private resourceRequest: bookParser.CallbackRes<string, ArrayBuffer>;
-    //添加“阅读页面展示”回调，在回调方法内通过AppStorage保存“当前页面数据”。
-    // Index页面会监听到PageDataInfo的变化，用于“继续阅读按钮”的展示，以及跳转到指定阅读进度。
-    //动态响应资源请求、页面状态变化和窗口尺寸调整，确保阅读功能的流畅性和界面适配
+    // 更新章节信息
+    private updateChapterInfo(data: readerCore.PageDataInfo): void {
+        if (!data || data.resourceIndex < 0) {
+            return;
+        }
+        const spineList = this.defaultHandler?.getSpineList() || [];
+        if (spineList.length === 0) {
+            return;
+        }
+        // 当前章节 = resourceIndex + 1（resourceIndex从0开始）
+        this.currentChapter = data.resourceIndex + 1;
+        this.totalChapters = spineList.length;
+        hilog.info(0x0000, TAG, `Chapter: ${this.currentChapter}/${this.totalChapters}`);
+    }
+    // 生成完整章节列表（基于spine）
+    private buildFullChapterList(): void {
+        const spineList = this.defaultHandler?.getSpineList() || [];
+        const catalogList = this.defaultHandler?.getCatalogList() || [];
+        if (spineList.length === 0) {
+            return;
+        }
+        this.fullChapterList = [];
+        for (let i = 0; i < spineList.length; i++) {
+            const spineItem = spineList[i];
+            // 尝试从目录中匹配章节名称
+            let chapterName = '';
+            const catalogItem = catalogList.find(item => item.href === spineItem.href ||
+                item.href === spineItem.idRef ||
+                (spineItem.href && item.href && spineItem.href.includes(item.href)) ||
+                (spineItem.idRef && item.href && spineItem.idRef.includes(item.href)));
+            if (catalogItem) {
+                chapterName = catalogItem.catalogName;
+            }
+            else {
+                // 如果目录中没有，使用spine的idRef或生成默认名称
+                chapterName = spineItem.idRef || `章节 ${i + 1}`;
+            }
+            this.fullChapterList.push({
+                index: i,
+                name: chapterName,
+                href: spineItem.href || spineItem.idRef || ''
+            });
+        }
+        hilog.info(0x0000, TAG, `buildFullChapterList: spineList.length=${spineList.length}, catalogList.length=${catalogList.length}, total chapters = ${this.fullChapterList.length}`);
+    }
     private registerListener(): void {
         //资源请求监听
         this.readerComponentController.on('resourceRequest', this.resourceRequest);
@@ -691,6 +802,8 @@ class Reader extends ViewPU {
             this.currentData = data;
             // 保存页面数据
             AppStorage.setOrCreate('currentData', this.currentData);
+            // 更新章节信息
+            this.updateChapterInfo(data);
             // 只要页面状态变化就保存进度，不仅仅是 PAGE_ON_SHOW
             if (data.state === readerCore.PageState.PAGE_ON_SHOW ||
                 data.state === readerCore.PageState.PAGE_LOADING) {
@@ -847,6 +960,8 @@ class Reader extends ViewPU {
             try {
                 await this.readerComponentController.startPlay(resourceIndex || 0, domPos);
                 hilog.info(0x0000, TAG, 'startPlay: readerComponentController.startPlay completed');
+                // 在startPlay完成后生成完整章节列表（此时书籍已完全加载，spine列表完整）
+                this.buildFullChapterList();
             }
             catch (err) {
                 hilog.error(0x0000, TAG, `startPlay: readerComponentController.startPlay failed: ${err}`);
@@ -915,6 +1030,7 @@ class Reader extends ViewPU {
             ttsVolume: this.ttsVolume,
             ttsPitch: this.ttsPitch,
             ttsSpeed: this.ttsSpeed,
+            singleHandMode: this.singleHandMode,
         };
         await SettingStorage.saveSettings(context, settings);
         // 触发数据同步
@@ -938,6 +1054,7 @@ class Reader extends ViewPU {
             ttsVolume: this.ttsVolume,
             ttsPitch: this.ttsPitch,
             ttsSpeed: this.ttsSpeed,
+            singleHandMode: saved?.singleHandMode ?? this.singleHandMode,
         };
         await SettingStorage.saveSettings(context, settings);
         // 触发数据同步
@@ -1218,7 +1335,7 @@ class Reader extends ViewPU {
             List.create();
             List.scrollBar(BarState.Off);
             List.width('100%');
-            List.height('100%');
+            List.layoutWeight(1);
             List.edgeEffect(EdgeEffect.None);
         }, List);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
@@ -1242,13 +1359,13 @@ class Reader extends ViewPU {
                         this.observeComponentCreation2((elmtId, isInitialRender) => {
                             Column.create();
                             Column.padding({
-                                left: item.catalogLevel ? item.catalogLevel * 26 : 16,
+                                left: 16,
                                 right: 16,
                                 top: 6,
                                 bottom: 6
                             });
                             Column.onClick(async () => {
-                                this.jumpToCatalogItem(item);
+                                this.jumpToChapter(item.index);
                             });
                         }, Column);
                         this.observeComponentCreation2((elmtId, isInitialRender) => {
@@ -1264,14 +1381,14 @@ class Reader extends ViewPU {
                         this.observeComponentCreation2((elmtId, isInitialRender) => {
                             Text.create(' · ');
                             Text.fontSize(14);
-                            Text.fontColor(this.isCurrentChapter(item) ? { "id": 16777246, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" } : { "id": 16777245, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+                            Text.fontColor(this.isCurrentChapterByIndex(item.index) ? { "id": 16777246, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" } : { "id": 16777245, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
                         }, Text);
                         Text.pop();
                         this.observeComponentCreation2((elmtId, isInitialRender) => {
-                            Text.create(item.catalogName);
+                            Text.create(item.name);
                             Text.fontSize(14);
-                            Text.fontColor(this.isCurrentChapter(item) ? { "id": 16777246, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" } : { "id": 16777245, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
-                            Text.fontWeight(this.isCurrentChapter(item) ? FontWeight.Bold : FontWeight.Normal);
+                            Text.fontColor(this.isCurrentChapterByIndex(item.index) ? { "id": 16777246, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" } : { "id": 16777245, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+                            Text.fontWeight(this.isCurrentChapterByIndex(item.index) ? FontWeight.Bold : FontWeight.Normal);
                             Text.textOverflow({ overflow: TextOverflow.Ellipsis });
                             Text.padding({ top: 8, bottom: 8 });
                             Text.maxLines(2);
@@ -1290,7 +1407,7 @@ class Reader extends ViewPU {
                     ListItem.pop();
                 }
             };
-            this.forEachUpdateFunction(elmtId, this.catalogItemList, forEachItemGenFunction);
+            this.forEachUpdateFunction(elmtId, this.fullChapterList, forEachItemGenFunction, (item: ChapterItem) => item.index.toString(), false, false);
         }, ForEach);
         ForEach.pop();
         List.pop();
@@ -1298,14 +1415,20 @@ class Reader extends ViewPU {
     }
     private buildSetting(parent = null) {
         this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Scroll.create();
+            Scroll.scrollBar(BarState.Auto);
+            Scroll.edgeEffect(EdgeEffect.None);
+            Scroll.width('100%');
+            Scroll.height('100%');
+            Scroll.visibility(this.currentIndex === 1 ? Visibility.Visible : Visibility.None);
+            Scroll.backgroundColor(this.eyeMode ? '#FAF9DE' : { "id": 16777263, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+            Scroll.borderRadius({ topRight: 32, topLeft: 32 });
+            Scroll.zIndex(3);
+        }, Scroll);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
             Column.create();
-            Column.borderRadius({ topRight: 32, topLeft: 32 });
             Column.width('100%');
-            Column.height('100%');
-            Column.visibility(this.currentIndex === 1 ? Visibility.Visible : Visibility.None);
             Column.alignItems(HorizontalAlign.Start);
-            Column.backgroundColor(this.eyeMode ? '#FAF9DE' : { "id": 16777263, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
-            Column.zIndex(3);
         }, Column);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             //适配不同UI
@@ -1472,6 +1595,49 @@ class Reader extends ViewPU {
         }, Text);
         Text.pop();
         //翻页组件
+        Row.pop();
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Text.create();
+            Text.width('92%');
+            Text.height(1);
+            Text.margin({ left: 16, top: 12, right: 16 });
+            Text.backgroundColor({ "id": 16777249, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+        }, Text);
+        Text.pop();
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            // 单手模式开关
+            Row.create();
+            // 单手模式开关
+            Row.width('100%');
+            // 单手模式开关
+            Row.margin({ left: 16, top: 16, right: 16 });
+        }, Row);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Text.create('单手模式');
+            Text.fontColor(Color.Black);
+            Text.fontSize(15);
+            Text.width(65);
+            Text.margin({ left: 5 });
+        }, Text);
+        Text.pop();
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Toggle.create({ type: ToggleType.Switch, isOn: this.singleHandMode });
+            Toggle.selectedColor(Color.Blue);
+            Toggle.onChange((isOn: boolean) => {
+                this.singleHandMode = isOn;
+                this.saveCurrentSettings();
+                hilog.info(0x0000, TAG, `Single hand mode changed to: ${isOn}`);
+            });
+        }, Toggle);
+        Toggle.pop();
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Text.create('点击左右侧都翻下一页');
+            Text.fontSize(14);
+            Text.fontColor('#666666');
+            Text.margin({ left: 8 });
+        }, Text);
+        Text.pop();
+        // 单手模式开关
         Row.pop();
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Text.create();
@@ -1732,119 +1898,88 @@ class Reader extends ViewPU {
             //字体大小
             Row.create();
             //字体大小
-            Row.width("100%");
+            Row.width('100%');
             //字体大小
-            Row.justifyContent(FlexAlign.SpaceBetween);
+            Row.padding({ left: 10, right: 10 });
         }, Row);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Text.create({ "id": 16777318, "type": 10003, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
             Text.fontColor(Color.Black);
-            Text.fontSize(13);
-            Text.width(30);
-            Text.margin({ left: 8 });
+            Text.fontSize(16);
+            Text.width(50);
+            Text.margin({ left: 5 });
         }, Text);
         Text.pop();
         this.observeComponentCreation2((elmtId, isInitialRender) => {
-            TextInput.create({ placeholder: { "id": 16777231, "type": 10003, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" }, text: this.fontSize });
-            TextInput.margin({
-                left: 10,
-                top: 10,
-                right: 16,
-                bottom: 10
+            Slider.create({ value: this.fontSize, min: 12, max: 32, step: 1, style: SliderStyle.InSet });
+            Slider.blockColor('#191970');
+            Slider.trackColor('#ADD8E6');
+            Slider.selectedColor('#4169E1');
+            Slider.showSteps(true);
+            Slider.showTips(true);
+            Slider.width('60%');
+            Slider.onChange((value: number, mode: SliderChangeMode) => {
+                this.fontSize = Math.round(value);
+                this.readerSetting.fontSize = this.fontSize;
+                this.readerComponentController.setPageConfig(this.readerSetting);
+                this.saveCurrentSettings();
+                hilog.info(0x0000, TAG, `FontSize changed to: ${this.fontSize}`);
             });
-            TextInput.backgroundColor({ "id": 16777259, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
-            TextInput.placeholderColor({ "id": 125829228, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
-            TextInput.fontColor({ "id": 125829228, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
-            TextInput.type(InputType.Number);
-            TextInput.fontSize(16);
-            TextInput.onChange((value: string) => {
-                this.fontSize = value;
-            });
-            TextInput.width("80%");
-        }, TextInput);
+        }, Slider);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Text.create(`${this.fontSize}`);
+            Text.fontColor(Color.Black);
+            Text.fontSize(14);
+            Text.width(30);
+            Text.textAlign(TextAlign.Center);
+        }, Text);
+        Text.pop();
         //字体大小
         Row.pop();
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             //行间距
             Row.create();
             //行间距
-            Row.width("100%");
+            Row.width('100%');
             //行间距
-            Row.justifyContent(FlexAlign.SpaceBetween);
+            Row.padding({ left: 10, right: 10 });
         }, Row);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Text.create({ "id": 16777319, "type": 10003, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
             Text.fontColor(Color.Black);
-            Text.fontSize(13);
-            Text.width(30);
-            Text.margin({ left: 8 });
+            Text.fontSize(16);
+            Text.width(50);
+            Text.margin({ left: 5 });
         }, Text);
         Text.pop();
         this.observeComponentCreation2((elmtId, isInitialRender) => {
-            TextInput.create({ placeholder: { "id": 16777235, "type": 10003, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" }, text: this.lineHeight });
-            TextInput.margin({ left: 10, right: 16, bottom: 10 });
-            TextInput.backgroundColor({ "id": 16777259, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
-            TextInput.placeholderColor({ "id": 125829228, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
-            TextInput.fontColor({ "id": 125829228, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
-            TextInput.type(InputType.NUMBER_DECIMAL);
-            TextInput.fontSize(16);
-            TextInput.onChange((value: string) => {
-                this.lineHeight = value;
+            Slider.create({ value: this.lineHeight, min: 1.0, max: 3.0, step: 0.1, style: SliderStyle.InSet });
+            Slider.blockColor('#191970');
+            Slider.trackColor('#ADD8E6');
+            Slider.selectedColor('#4169E1');
+            Slider.showSteps(true);
+            Slider.showTips(true);
+            Slider.width('60%');
+            Slider.onChange((value: number, mode: SliderChangeMode) => {
+                this.lineHeight = Math.round(value * 10) / 10;
+                this.readerSetting.lineHeight = this.lineHeight;
+                this.readerComponentController.setPageConfig(this.readerSetting);
+                this.saveCurrentSettings();
+                hilog.info(0x0000, TAG, `LineHeight changed to: ${this.lineHeight}`);
             });
-            TextInput.width("80%");
-        }, TextInput);
+        }, Slider);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Text.create(`${this.lineHeight.toFixed(1)}`);
+            Text.fontColor(Color.Black);
+            Text.fontSize(14);
+            Text.width(40);
+            Text.textAlign(TextAlign.Center);
+        }, Text);
+        Text.pop();
         //行间距
         Row.pop();
-        this.observeComponentCreation2((elmtId, isInitialRender) => {
-            //更新上面两个
-            Button.createWithLabel({ "id": 16777242, "type": 10003, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
-            //更新上面两个
-            Button.onClick(async () => {
-                const currentResourceIndex = this.currentData?.resourceIndex ?? 0;
-                const currentDomPos = this.currentData?.startDomPos ?? '';
-                hilog.info(0x0000, TAG, 'click : update page setting, fontSize = ' + this.fontSize + ' ,lineHeight = ' + this.lineHeight);
-                if (!isNaN(Number.parseInt(this.fontSize))) {
-                    this.readerSetting.fontSize = Number.parseInt(this.fontSize);
-                }
-                if (!isNaN(Number.parseInt(this.lineHeight))) {
-                    this.readerSetting.lineHeight = Number.parseInt(this.lineHeight);
-                }
-                try {
-                    this.readerComponentController.setPageConfig(this.readerSetting);
-                    await this.readerComponentController.startPlay(currentResourceIndex, currentDomPos);
-                    this.saveCurrentSettings();
-                }
-                catch (error) {
-                    hilog.info(0x0000, TAG, `set fontSize or lineHeight failed, Code: ${error.code}, message: ${error.message}`);
-                }
-            });
-            //更新上面两个
-            Button.onTouch((event: TouchEvent) => {
-                if (event.type === TouchType.Down) {
-                    // 按下时改变状态
-                    this.isUpdatePressed = true;
-                }
-                else if (event.type === TouchType.Up || event.type === TouchType.Cancel) {
-                    // 松开或取消时恢复状态
-                    this.isUpdatePressed = false;
-                }
-            });
-            //更新上面两个
-            Button.fontSize(16);
-            //更新上面两个
-            Button.width('92%');
-            //更新上面两个
-            Button.fontColor(Color.Red);
-            //更新上面两个
-            Button.backgroundColor(this.isUpdatePressed ? "#ffb0b0b0" : { "id": 16777259, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
-            //更新上面两个
-            Button.padding({ top: 10, bottom: 10 });
-            //更新上面两个
-            Button.margin({ left: 16, right: 16, bottom: 30 });
-        }, Button);
-        //更新上面两个
-        Button.pop();
         Column.pop();
+        Scroll.pop();
     }
     initialRender() {
         this.observeComponentCreation2((elmtId, isInitialRender) => {
@@ -1895,15 +2030,19 @@ class Reader extends ViewPU {
             else {
                 this.ifElseBranchUpdateFunction(1, () => {
                     this.observeComponentCreation2((elmtId, isInitialRender) => {
-                        __Common__.create();
-                        __Common__.zIndex(1);
-                    }, __Common__);
+                        //阅读内容展示,交互场景化组件
+                        Stack.create();
+                        //阅读内容展示,交互场景化组件
+                        Stack.width('100%');
+                        //阅读内容展示,交互场景化组件
+                        Stack.height('100%');
+                        //阅读内容展示,交互场景化组件
+                        Stack.zIndex(1);
+                    }, Stack);
                     {
                         this.observeComponentCreation2((elmtId, isInitialRender) => {
                             if (isInitialRender) {
-                                let componentCall = new 
-                                //阅读内容展示,交互场景化组件
-                                ReadPageComponent(this, {
+                                let componentCall = new ReadPageComponent(this, {
                                     controller: this.readerComponentController,
                                     readerCallback: (err: BusinessError, data: readerCore.ReaderComponentController) => {
                                         this.readerComponentController = data; //使得父组件可以持有并后续使用这个控制器来操作阅读器
@@ -1911,7 +2050,7 @@ class Reader extends ViewPU {
                                             hilog.info(0x0000, TAG, `ReadPageComponent init failed, Code: ${err.code}, message: ${err.message}`);
                                         }
                                     }
-                                }, undefined, elmtId, () => { }, { page: "entry/src/main/ets/pages/Reader.ets", line: 1422, col: 7 });
+                                }, undefined, elmtId, () => { }, { page: "entry/src/main/ets/pages/Reader.ets", line: 1515, col: 9 });
                                 ViewPU.create(componentCall);
                                 let paramsLambda = () => {
                                     return {
@@ -1931,7 +2070,59 @@ class Reader extends ViewPU {
                             }
                         }, { name: "ReadPageComponent" });
                     }
-                    __Common__.pop();
+                    this.observeComponentCreation2((elmtId, isInitialRender) => {
+                        If.create();
+                        // 单手模式：左右两侧触摸区域，点击都翻到下一页
+                        if (this.singleHandMode) {
+                            this.ifElseBranchUpdateFunction(0, () => {
+                                this.observeComponentCreation2((elmtId, isInitialRender) => {
+                                    // 左侧触摸区域
+                                    Column.create();
+                                    // 左侧触摸区域
+                                    Column.width('30%');
+                                    // 左侧触摸区域
+                                    Column.height('100%');
+                                    // 左侧触摸区域
+                                    Column.position({ x: 0, y: 0 });
+                                    // 左侧触摸区域
+                                    Column.backgroundColor(Color.Transparent);
+                                    // 左侧触摸区域
+                                    Column.onClick(() => {
+                                        hilog.info(0x0000, TAG, 'SingleHandMode: left area clicked, flip to next page');
+                                        this.readerComponentController.flipPage(true);
+                                    });
+                                }, Column);
+                                // 左侧触摸区域
+                                Column.pop();
+                                this.observeComponentCreation2((elmtId, isInitialRender) => {
+                                    // 右侧触摸区域
+                                    Column.create();
+                                    // 右侧触摸区域
+                                    Column.width('30%');
+                                    // 右侧触摸区域
+                                    Column.height('100%');
+                                    // 右侧触摸区域
+                                    Column.position({ x: '70%', y: 0 });
+                                    // 右侧触摸区域
+                                    Column.backgroundColor(Color.Transparent);
+                                    // 右侧触摸区域
+                                    Column.onClick(() => {
+                                        hilog.info(0x0000, TAG, 'SingleHandMode: right area clicked, flip to next page');
+                                        this.readerComponentController.flipPage(true);
+                                    });
+                                }, Column);
+                                // 右侧触摸区域
+                                Column.pop();
+                            });
+                        }
+                        else {
+                            this.ifElseBranchUpdateFunction(1, () => {
+                            });
+                        }
+                    }, If);
+                    If.pop();
+                    //阅读内容展示,交互场景化组件
+                    Stack.pop();
                     this.observeComponentCreation2((elmtId, isInitialRender) => {
                         //播放图标
                         Row.create();
@@ -1975,6 +2166,24 @@ class Reader extends ViewPU {
                     //播放图标
                     Row.pop();
                     this.observeComponentCreation2((elmtId, isInitialRender) => {
+                        // 章节显示
+                        Text.create(`${this.currentChapter}/${this.totalChapters}`);
+                        // 章节显示
+                        Text.fontSize(14);
+                        // 章节显示
+                        Text.fontColor('#666666');
+                        // 章节显示
+                        Text.padding({ left: 8, right: 8, top: 4, bottom: 4 });
+                        // 章节显示
+                        Text.borderRadius(12);
+                        // 章节显示
+                        Text.position({ bottom: 20, right: 20 });
+                        // 章节显示
+                        Text.zIndex(2);
+                    }, Text);
+                    // 章节显示
+                    Text.pop();
+                    this.observeComponentCreation2((elmtId, isInitialRender) => {
                         If.create();
                         //menu bar
                         if (this.currentIndex >= 0) {
@@ -2003,7 +2212,7 @@ class Reader extends ViewPU {
                                     //内部菜单容器：实际内容：目录/设置 + 底部按钮
                                     Column.width('100%');
                                     //内部菜单容器：实际内容：目录/设置 + 底部按钮
-                                    Column.height('80%');
+                                    Column.height('65%');
                                 }, Column);
                                 this.observeComponentCreation2((elmtId, isInitialRender) => {
                                     //内容区域：目录和设置
@@ -2136,13 +2345,15 @@ class Reader extends ViewPU {
         try { //获取目录列表
             //通过书籍解析器处理器（defaultHandler）调用 getCatalogList() 获取书籍的目录列表，通过 || [] 兜底，保证 catalogItemList 始终是一个数组
             this.catalogItemList = this.defaultHandler?.getCatalogList() || [];
+            // 生成完整章节列表
+            this.buildFullChapterList();
         }
         catch (error) {
             hilog.info(0x0000, TAG, `getCatalogList failed, Code: ${error.code}, message: ${error.message}`);
         }
         //触发获取书籍基本信息
         this.getBookInfo();
-        hilog.info(0x0000, TAG, 'catalog list length: ' + this.catalogItemList.length);
+        hilog.info(0x0000, TAG, 'catalog list length: ' + this.catalogItemList.length + ', full chapter list length: ' + this.fullChapterList.length);
     }
     //跳转到设置
     private jumpToSetting() {
@@ -2180,6 +2391,27 @@ class Reader extends ViewPU {
         }
         const resourceItem = this.getResourceItemByCatalog(catalogItem);
         return resourceItem.index === this.currentData.resourceIndex;
+    }
+    // 根据章节索引判断是否为当前章节
+    private isCurrentChapterByIndex(chapterIndex: number): boolean {
+        if (!this.currentData || this.currentData.resourceIndex < 0) {
+            return false;
+        }
+        return chapterIndex === this.currentData.resourceIndex;
+    }
+    // 跳转到指定章节（通过spine索引）
+    private async jumpToChapter(chapterIndex: number): Promise<void> {
+        if (chapterIndex < 0) {
+            return;
+        }
+        try {
+            await this.readerComponentController.startPlay(chapterIndex, '');
+            hilog.info(0x0000, TAG, `jumpToChapter: jumped to chapter ${chapterIndex}`);
+        }
+        catch (err) {
+            hilog.error(0x0000, TAG, `jumpToChapter failed: ${err}`);
+        }
+        this.closeModal();
     }
     // 更具传入的目录项查找并返回对应的资源项，用于定位和加载内容
     private getResourceItemByCatalog(catalogItem: bookParser.CatalogItem): bookParser.SpineItem {

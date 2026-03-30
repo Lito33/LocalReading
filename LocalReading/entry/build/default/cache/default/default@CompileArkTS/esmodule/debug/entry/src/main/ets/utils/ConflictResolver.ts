@@ -35,6 +35,7 @@ interface SyncData {
     ttsVolume?: number;
     ttsPitch?: number;
     ttsSpeed?: number;
+    singleHandMode?: boolean;
 }
 interface ConflictResolutionResult {
     conflict: boolean;
@@ -194,6 +195,7 @@ export class ConflictResolver {
         result.ttsVolume = ConflictResolver.mergeField(localData?.ttsVolume, remoteData?.ttsVolume, localTimestamp, remoteTimestamp);
         result.ttsPitch = ConflictResolver.mergeField(localData?.ttsPitch, remoteData?.ttsPitch, localTimestamp, remoteTimestamp);
         result.ttsSpeed = ConflictResolver.mergeField(localData?.ttsSpeed, remoteData?.ttsSpeed, localTimestamp, remoteTimestamp);
+        result.singleHandMode = ConflictResolver.mergeField(localData?.singleHandMode, remoteData?.singleHandMode, localTimestamp, remoteTimestamp);
         // 处理特定类型的合并逻辑（覆盖默认逻辑）
         if (conflict.dataType === 'reading_progress') {
             // 阅读进度合并：取较大的进度值（用户阅读越多越好）
@@ -524,7 +526,8 @@ export class ConflictResolver {
             fontColor: settings.fontColor,
             ttsVolume: settings.ttsVolume,
             ttsPitch: settings.ttsPitch,
-            ttsSpeed: settings.ttsSpeed
+            ttsSpeed: settings.ttsSpeed,
+            singleHandMode: settings.singleHandMode
         };
     }
     /**
@@ -549,7 +552,8 @@ export class ConflictResolver {
             fontColor: syncData.fontColor ?? sourceSettings.fontColor,
             ttsVolume: syncData.ttsVolume ?? sourceSettings.ttsVolume,
             ttsPitch: syncData.ttsPitch ?? sourceSettings.ttsPitch,
-            ttsSpeed: syncData.ttsSpeed ?? sourceSettings.ttsSpeed
+            ttsSpeed: syncData.ttsSpeed ?? sourceSettings.ttsSpeed,
+            singleHandMode: syncData.singleHandMode ?? sourceSettings.singleHandMode
         };
     }
 }

@@ -1857,7 +1857,7 @@
       ]
     },
     "D:\\devecoStudioDriector\\SomeDemo\\LocalReading\\entry\\src\\main\\ets\\common\\SettingStorage.ets": {
-      "mtimeMs": 1774787374214.9204,
+      "mtimeMs": 1774851354346.5342,
       "children": [
         "D:\\what down\\vediodown\\tool\\devecostudio\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.data.preferences.d.ts",
         "D:\\what down\\vediodown\\tool\\devecostudio\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.common.d.ts"
@@ -2404,7 +2404,7 @@
       ]
     },
     "D:\\devecoStudioDriector\\SomeDemo\\LocalReading\\entry\\src\\main\\ets\\pages\\Reader.ets": {
-      "mtimeMs": 1774784771241.3489,
+      "mtimeMs": 1774851560810.133,
       "children": [
         "D:\\devecoStudioDriector\\SomeDemo\\LocalReading\\entry\\src\\main\\ets\\entryability\\WindowAbility.ets",
         "D:\\what down\\vediodown\\tool\\devecostudio\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.display.d.ts",
@@ -2427,7 +2427,10 @@
         "D:\\devecoStudioDriector\\SomeDemo\\LocalReading\\entry\\src\\main\\ets\\utils\\DistributedSyncManager.ets"
       ],
       "parent": [],
-      "error": false
+      "error": true,
+      "errorCodes": [
+        28040
+      ]
     },
     "D:\\what down\\vediodown\\tool\\devecostudio\\DevEco Studio\\sdk\\default\\hms\\ets\\api\\@hms.ai.textToSpeech.d.ts": {
       "mtimeMs": 1768795642000,
@@ -2440,7 +2443,7 @@
       "error": false
     },
     "D:\\devecoStudioDriector\\SomeDemo\\LocalReading\\entry\\src\\main\\ets\\pages\\Login.ets": {
-      "mtimeMs": 1774787831284.6057,
+      "mtimeMs": 1774788134554.0476,
       "children": [
         "D:\\what down\\vediodown\\tool\\devecostudio\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.promptAction.d.ts",
         "D:\\what down\\vediodown\\tool\\devecostudio\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.router.d.ts",
@@ -4265,7 +4268,7 @@
       "error": false
     },
     "D:\\devecoStudioDriector\\SomeDemo\\LocalReading\\entry\\src\\main\\ets\\utils\\ConflictResolver.ets": {
-      "mtimeMs": 1774331420574.376,
+      "mtimeMs": 1774851732659.8152,
       "children": [
         "D:\\what down\\vediodown\\tool\\devecostudio\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.hilog.d.ts",
         "D:\\devecoStudioDriector\\SomeDemo\\LocalReading\\entry\\src\\main\\ets\\common\\ProgressStorage.ets",

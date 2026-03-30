@@ -29,6 +29,13 @@ interface AttemptParams {
   path: string;
 }
 
+// 章节项（用于目录显示）
+interface ChapterItem {
+  index: number;        // spine索引
+  name: string;         // 章节名称
+  href: string;         // 章节路径
+}
+
 const TAG: string = 'ReaderPage';
 
 
@@ -54,18 +61,23 @@ struct Reader {
   @State currentIndex: number = -1;
   //章节列表元素
   @State catalogItemList: bookParser.CatalogItem[] = [];
+  // 完整章节列表（基于spine，包含所有章节）
+  @State fullChapterList: ChapterItem[] = [];
   //readerCore.PageDataInfo包含当前页内容、页码、章节信息等关键数据
   private currentData: readerCore.PageDataInfo | null = null;
   //书籍解析器处理器
   private defaultHandler: bookParser.BookParserHandler | null = null;
   //阅读控制器:例如翻页、跳转章节、获取当前阅读进度等
   private readerComponentController: readerCore.ReaderComponentController = new readerCore.ReaderComponentController();
+  // 章节显示相关状态
+  @State currentChapter: number = 1;  // 当前章节（从1开始）
+  @State totalChapters: number = 0;  // 总章节数
   @State bookCover: PixelMap | null = null;
   @State bookTitle: string = '';
   @State author: string = '';
   @State loadError: string = ''; // 加载错误信息
-  @State fontSize: string = '18';
-  @State lineHeight: string = '';
+  @State fontSize: number = 18;  // 字体大小 (12-32)
+  @State lineHeight: number = 1.9;  // 行间距 (1.0-3.0)
   //初始化字体列表
   private fontList: Array<FontFileInfo> =
     //BookUtils.getString(context,name)根据资源名称从应用的资源管理器中获取对应的本地化字符串。
@@ -115,14 +127,16 @@ struct Reader {
   }
   //主题
   @State themeSelectIndex: number = 0;
+  // 单手模式：点击屏幕左右两侧都翻到下一页
+  @State singleHandMode: boolean = false;
 //阅读相关设置
   private readerSetting: readerCore.ReaderSetting = {
     fontName: BookUtils.getString(this.getUIContext().getHostContext(), 'system_font'),
     fontPath: '',
-    fontSize: Number.parseInt(this.fontSize),
+    fontSize: this.fontSize,
     fontColor: '#000000',
     fontWeight: 400,
-    lineHeight: 1.9,
+    lineHeight: this.lineHeight,
     nightMode: false,
     themeColor: 'rgba(248, 249, 250, 1)',
     themeBgImg: '',
@@ -195,8 +209,8 @@ struct Reader {
 
         // 更新 UI 状态变量
         this.selectFontPath = saved.fontPath  ?? '';
-        this.fontSize = (saved.fontSize ?? 18).toString();
-        this.lineHeight = (saved.lineHeight ?? 1.9).toString();
+        this.fontSize = saved.fontSize ?? 18;
+        this.lineHeight = saved.lineHeight ?? 1.9;
 
         // 优先使用保存的字体颜色和夜间模式设置
         // 如果保存的设置中有有效的 fontColor（非空字符串），直接使用
@@ -244,6 +258,11 @@ struct Reader {
           this.speaker.setSpeed(this.ttsSpeed);
         } else {
           this.ttsSpeed = 1.0;
+        }
+
+        // 加载单手模式设置
+        if (saved.singleHandMode !== undefined) {
+          this.singleHandMode = saved.singleHandMode;
         }
 
         // 如果保存的字体路径在字体列表中，可能需要高亮（字体选择按钮已经通过 selectFontPath 处理）
@@ -385,9 +404,65 @@ struct Reader {
     return this.loadFileFromPath(resourcePath);
   }
 
-  //添加“阅读页面展示”回调，在回调方法内通过AppStorage保存“当前页面数据”。
-  // Index页面会监听到PageDataInfo的变化，用于“继续阅读按钮”的展示，以及跳转到指定阅读进度。
-  //动态响应资源请求、页面状态变化和窗口尺寸调整，确保阅读功能的流畅性和界面适配
+
+
+
+  // 更新章节信息
+  private updateChapterInfo(data: readerCore.PageDataInfo): void {
+    if (!data || data.resourceIndex < 0) {
+      return;
+    }
+
+    const spineList = this.defaultHandler?.getSpineList() || [];
+    if (spineList.length === 0) {
+      return;
+    }
+
+    // 当前章节 = resourceIndex + 1（resourceIndex从0开始）
+    this.currentChapter = data.resourceIndex + 1;
+    this.totalChapters = spineList.length;
+    
+    hilog.info(0x0000, TAG, `Chapter: ${this.currentChapter}/${this.totalChapters}`);
+  }
+
+  // 生成完整章节列表（基于spine）
+  private buildFullChapterList(): void {
+    const spineList = this.defaultHandler?.getSpineList() || [];
+    const catalogList = this.defaultHandler?.getCatalogList() || [];
+    
+    if (spineList.length === 0) {
+      return;
+    }
+
+    this.fullChapterList = [];
+    for (let i = 0; i < spineList.length; i++) {
+      const spineItem = spineList[i];
+      // 尝试从目录中匹配章节名称
+      let chapterName = '';
+      const catalogItem = catalogList.find(item =>
+        item.href === spineItem.href ||
+        item.href === spineItem.idRef ||
+        (spineItem.href && item.href && spineItem.href.includes(item.href)) ||
+        (spineItem.idRef && item.href && spineItem.idRef.includes(item.href))
+      );
+      
+      if (catalogItem) {
+        chapterName = catalogItem.catalogName;
+      } else {
+        // 如果目录中没有，使用spine的idRef或生成默认名称
+        chapterName = spineItem.idRef || `章节 ${i + 1}`;
+      }
+
+      this.fullChapterList.push({
+        index: i,
+        name: chapterName,
+        href: spineItem.href || spineItem.idRef || ''
+      });
+    }
+    
+    hilog.info(0x0000, TAG, `buildFullChapterList: spineList.length=${spineList.length}, catalogList.length=${catalogList.length}, total chapters = ${this.fullChapterList.length}`);
+  }
+
   private registerListener(): void {
     //资源请求监听
     this.readerComponentController.on('resourceRequest', this.resourceRequest);
@@ -398,6 +473,9 @@ struct Reader {
       // 保存页面数据
       AppStorage.setOrCreate('currentData', this.currentData);
       
+      // 更新章节信息
+      this.updateChapterInfo(data);
+
       // 只要页面状态变化就保存进度，不仅仅是 PAGE_ON_SHOW
       if (data.state === readerCore.PageState.PAGE_ON_SHOW || 
           data.state === readerCore.PageState.PAGE_LOADING) {
@@ -576,6 +654,8 @@ struct Reader {
       try {
         await this.readerComponentController.startPlay(resourceIndex || 0, domPos);
         hilog.info(0x0000, TAG, 'startPlay: readerComponentController.startPlay completed');
+        // 在startPlay完成后生成完整章节列表（此时书籍已完全加载，spine列表完整）
+        this.buildFullChapterList();
       } catch (err) {
         hilog.error(0x0000, TAG, `startPlay: readerComponentController.startPlay failed: ${err}`);
       }
@@ -644,6 +724,7 @@ struct Reader {
       ttsVolume: this.ttsVolume,
       ttsPitch: this.ttsPitch,
       ttsSpeed: this.ttsSpeed,
+      singleHandMode: this.singleHandMode,
     };
     await SettingStorage.saveSettings(context, settings);
     // 触发数据同步
@@ -668,6 +749,7 @@ struct Reader {
       ttsVolume: this.ttsVolume,
       ttsPitch: this.ttsPitch,
       ttsSpeed: this.ttsSpeed,
+      singleHandMode: saved?.singleHandMode ?? this.singleHandMode,
     };
     await SettingStorage.saveSettings(context, settings);
     // 触发数据同步
@@ -908,18 +990,18 @@ struct Reader {
       .alignSelf(ItemAlign.Start)
 
       List() {
-        ForEach(this.catalogItemList, (item: bookParser.CatalogItem) => {
+        ForEach(this.fullChapterList, (item: ChapterItem) => {
           ListItem() {
             Column() {
               Row() {
                 Row() {
                   Text(' · ')
                     .fontSize(14)
-                    .fontColor(this.isCurrentChapter(item) ? $r('app.color.blue') : $r('app.color.black_90_opacity'))
-                  Text(item.catalogName)
+                    .fontColor(this.isCurrentChapterByIndex(item.index) ? $r('app.color.blue') : $r('app.color.black_90_opacity'))
+                  Text(item.name)
                     .fontSize(14)
-                    .fontColor(this.isCurrentChapter(item) ? $r('app.color.blue') : $r('app.color.black_90_opacity'))
-                    .fontWeight(this.isCurrentChapter(item) ? FontWeight.Bold : FontWeight.Normal)
+                    .fontColor(this.isCurrentChapterByIndex(item.index) ? $r('app.color.blue') : $r('app.color.black_90_opacity'))
+                    .fontWeight(this.isCurrentChapterByIndex(item.index) ? FontWeight.Bold : FontWeight.Normal)
                     .textOverflow({ overflow: TextOverflow.Ellipsis })
                     .padding({ top: 8, bottom: 8 })
                     .maxLines(2)
@@ -934,20 +1016,20 @@ struct Reader {
               Divider()
             }
             .padding({
-              left: item.catalogLevel ? item.catalogLevel * 26 : 16,
+              left: 16,
               right: 16,
               top: 6,
               bottom: 6
             })
             .onClick(async () => {
-              this.jumpToCatalogItem(item);
+              this.jumpToChapter(item.index);
             })
           }
-        })
+        }, (item: ChapterItem) => item.index.toString())
       }
       .scrollBar(BarState.Off)
       .width('100%')
-      .height('100%')
+      .layoutWeight(1)  // 使用layoutWeight占据剩余空间，避免被顶部固定高度元素挤压
       .edgeEffect(EdgeEffect.None)//去掉滚动到边缘的回弹效果
     }
     .height('100%')
@@ -960,9 +1042,10 @@ struct Reader {
 
   @Builder
   private buildSetting() {
-    Column() {
-      //适配不同UI
-      GridRow({
+    Scroll() {
+      Column() {
+        //适配不同UI
+        GridRow({
         columns: {
           xs: 4,
           sm: 4,
@@ -1090,6 +1173,36 @@ struct Reader {
           .fontSize(16)
           .lineHeight(21)
           .fontColor(Color.Black)
+      }
+      .width('100%')
+      .margin({ left: 16, top: 16, right: 16 })
+
+      Text()
+        .width('92%')
+        .height(1)
+        .margin({ left: 16, top: 12, right: 16 })
+        .backgroundColor($r('app.color.ic_bg_grey'))
+
+      // 单手模式开关
+      Row() {
+        Text($r('app.string.SingleMode'))
+          .fontColor(Color.Black)
+          .fontSize(15)
+          .width(65)
+          .margin({ left: 5 })
+
+        Toggle({ type: ToggleType.Switch, isOn: this.singleHandMode })
+          .selectedColor(Color.Blue)
+          .onChange((isOn: boolean) => {
+            this.singleHandMode = isOn;
+            this.saveCurrentSettings();
+            hilog.info(0x0000, TAG, `Single hand mode changed to: ${isOn}`);
+          })
+
+        Text($r('app.string.SingleModeDescription'))
+          .fontSize(14)
+          .fontColor('#666666')
+          .margin({ left: 8 })
       }
       .width('100%')
       .margin({ left: 16, top: 16, right: 16 })
@@ -1295,102 +1408,81 @@ struct Reader {
       Row(){
         Text($r('app.string.FontSize'))
           .fontColor(Color.Black)
-          .fontSize(13)
-          .width(30)
-          .margin({left:8})
-
-        TextInput({ placeholder: $r('app.string.font_size_placeholder'), text: this.fontSize })
-          .margin({
-            left: 10,
-            top: 10,
-            right: 16,
-            bottom: 10
-          })
-          .backgroundColor($r('app.color.ic_text_input_bg'))
-          //It is recommended that you use layered parameters for easier color mode switching and theme color changing. <ArkTSCheck>
-          .placeholderColor($r('sys.color.ohos_dialog_text_alert'))
-          .fontColor($r('sys.color.ohos_dialog_text_alert'))
-          .type(InputType.Number)
           .fontSize(16)
-          .onChange((value: string) => {//更改数值
-            this.fontSize = value;
+          .width(50)
+          .margin({left:5})
+
+        Slider({value: this.fontSize, min: 12, max: 32, step: 1, style: SliderStyle.InSet})
+          .blockColor('#191970')
+          .trackColor('#ADD8E6')
+          .selectedColor('#4169E1')
+          .showSteps(true)
+          .showTips(true)
+          .width('60%')
+          .onChange((value: number, mode: SliderChangeMode) => {
+            this.fontSize = Math.round(value);
+            this.readerSetting.fontSize = this.fontSize;
+            this.readerComponentController.setPageConfig(this.readerSetting);
+            this.saveCurrentSettings();
+            hilog.info(0x0000, TAG, `FontSize changed to: ${this.fontSize}`);
           })
-          .width("80%")
+
+        Text(`${this.fontSize}`)
+          .fontColor(Color.Black)
+          .fontSize(14)
+          .width(30)
+          .textAlign(TextAlign.Center)
       }
-      .width("100%")
-      .justifyContent(FlexAlign.SpaceBetween)
+      .width('100%')
+      .padding({left:10, right:10})
 
 
       //行间距
       Row(){
         Text($r('app.string.LineHeight'))
           .fontColor(Color.Black)
-          .fontSize(13)
-          .width(30)
-          .margin({left:8})
-
-        TextInput({ placeholder: $r('app.string.line_height_placeholder'), text: this.lineHeight })
-          .margin({ left: 10, right: 16, bottom: 10 })
-          .backgroundColor($r('app.color.ic_text_input_bg'))
-          .placeholderColor($r('sys.color.ohos_dialog_text_alert'))
-          .fontColor($r('sys.color.ohos_dialog_text_alert'))
-          .type(InputType.NUMBER_DECIMAL)
           .fontSize(16)
-          .onChange((value: string) => {//更改数值
-            this.lineHeight = value;
-          })
-          .width("80%")
-      }
-      .width("100%")
-      .justifyContent(FlexAlign.SpaceBetween)
+          .width(50)
+          .margin({left:5})
 
-
-      //更新上面两个
-      Button($r('app.string.update_font_size_and_line_height'))
-        .onClick(async () => {
-          const currentResourceIndex = this.currentData?.resourceIndex ?? 0;
-          const currentDomPos = this.currentData?.startDomPos ?? '';
-
-          hilog.info(0x0000, TAG,
-            'click : update page setting, fontSize = ' + this.fontSize + ' ,lineHeight = ' + this.lineHeight);
-          if (!isNaN(Number.parseInt(this.fontSize))) {
-            this.readerSetting.fontSize = Number.parseInt(this.fontSize);
-          }
-          if (!isNaN(Number.parseInt(this.lineHeight))) {
-            this.readerSetting.lineHeight = Number.parseInt(this.lineHeight);
-          }
-          try {
+        Slider({value: this.lineHeight, min: 1.0, max: 3.0, step: 0.1, style: SliderStyle.InSet})
+          .blockColor('#191970')
+          .trackColor('#ADD8E6')
+          .selectedColor('#4169E1')
+          .showSteps(true)
+          .showTips(true)
+          .width('60%')
+          .onChange((value: number, mode: SliderChangeMode) => {
+            this.lineHeight = Math.round(value * 10) / 10;
+            this.readerSetting.lineHeight = this.lineHeight;
             this.readerComponentController.setPageConfig(this.readerSetting);
-            await this.readerComponentController.startPlay(currentResourceIndex, currentDomPos);
-            this.saveCurrentSettings()
-          } catch (error) {
-            hilog.info(0x0000, TAG,
-              `set fontSize or lineHeight failed, Code: ${error.code}, message: ${error.message}`);
-          }
-        })
-        .onTouch((event: TouchEvent) => {
-          if (event.type === TouchType.Down) {
-            // 按下时改变状态
-            this.isUpdatePressed = true;
-          } else if (event.type === TouchType.Up || event.type === TouchType.Cancel) {
-            // 松开或取消时恢复状态
-            this.isUpdatePressed = false;
-          }
-        })
-        .fontSize(16)
-        .width('92%')
-        .fontColor(Color.Red)
-        .backgroundColor(this.isUpdatePressed ? "#ffb0b0b0" : $r('app.color.ic_text_input_bg'))
-        .padding({ top: 10, bottom: 10 })
-        .margin({ left: 16, right: 16, bottom: 30 })
+            this.saveCurrentSettings();
+            hilog.info(0x0000, TAG, `LineHeight changed to: ${this.lineHeight}`);
+          })
 
+        Text(`${this.lineHeight.toFixed(1)}`)
+          .fontColor(Color.Black)
+          .fontSize(14)
+          .width(40)
+          .textAlign(TextAlign.Center)
+      }
+      .width('100%')
+      .padding({left:10, right:10})
+
+
+      // 字体大小和行间距现在通过滑块实时更新，不再需要确认按钮
+
+      }
+      .width('100%')
+      .alignItems(HorizontalAlign.Start)
     }
-    .borderRadius({ topRight: 32, topLeft: 32 })
+    .scrollBar(BarState.Auto)
+    .edgeEffect(EdgeEffect.None)
     .width('100%')
     .height('100%')
     .visibility(this.currentIndex === 1 ? Visibility.Visible : Visibility.None)
-    .alignItems(HorizontalAlign.Start)
     .backgroundColor(this.eyeMode ? '#FAF9DE' : $r('app.color.page_background1'))
+    .borderRadius({ topRight: 32, topLeft: 32 })
     .zIndex(3)
   }
 
@@ -1419,15 +1511,45 @@ struct Reader {
         .zIndex(10) // 确保在最上层
       } else {
       //阅读内容展示,交互场景化组件
-      ReadPageComponent({
-        controller: this.readerComponentController,
-        readerCallback: (err: BusinessError, data: readerCore.ReaderComponentController) => {
-          this.readerComponentController = data;//使得父组件可以持有并后续使用这个控制器来操作阅读器
-          if (err) {
-            hilog.info(0x0000, TAG, `ReadPageComponent init failed, Code: ${err.code}, message: ${err.message}`);
+      Stack() {
+        ReadPageComponent({
+          controller: this.readerComponentController,
+          readerCallback: (err: BusinessError, data: readerCore.ReaderComponentController) => {
+            this.readerComponentController = data;//使得父组件可以持有并后续使用这个控制器来操作阅读器
+            if (err) {
+              hilog.info(0x0000, TAG, `ReadPageComponent init failed, Code: ${err.code}, message: ${err.message}`);
+            }
           }
+        })
+
+        // 单手模式：左右两侧触摸区域，点击都翻到下一页
+        if (this.singleHandMode) {
+          // 左侧触摸区域
+          Column()
+            .width('30%')
+            .height('100%')
+            .position({ x: 0, y: 0 })
+            .backgroundColor(Color.Transparent)
+            .onClick(() => {
+              hilog.info(0x0000, TAG, 'SingleHandMode: left area clicked, flip to next page');
+              this.readerComponentController.flipPage(true);
+            })
+
+          // 右侧触摸区域
+          Column()
+            .width('30%')
+            .height('100%')
+            .position({ x: '70%', y: 0 })
+            .backgroundColor(Color.Transparent)
+            .onClick(() => {
+              hilog.info(0x0000, TAG, 'SingleHandMode: right area clicked, flip to next page');
+              this.readerComponentController.flipPage(true);
+            })
         }
-      }).zIndex(1)
+      }
+      .width('100%')
+      .height('100%')
+      .zIndex(1)
       //播放图标
       Row(){
         Image(this.isClicked ? $r('app.media.VideoPlay_on') : $r('app.media.VideoPlay_off'))
@@ -1461,6 +1583,15 @@ struct Reader {
       .zIndex(4)
       .visibility(this.currentIndex >= 0 ? Visibility.Visible : Visibility.None)
       .animation({duration: 300, curve: Curve.EaseInOut})
+
+      // 章节显示
+      Text(`${this.currentChapter}/${this.totalChapters}`)
+        .fontSize(14)
+        .fontColor('#666666')
+        .padding({ left: 8, right: 8, top: 4, bottom: 4 })
+        .borderRadius(12)
+        .position({ bottom: 20, right: 20 })
+        .zIndex(2)
 
       //menu bar
       if (this.currentIndex >= 0) {
@@ -1502,7 +1633,7 @@ struct Reader {
             .backgroundColor(Color.White)
           }
           .width('100%')
-          .height('80%')
+          .height('65%')
 
         }
         .width('100%')
@@ -1563,12 +1694,14 @@ struct Reader {
     try {//获取目录列表
       //通过书籍解析器处理器（defaultHandler）调用 getCatalogList() 获取书籍的目录列表，通过 || [] 兜底，保证 catalogItemList 始终是一个数组
       this.catalogItemList = this.defaultHandler?.getCatalogList() || [];
+      // 生成完整章节列表
+      this.buildFullChapterList();
     } catch (error) {
       hilog.info(0x0000, TAG, `getCatalogList failed, Code: ${error.code}, message: ${error.message}`);
     }
     //触发获取书籍基本信息
     this.getBookInfo();
-    hilog.info(0x0000, TAG, 'catalog list length: ' + this.catalogItemList.length);
+    hilog.info(0x0000, TAG, 'catalog list length: ' + this.catalogItemList.length + ', full chapter list length: ' + this.fullChapterList.length);
   }
 
   //跳转到设置
@@ -1609,6 +1742,29 @@ struct Reader {
     }
     const resourceItem = this.getResourceItemByCatalog(catalogItem);
     return resourceItem.index === this.currentData.resourceIndex;
+  }
+
+  // 根据章节索引判断是否为当前章节
+  private isCurrentChapterByIndex(chapterIndex: number): boolean {
+    if (!this.currentData || this.currentData.resourceIndex < 0) {
+      return false;
+    }
+    return chapterIndex === this.currentData.resourceIndex;
+  }
+
+  // 跳转到指定章节（通过spine索引）
+  private async jumpToChapter(chapterIndex: number): Promise<void> {
+    if (chapterIndex < 0) {
+      return;
+    }
+    
+    try {
+      await this.readerComponentController.startPlay(chapterIndex, '');
+      hilog.info(0x0000, TAG, `jumpToChapter: jumped to chapter ${chapterIndex}`);
+    } catch (err) {
+      hilog.error(0x0000, TAG, `jumpToChapter failed: ${err}`);
+    }
+    this.closeModal();
   }
 
   // 更具传入的目录项查找并返回对应的资源项，用于定位和加载内容

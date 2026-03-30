@@ -129,6 +129,7 @@ struct LoginBottom{
     const account = this.account.trim();
     const password = this.password.trim();
 
+    
     if (!account || !password) {
       promptAction.showToast({ message: '账号和密码不能为空', duration: 2000 });
       this.loginResult = { success: false, isRegister: false };
