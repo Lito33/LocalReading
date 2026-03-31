@@ -559,7 +559,7 @@ struct Reader {
     await ProgressStorage.saveProgress(context, progress, currentUser);
     hilog.info(0x0000, TAG, 'saveCurrentProgress: progress saved successfully');
     
-    // ✅ 通知Index页面进度已更新，触发刷新
+    //  通知Index页面进度已更新，触发刷新
     AppStorage.setOrCreate('progressUpdated', Date.now());
 
     //保存后自动同步-每次翻页后
