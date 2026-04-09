@@ -1,0 +1,25 @@
+{
+  "modulePathMap": {
+    "entry": "D:\\devecoStudioDriector\\SomeDemo\\LocalReading\\entry",
+    "note": "D:\\devecoStudioDriector\\SomeDemo\\LocalReading\\exfeature\\note"
+  },
+  "compileMode": "esmodule",
+  "projectRootPath": "D:\\devecoStudioDriector\\SomeDemo\\LocalReading",
+  "nodeModulesPath": "D:\\devecoStudioDriector\\SomeDemo\\LocalReading\\entry\\.preview\\default\\intermediates\\loader_out\\default\\node_modules",
+  "byteCodeHarInfo": {},
+  "declarationEntry": [],
+  "moduleName": "entry",
+  "hspNameOhmMap": {},
+  "harNameOhmMap": {},
+  "packageManagerType": "ohpm",
+  "compileEntry": [],
+  "otherCompileFiles": [],
+  "dynamicImportLibInfo": {},
+  "routerMap": [],
+  "hspResourcesMap": {},
+  "updateVersionInfo": {},
+  "customizedHar": false,
+  "anBuildOutPut": "D:\\devecoStudioDriector\\SomeDemo\\LocalReading\\entry\\.preview\\default\\intermediates\\loader_out\\default\\an\\arm64-v8a",
+  "anBuildMode": "type",
+  "buildConfigPath": ".preview\\config\\buildConfig.json"
+}

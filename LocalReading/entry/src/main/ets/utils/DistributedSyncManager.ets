@@ -7,7 +7,7 @@ import { SettingStorage, PersistedReaderSettings } from '../common/SettingStorag
 import { GlobalContext } from '../common/GlobalContext';
 import { StoredUserCredential } from './PasswordUtil';
 import { ProgressStorage, BookProgress } from '../common/ProgressStorage';
-import { ConflictResolver } from './ConflictResolver';
+import { ConflictResolver, ResolutionStrategy } from './ConflictResolver';
 import { BookStorage } from '../common/BookStorage';
 import { BookParserInfo } from '../common/BookParserInfo';
 
@@ -43,6 +43,7 @@ export interface SyncStatus {
   syncError?: string;
 }
 
+
 export class DistributedSyncManager {
   private static instance: DistributedSyncManager;
   private dataObject: distributedDataObject.DataObject | null = null;
@@ -51,6 +52,9 @@ export class DistributedSyncManager {
     lastSyncTime: 0
   };
   private onDataChanged: (() => void) | null = null;
+
+  // 冲突解决策略，默认为 MERGE
+  private conflictStrategy: ResolutionStrategy = { strategy: 'MERGE', autoResolve: true };
 
   public static getInstance(): DistributedSyncManager {
     if (!DistributedSyncManager.instance) {
@@ -149,7 +153,7 @@ export class DistributedSyncManager {
         const conflictResult = ConflictResolver.resolveSettingsConflict(
           localSettings,
           remoteSettings,
-          ConflictResolver.getDefaultStrategy()
+          this.conflictStrategy
         );
         
         if (conflictResult.resolvedSettings) {
@@ -217,7 +221,7 @@ export class DistributedSyncManager {
       const mergedProgresses = ConflictResolver.resolveBatchProgressConflicts(
         localProgresses,
         remoteProgresses,
-        ConflictResolver.getDefaultStrategy()
+        this.conflictStrategy
       );
       
       // 保存合并后的进度

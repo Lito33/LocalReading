@@ -195,6 +195,12 @@ export struct Index {
 
     } catch (error) {
       hilog.error(0x0000, TAG, `loadBook failed , Code: ${error.code}, message: ${error.message}`);
+
+      this.getUIContext().getPromptAction().showToast({
+        message: `导入失败：${error.message} || 书籍文件损坏 }`,
+        duration: 3000,
+      });
+
     }
 
 

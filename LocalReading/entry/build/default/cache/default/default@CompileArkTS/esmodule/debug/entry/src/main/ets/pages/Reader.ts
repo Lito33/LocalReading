@@ -596,7 +596,7 @@ class Reader extends ViewPU {
                 this.selectFontPath = saved.fontPath ?? '';
                 this.fontSize = saved.fontSize ?? 18;
                 this.lineHeight = saved.lineHeight ?? 1.9;
-                // 优先使用保存的字体颜色和夜间模式设置
+                // 优先使用保存的字体颜色和主题模式设置
                 // 如果保存的设置中有有效的 fontColor（非空字符串），直接使用
                 // themeList: ['white', 'yellow', 'pink', 'green', 'dark', 'whiteSky', 'darkSky']
                 // index 4 (dark), 6 (darkSky) 需要白色字体
@@ -652,7 +652,6 @@ class Reader extends ViewPU {
                 if (saved.singleHandMode !== undefined) {
                     this.singleHandMode = saved.singleHandMode;
                 }
-                // 如果保存的字体路径在字体列表中，可能需要高亮（字体选择按钮已经通过 selectFontPath 处理）
             }
             //获取路由参数启动阅读器！
             hilog.info(0x0000, TAG, `========== aboutToAppear: Getting Router Params ==========`);
@@ -1220,7 +1219,6 @@ class Reader extends ViewPU {
         }
         this.readerComponentController.off('pageShow');
         this.readerComponentController.off('resourceRequest');
-        //获取Index页面传入的“书籍文件路径”及“阅读进度”信息，并调用startPlay()接口打开书籍。
         this.readerComponentController.releaseBook();
         // 只停止朗读，不关闭引擎（引擎可以复用）
         this.speaker?.stopSpeak();
@@ -1421,7 +1419,7 @@ class Reader extends ViewPU {
     private buildSetting(parent = null) {
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Scroll.create();
-            Scroll.scrollBar(BarState.Auto);
+            Scroll.scrollBar(BarState.Off);
             Scroll.edgeEffect(EdgeEffect.None);
             Scroll.width('100%');
             Scroll.height('100%');
@@ -2050,7 +2048,7 @@ class Reader extends ViewPU {
                                             hilog.info(0x0000, TAG, `ReadPageComponent init failed, Code: ${err.code}, message: ${err.message}`);
                                         }
                                     }
-                                }, undefined, elmtId, () => { }, { page: "entry/src/main/ets/pages/Reader.ets", line: 1513, col: 9 });
+                                }, undefined, elmtId, () => { }, { page: "entry/src/main/ets/pages/Reader.ets", line: 1512, col: 9 });
                                 ViewPU.create(componentCall);
                                 let paramsLambda = () => {
                                     return {
@@ -2361,39 +2359,6 @@ class Reader extends ViewPU {
     private jumpToSetting() {
         this.currentIndex = 1;
     }
-    //跳转到指定目录章节
-    private async jumpToCatalogItem(catalogItem: bookParser.CatalogItem) {
-        //获取文档位置，根据目录项信息计算出在文档中的精确位置（例如章节开头的元素ID或字符偏移量），用于实现定位。
-        const domPos = await this.getDomPos(catalogItem);
-        //获取资源索引，将目录项映射到对应的资源索引（ps章节号），以便阅读器知道加载哪个资源块。
-        const resourceIndex = this.getResourceItemByCatalog(catalogItem).index;
-        //调用阅读器控制器的 startPlay 方法，传入资源索引和位置信息，让阅读器跳转到指定章节并定位到 domPos 位置。
-        this.readerComponentController.startPlay(resourceIndex, domPos).catch(() => {
-            hilog.info(0x0000, TAG, `startPlay failed`);
-        });
-        this.closeModal();
-    }
-    // 根据传入的目录项获取该章节在书籍文档中的具体定位标识
-    private async getDomPos(catalogItem: bookParser.CatalogItem): Promise<string> {
-        try {
-            // 通过 this.defaultHandler（书籍解析器处理器）调用 getDomPosByCatalogHref 方法，
-            // 并传入目录项的 href 属性（通常指向章节在文档中的唯一标识，如文件名或元素ID）
-            const domPos: string = this.defaultHandler?.getDomPosByCatalogHref(catalogItem.href || '') || '';
-            return domPos;
-        }
-        catch (error) {
-            hilog.info(0x0000, TAG, `getDomPos failed, Code: ${error.code}, message: ${error.message}`);
-        }
-        return Promise.reject();
-    }
-    // 判断某个目录项是否是当前所在章节
-    private isCurrentChapter(catalogItem: bookParser.CatalogItem): boolean {
-        if (!this.currentData || this.currentData.resourceIndex < 0) {
-            return false;
-        }
-        const resourceItem = this.getResourceItemByCatalog(catalogItem);
-        return resourceItem.index === this.currentData.resourceIndex;
-    }
     // 根据章节索引判断是否为当前章节
     private isCurrentChapterByIndex(chapterIndex: number): boolean {
         if (!this.currentData || this.currentData.resourceIndex < 0) {
@@ -2414,36 +2379,6 @@ class Reader extends ViewPU {
             hilog.error(0x0000, TAG, `jumpToChapter failed: ${err}`);
         }
         this.closeModal();
-    }
-    // 更具传入的目录项查找并返回对应的资源项，用于定位和加载内容
-    private getResourceItemByCatalog(catalogItem: bookParser.CatalogItem): bookParser.SpineItem {
-        // 获取目标资源文件名
-        let resourceFile = catalogItem.resourceFile || '';
-        try {
-            // 获取整个 Spine 列表
-            let spineList: bookParser.SpineItem[] = this.defaultHandler?.getSpineList() || [];
-            //按文件名匹配资源项
-            let resourceItemArr = spineList.filter(item => item.href === resourceFile);
-            if (resourceItemArr.length > 0) { // 返回匹配项或默认项
-                hilog.info(0x0000, TAG, 'getResourceItemByCatalog get resource ', resourceItemArr[0]);
-                let resourceItem = resourceItemArr[0];
-                return resourceItem;
-            }
-            else if (spineList.length > 0) {
-                hilog.info(0x0000, TAG, 'getResourceItemByCatalog get resource in resourceList', spineList[0]);
-                return spineList[0];
-            }
-        }
-        catch (error) {
-            hilog.info(0x0000, TAG, `getSpineList failed, Code: ${error.code}, message: ${error.message}`);
-        }
-        hilog.info(0x0000, TAG, 'getResourceItemByCatalog get resource in escape');
-        return {
-            idRef: '',
-            index: 0,
-            href: '',
-            properties: ''
-        };
     }
     //获取背景图片
     getBackgroundImage(themeType: string): Resource | string {

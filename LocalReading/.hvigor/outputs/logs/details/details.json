@@ -32,28 +32,28 @@
     "IS_HVIGORFILE_TYPE_CHECK": false,
     "TASK_TIME": {
       "923fe53966c6cd9343e11af776cd4b05be315ea4b200b02e4d5dfb0f929b73bf": {
-        "CreateModuleInfo": 680400,
-        "PreCheckSyscap": 415700,
-        "GeneratePkgContextInfo": 3175600,
-        "ProcessIntegratedHsp": 686100,
-        "SyscapTransform": 2251800,
-        "ProcessStartupConfig": 1927100,
-        "ConfigureCmake": 1087300,
-        "BuildNativeWithCmake": 389200,
-        "BuildNativeWithNinja": 439700,
-        "BuildJS": 2454500,
-        "CompileArkTS": 2148942400,
-        "ProcessCompiledResources": 588900,
-        "PackageHap": 164178200,
-        "PackingCheck": 4817400,
-        "SignHap": 387862700,
-        "CollectDebugSymbol": 1176700,
-        "assembleHap": 299500
+        "CreateModuleInfo": 3047400,
+        "PreCheckSyscap": 1338800,
+        "GeneratePkgContextInfo": 18731400,
+        "ProcessIntegratedHsp": 3562100,
+        "SyscapTransform": 37746000,
+        "ProcessStartupConfig": 4638400,
+        "ConfigureCmake": 947700,
+        "BuildNativeWithCmake": 719000,
+        "BuildNativeWithNinja": 3567300,
+        "BuildJS": 7154600,
+        "CompileArkTS": 56902324200,
+        "ProcessCompiledResources": 2236700,
+        "PackageHap": 1143498400,
+        "PackingCheck": 18914700,
+        "SignHap": 2561597900,
+        "CollectDebugSymbol": 3019600,
+        "assembleHap": 1116000
       },
       "edb465624291e4053c6c5ea4b7eb320dec773e10a57d26b95dcf0564f8e310f8": {
-        "ConfigureCmake": 410900,
-        "BuildNativeWithCmake": 307400,
-        "BuildNativeWithNinja": 583400
+        "ConfigureCmake": 767600,
+        "BuildNativeWithCmake": 1035100,
+        "BuildNativeWithNinja": 2165800
       }
     },
     "APIS": [
@@ -64,7 +64,7 @@
       "ENABLE_CPP_FUNCTION_LEVEL_INCREMENTAL": false
     },
     "CONFIG_PROPERTIES": {},
-    "TOTAL_TIME": 2971118400,
-    "BUILD_ID": "202603312203352660"
+    "BUILD_ID": "202604092240485600",
+    "TOTAL_TIME": 115308022300
   }
 }

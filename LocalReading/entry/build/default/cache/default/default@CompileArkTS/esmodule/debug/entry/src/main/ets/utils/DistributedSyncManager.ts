@@ -10,6 +10,7 @@ import type { StoredUserCredential } from './PasswordUtil';
 import { ProgressStorage } from "@bundle:com.example.readerkitdemo/entry/ets/common/ProgressStorage";
 import type { BookProgress } from "@bundle:com.example.readerkitdemo/entry/ets/common/ProgressStorage";
 import { ConflictResolver } from "@bundle:com.example.readerkitdemo/entry/ets/utils/ConflictResolver";
+import type { ResolutionStrategy } from "@bundle:com.example.readerkitdemo/entry/ets/utils/ConflictResolver";
 import { BookStorage } from "@bundle:com.example.readerkitdemo/entry/ets/common/BookStorage";
 import { BookParserInfo } from "@bundle:com.example.readerkitdemo/entry/ets/common/BookParserInfo";
 const TAG = 'DistributedSyncManager';
@@ -48,6 +49,8 @@ export class DistributedSyncManager {
         lastSyncTime: 0
     };
     private onDataChanged: (() => void) | null = null;
+    // 冲突解决策略，默认为 MERGE
+    private conflictStrategy: ResolutionStrategy = { strategy: 'MERGE', autoResolve: true };
     public static getInstance(): DistributedSyncManager {
         if (!DistributedSyncManager.instance) {
             DistributedSyncManager.instance = new DistributedSyncManager();
@@ -128,7 +131,7 @@ export class DistributedSyncManager {
                 const remoteSettings: PersistedReaderSettings = JSON.parse(remoteSettingsJson);
                 const localSettings = await SettingStorage.loadSettings(context);
                 // 使用 ConflictResolver 解决设置冲突
-                const conflictResult = ConflictResolver.resolveSettingsConflict(localSettings, remoteSettings, ConflictResolver.getDefaultStrategy());
+                const conflictResult = ConflictResolver.resolveSettingsConflict(localSettings, remoteSettings, this.conflictStrategy);
                 if (conflictResult.resolvedSettings) {
                     await SettingStorage.saveSettings(context, conflictResult.resolvedSettings);
                     if (conflictResult.conflict) {
@@ -179,7 +182,7 @@ export class DistributedSyncManager {
             const localProgresses = await ProgressStorage.loadAllProgresses(context, currentUser);
             hilog.info(0x0000, TAG, `Merging progresses: local=${localProgresses.length}, remote=${remoteProgresses.length}`);
             // 使用 ConflictResolver 批量解决冲突
-            const mergedProgresses = ConflictResolver.resolveBatchProgressConflicts(localProgresses, remoteProgresses, ConflictResolver.getDefaultStrategy());
+            const mergedProgresses = ConflictResolver.resolveBatchProgressConflicts(localProgresses, remoteProgresses, this.conflictStrategy);
             // 保存合并后的进度
             await ProgressStorage.saveAllProgresses(context, mergedProgresses, currentUser);
             hilog.info(0x0000, TAG, `Progresses merged: ${mergedProgresses.length} records after conflict resolution`);

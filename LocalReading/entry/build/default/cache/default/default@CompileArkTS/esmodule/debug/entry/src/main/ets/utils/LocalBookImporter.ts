@@ -55,7 +55,7 @@ export class LocalBookImporter {
             // 使用 openSync 打开文件（支持 URI）
             let file = fs.openSync(filePath, fs.OpenMode.READ_ONLY);
             fileFd = file.fd;
-            let stat = await fs.stat(file.fd); //异步获取状态信息
+            let stat = await fs.stat(file.fd); //异步获取文件或目录详细属性信息
             if (0 >= stat.size) { //文件大小
                 hilog.error(0x0000, TAG, "checkFileValid LOCAL_BOOK_IMPORT_FILE_EXCEPTION.");
                 return Promise.reject(LocalBookImportResult.LOCAL_BOOK_IMPORT_FILE_EXCEPTION);
