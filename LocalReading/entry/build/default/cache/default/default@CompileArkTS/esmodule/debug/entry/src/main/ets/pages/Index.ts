@@ -1,6 +1,17 @@
 if (!("finalizeConstruction" in ViewPU.prototype)) {
     Reflect.set(ViewPU.prototype, "finalizeConstruction", () => { });
 }
+interface BookListItem_Params {
+    book?: BookParserInfo // 书籍信息
+    ;
+    isSelected?: boolean // 是否被选中（高亮）
+    ;
+    progressText?: string // 进度显示文本（章节名）
+    ;
+    onSelect?: () => void;
+    onLongPress?: () => void;
+    isPressed?: boolean;
+}
 interface Index_Params {
     filePath?: string;
     bookName?: string;
@@ -10,6 +21,7 @@ interface Index_Params {
     selectedBook?: BookParserInfo | null;
     progresses?: BookProgress[];
     isRefreshing?: boolean;
+    isPressing?: boolean;
     progressUpdated?: number;
     currentUser?: string;
 }
@@ -44,6 +56,7 @@ export class Index extends ViewPU {
         this.__selectedBook = new ObservedPropertyObjectPU(null, this, "selectedBook");
         this.__progresses = new ObservedPropertyObjectPU([], this, "progresses");
         this.__isRefreshing = new ObservedPropertySimplePU(false, this, "isRefreshing");
+        this.__isPressing = new ObservedPropertySimplePU(false, this, "isPressing");
         this.__progressUpdated = this.createStorageLink('progressUpdated', 0, "progressUpdated");
         this.__currentUser = this.createStorageLink('currentUser', '', "currentUser");
         this.setInitiallyProvidedValue(params);
@@ -70,6 +83,9 @@ export class Index extends ViewPU {
         if (params.isRefreshing !== undefined) {
             this.isRefreshing = params.isRefreshing;
         }
+        if (params.isPressing !== undefined) {
+            this.isPressing = params.isPressing;
+        }
     }
     updateStateVars(params: Index_Params) {
     }
@@ -81,6 +97,7 @@ export class Index extends ViewPU {
         this.__selectedBook.purgeDependencyOnElmtId(rmElmtId);
         this.__progresses.purgeDependencyOnElmtId(rmElmtId);
         this.__isRefreshing.purgeDependencyOnElmtId(rmElmtId);
+        this.__isPressing.purgeDependencyOnElmtId(rmElmtId);
         this.__progressUpdated.purgeDependencyOnElmtId(rmElmtId);
         this.__currentUser.purgeDependencyOnElmtId(rmElmtId);
     }
@@ -92,6 +109,7 @@ export class Index extends ViewPU {
         this.__selectedBook.aboutToBeDeleted();
         this.__progresses.aboutToBeDeleted();
         this.__isRefreshing.aboutToBeDeleted();
+        this.__isPressing.aboutToBeDeleted();
         this.__progressUpdated.aboutToBeDeleted();
         this.__currentUser.aboutToBeDeleted();
         SubscriberManager.Get().delete(this.id__());
@@ -153,6 +171,13 @@ export class Index extends ViewPU {
     }
     set isRefreshing(newValue: boolean) {
         this.__isRefreshing.set(newValue);
+    }
+    private __isPressing: ObservedPropertySimplePU<boolean>;
+    get isPressing() {
+        return this.__isPressing.get();
+    }
+    set isPressing(newValue: boolean) {
+        this.__isPressing.set(newValue);
     }
     // 监听进度更新标志，当Reader保存进度时触发刷新
     private __progressUpdated: ObservedPropertyAbstractPU<number>;
@@ -579,111 +604,48 @@ export class Index extends ViewPU {
                                 const itemCreation2 = (elmtId, isInitialRender) => {
                                     ListItem.create(deepRenderFunction, true);
                                     ListItem.height(100);
+                                    ListItem.borderRadius(8);
                                 };
                                 const deepRenderFunction = (elmtId, isInitialRender) => {
                                     itemCreation(elmtId, isInitialRender);
-                                    this.observeComponentCreation2((elmtId, isInitialRender) => {
-                                        Row.create();
-                                        Row.width('100%');
-                                        Row.padding(12);
-                                        Row.backgroundColor(this.selectedBook?.getBookId() === book.getBookId() ? '#F0F0F0' : Color.White);
-                                        Row.borderRadius(8);
-                                        Row.onClick(() => this.selectBook(book));
-                                        Gesture.create(GesturePriority.Low);
-                                        LongPressGesture.create({ repeat: false, allowableMovement: 200 });
-                                        LongPressGesture.onAction((event: GestureEvent) => {
-                                            this.showDeleteDialog(book); //触发删除确认对话框
-                                        });
-                                        LongPressGesture.pop();
-                                        Gesture.pop();
-                                    }, Row);
-                                    this.observeComponentCreation2((elmtId, isInitialRender) => {
-                                        //这里使用绝对路径无法显示图片，改为协议路径就好了->file://,因为获取的路径是从/data开始的
-                                        Image.create(book.getCoverPath() ? 'file://' + book.getCoverPath() : { "id": 16777285, "type": 20000, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
-                                        //这里使用绝对路径无法显示图片，改为协议路径就好了->file://,因为获取的路径是从/data开始的
-                                        Image.width(60);
-                                        //这里使用绝对路径无法显示图片，改为协议路径就好了->file://,因为获取的路径是从/data开始的
-                                        Image.height(80);
-                                        //这里使用绝对路径无法显示图片，改为协议路径就好了->file://,因为获取的路径是从/data开始的
-                                        Image.objectFit(ImageFit.Cover);
-                                        //这里使用绝对路径无法显示图片，改为协议路径就好了->file://,因为获取的路径是从/data开始的
-                                        Image.borderRadius(8);
-                                        //这里使用绝对路径无法显示图片，改为协议路径就好了->file://,因为获取的路径是从/data开始的
-                                        Image.margin({ right: 12 });
-                                        //这里使用绝对路径无法显示图片，改为协议路径就好了->file://,因为获取的路径是从/data开始的
-                                        Image.onError((err) => {
-                                            hilog.error(0x0000, TAG, `Image load error for ${book.getCoverPath()}: ${JSON.stringify(err)}`);
-                                        });
-                                    }, Image);
-                                    this.observeComponentCreation2((elmtId, isInitialRender) => {
-                                        Column.create();
-                                        Column.layoutWeight(1);
-                                        Column.alignItems(HorizontalAlign.Start);
-                                    }, Column);
-                                    this.observeComponentCreation2((elmtId, isInitialRender) => {
-                                        //书名
-                                        Text.create(book.getBookName());
-                                        //书名
-                                        Text.fontSize(16);
-                                        //书名
-                                        Text.maxLines(1);
-                                        //书名
-                                        Text.textOverflow({ overflow: TextOverflow.Ellipsis });
-                                        //书名
-                                        Text.layoutWeight(1);
-                                        //书名
-                                        Text.fontColor({ "id": 125831025, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
-                                    }, Text);
-                                    //书名
-                                    Text.pop();
-                                    this.observeComponentCreation2((elmtId, isInitialRender) => {
-                                        //当前章节
-                                        Text.create(this.getChapterDisplay(book));
-                                        //当前章节
-                                        Text.fontSize(14);
-                                        //当前章节
-                                        Text.fontColor('#666666');
-                                        //当前章节
-                                        Text.margin({ top: 4 });
-                                        //当前章节
-                                        Text.width('100%');
-                                    }, Text);
-                                    //当前章节
-                                    Text.pop();
-                                    Column.pop();
-                                    this.observeComponentCreation2((elmtId, isInitialRender) => {
-                                        If.create();
-                                        // 选中指示器
-                                        if (this.selectedBook?.getBookId() === book.getBookId()) {
-                                            this.ifElseBranchUpdateFunction(0, () => {
-                                                this.observeComponentCreation2((elmtId, isInitialRender) => {
-                                                    // Text('✓').fontColor(Color.Green).margin({ right: 8 })
-                                                    Image.create({ "id": 16777273, "type": 20000, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
-                                                    // Text('✓').fontColor(Color.Green).margin({ right: 8 })
-                                                    Image.margin({ right: 8 });
-                                                    // Text('✓').fontColor(Color.Green).margin({ right: 8 })
-                                                    Image.objectFit(ImageFit.Contain);
-                                                    // Text('✓').fontColor(Color.Green).margin({ right: 8 })
-                                                    Image.width('20');
-                                                    // Text('✓').fontColor(Color.Green).margin({ right: 8 })
-                                                    Image.height('20');
-                                                }, Image);
-                                            });
-                                        }
-                                        else {
-                                            this.ifElseBranchUpdateFunction(1, () => {
-                                            });
-                                        }
-                                    }, If);
-                                    If.pop();
-                                    Row.pop();
+                                    {
+                                        this.observeComponentCreation2((elmtId, isInitialRender) => {
+                                            if (isInitialRender) {
+                                                let componentCall = new BookListItem(this, {
+                                                    book: book,
+                                                    isSelected: this.selectedBook?.getBookId() === book.getBookId(),
+                                                    progressText: this.getChapterDisplay(book),
+                                                    onSelect: (): void => this.selectBook(book),
+                                                    onLongPress: (): void => this.showDeleteDialog(book)
+                                                }, undefined, elmtId, () => { }, { page: "entry/src/main/ets/pages/Index.ets", line: 411, col: 17 });
+                                                ViewPU.create(componentCall);
+                                                let paramsLambda = () => {
+                                                    return {
+                                                        book: book,
+                                                        isSelected: this.selectedBook?.getBookId() === book.getBookId(),
+                                                        progressText: this.getChapterDisplay(book),
+                                                        onSelect: (): void => this.selectBook(book),
+                                                        onLongPress: (): void => this.showDeleteDialog(book)
+                                                    };
+                                                };
+                                                componentCall.paramsGenerator_ = paramsLambda;
+                                            }
+                                            else {
+                                                this.updateStateVarsOfChildByElmtId(elmtId, {
+                                                    book: book,
+                                                    isSelected: this.selectedBook?.getBookId() === book.getBookId(),
+                                                    progressText: this.getChapterDisplay(book)
+                                                });
+                                            }
+                                        }, { name: "BookListItem" });
+                                    }
                                     ListItem.pop();
                                 };
                                 this.observeComponentCreation2(itemCreation2, ListItem);
                                 ListItem.pop();
                             }
                         };
-                        this.forEachUpdateFunction(elmtId, this.importedBooks, forEachItemGenFunction);
+                        this.forEachUpdateFunction(elmtId, this.importedBooks, forEachItemGenFunction, (book: BookParserInfo) => book.getBookId(), false, false);
                     }, ForEach);
                     ForEach.pop();
                     List.pop();
@@ -909,6 +871,207 @@ export class Index extends ViewPU {
             PageTransitionExit.create({ duration: 0, curve: Curve.Sharp });
         }, null);
         PageTransition.pop();
+    }
+    rerender() {
+        this.updateDirtyElements();
+    }
+}
+class BookListItem extends ViewPU {
+    constructor(parent, params, __localStorage, elmtId = -1, paramsLambda = undefined, extraInfo) {
+        super(parent, __localStorage, elmtId, extraInfo);
+        if (typeof paramsLambda === "function") {
+            this.paramsGenerator_ = paramsLambda;
+        }
+        this.__book = new SynchedPropertyObjectOneWayPU(params.book, this, "book");
+        this.__isSelected = new SynchedPropertySimpleOneWayPU(params.isSelected, this, "isSelected");
+        this.__progressText = new SynchedPropertySimpleOneWayPU(params.progressText, this, "progressText");
+        this.onSelect = () => { } // 点击回调
+        ;
+        this.onLongPress = () => { } // 长按回调（删除）
+        ;
+        this.__isPressed = new ObservedPropertySimplePU(false // 独立按压状态
+        , this, "isPressed");
+        this.setInitiallyProvidedValue(params);
+        this.finalizeConstruction();
+    }
+    setInitiallyProvidedValue(params: BookListItem_Params) {
+        if (params.onSelect !== undefined) {
+            this.onSelect = params.onSelect;
+        }
+        if (params.onLongPress !== undefined) {
+            this.onLongPress = params.onLongPress;
+        }
+        if (params.isPressed !== undefined) {
+            this.isPressed = params.isPressed;
+        }
+    }
+    updateStateVars(params: BookListItem_Params) {
+        this.__book.reset(params.book);
+        this.__isSelected.reset(params.isSelected);
+        this.__progressText.reset(params.progressText);
+    }
+    purgeVariableDependenciesOnElmtId(rmElmtId) {
+        this.__book.purgeDependencyOnElmtId(rmElmtId);
+        this.__isSelected.purgeDependencyOnElmtId(rmElmtId);
+        this.__progressText.purgeDependencyOnElmtId(rmElmtId);
+        this.__isPressed.purgeDependencyOnElmtId(rmElmtId);
+    }
+    aboutToBeDeleted() {
+        this.__book.aboutToBeDeleted();
+        this.__isSelected.aboutToBeDeleted();
+        this.__progressText.aboutToBeDeleted();
+        this.__isPressed.aboutToBeDeleted();
+        SubscriberManager.Get().delete(this.id__());
+        this.aboutToBeDeletedInternal();
+    }
+    private __book: SynchedPropertySimpleOneWayPU<BookParserInfo>; // 书籍信息
+    get book() {
+        return this.__book.get();
+    }
+    set book(newValue: BookParserInfo // 书籍信息
+    ) {
+        this.__book.set(newValue);
+    }
+    private __isSelected: SynchedPropertySimpleOneWayPU<boolean>; // 是否被选中（高亮）
+    get isSelected() {
+        return this.__isSelected.get();
+    }
+    set isSelected(newValue: boolean // 是否被选中（高亮）
+    ) {
+        this.__isSelected.set(newValue);
+    }
+    private __progressText: SynchedPropertySimpleOneWayPU<string>; // 进度显示文本（章节名）
+    get progressText() {
+        return this.__progressText.get();
+    }
+    set progressText(newValue: string // 进度显示文本（章节名）
+    ) {
+        this.__progressText.set(newValue);
+    }
+    private onSelect: () => void; // 点击回调
+    private onLongPress: () => void; // 长按回调（删除）
+    private __isPressed: ObservedPropertySimplePU<boolean>; // 独立按压状态
+    get isPressed() {
+        return this.__isPressed.get();
+    }
+    set isPressed(newValue: boolean) {
+        this.__isPressed.set(newValue);
+    }
+    initialRender() {
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Row.create();
+            Row.width('100%');
+            Row.padding(12);
+            Row.backgroundColor(this.getBackgroundColor());
+            Row.borderRadius(8);
+            Row.onClick(() => this.onSelect());
+            Row.onTouch((event: TouchEvent) => {
+                // 按下时立即变暗，抬起或取消时恢复
+                if (event.type === TouchType.Down) {
+                    this.isPressed = true;
+                }
+                else if (event.type === TouchType.Up || event.type === TouchType.Cancel) {
+                    this.isPressed = false;
+                }
+            });
+            Gesture.create(GesturePriority.Low);
+            LongPressGesture.create({ repeat: false, allowableMovement: 200 });
+            LongPressGesture.onAction(() => {
+                // 长按时触发删除回调（不直接修改 isPressed，因为 onTouch 已经处理按下）
+                this.onLongPress();
+            });
+            LongPressGesture.pop();
+            Gesture.pop();
+        }, Row);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            //这里使用绝对路径无法显示图片，改为协议路径就好了->file://,因为获取的路径是从/data开始的
+            Image.create(this.book.getCoverPath() ? 'file://' + this.book.getCoverPath() : { "id": 16777285, "type": 20000, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+            //这里使用绝对路径无法显示图片，改为协议路径就好了->file://,因为获取的路径是从/data开始的
+            Image.width(60);
+            //这里使用绝对路径无法显示图片，改为协议路径就好了->file://,因为获取的路径是从/data开始的
+            Image.height(80);
+            //这里使用绝对路径无法显示图片，改为协议路径就好了->file://,因为获取的路径是从/data开始的
+            Image.objectFit(ImageFit.Cover);
+            //这里使用绝对路径无法显示图片，改为协议路径就好了->file://,因为获取的路径是从/data开始的
+            Image.borderRadius(8);
+            //这里使用绝对路径无法显示图片，改为协议路径就好了->file://,因为获取的路径是从/data开始的
+            Image.margin({ right: 12 });
+            //这里使用绝对路径无法显示图片，改为协议路径就好了->file://,因为获取的路径是从/data开始的
+            Image.onError((err) => {
+                hilog.error(0x0000, 'BookListItem', `Image load error: ${JSON.stringify(err)}`);
+            });
+        }, Image);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Column.create();
+            Column.layoutWeight(1);
+            Column.alignItems(HorizontalAlign.Start);
+        }, Column);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            // 书名
+            Text.create(this.book.getBookName());
+            // 书名
+            Text.fontSize(16);
+            // 书名
+            Text.maxLines(1);
+            // 书名
+            Text.textOverflow({ overflow: TextOverflow.Ellipsis });
+            // 书名
+            Text.layoutWeight(1);
+            // 书名
+            Text.fontColor({ "id": 125831025, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+        }, Text);
+        // 书名
+        Text.pop();
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            // 当前章节
+            Text.create(this.progressText);
+            // 当前章节
+            Text.fontSize(14);
+            // 当前章节
+            Text.fontColor('#666666');
+            // 当前章节
+            Text.margin({ top: 4 });
+            // 当前章节
+            Text.width('100%');
+        }, Text);
+        // 当前章节
+        Text.pop();
+        Column.pop();
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            If.create();
+            if (this.isSelected) {
+                this.ifElseBranchUpdateFunction(0, () => {
+                    this.observeComponentCreation2((elmtId, isInitialRender) => {
+                        // 选中指示器
+                        Image.create({ "id": 16777273, "type": 20000, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+                        // 选中指示器
+                        Image.margin({ right: 8 });
+                        // 选中指示器
+                        Image.objectFit(ImageFit.Contain);
+                        // 选中指示器
+                        Image.width(20);
+                        // 选中指示器
+                        Image.height(20);
+                    }, Image);
+                });
+            }
+            else {
+                this.ifElseBranchUpdateFunction(1, () => {
+                });
+            }
+        }, If);
+        If.pop();
+        Row.pop();
+    }
+    // 根据状态返回背景色
+    private getBackgroundColor(): string | Resource {
+        if (this.isPressed) {
+            return '#ffe5e5e5'; // 按压态变暗
+        }
+        if (this.isSelected) {
+            return '#F0F0F0'; // 选中态（浅灰）
+        }
+        return '#ffffff'; // 正常白色
     }
     rerender() {
         this.updateDirtyElements();

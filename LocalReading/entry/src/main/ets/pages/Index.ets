@@ -42,6 +42,8 @@ export struct Index {
   @State progresses: BookProgress[] = [];
 
   @State isRefreshing: boolean = false;
+
+  @State isPressing: boolean = false;
   
   // 监听进度更新标志，当Reader保存进度时触发刷新
   @StorageLink('progressUpdated') @Watch('onProgressUpdated') progressUpdated: number = 0;
@@ -406,62 +408,19 @@ export struct Index {
             List({ space: 11 }) {
             ForEach(this.importedBooks, (book: BookParserInfo) => {
               ListItem() {
-                Row(){
-                  //这里使用绝对路径无法显示图片，改为协议路径就好了->file://,因为获取的路径是从/data开始的
-                  Image(book.getCoverPath() ?'file://' + book.getCoverPath() : $r('app.media.default_cover'))
-                    .width(60)
-                    .height(80)
-                    .objectFit(ImageFit.Cover)
-                    .borderRadius(8)
-                    .margin({ right: 12 })
-                    .onError((err)=>{
-                      hilog.error(0x0000, TAG, `Image load error for ${book.getCoverPath()}: ${JSON.stringify(err)}`);
-                    })
-
-                  Column(){
-                    //书名
-                    Text(book.getBookName())
-                        .fontSize(16)
-                        .maxLines(1)
-                        .textOverflow({ overflow: TextOverflow.Ellipsis })
-                        .layoutWeight(1)
-                        .fontColor($r('sys.color.black'))
-                    //当前章节
-                    Text(this.getChapterDisplay(book))
-                      .fontSize(14)
-                      .fontColor('#666666')
-                      .margin({ top: 4 })
-                      .width('100%')
-                  }
-                  .layoutWeight(1)
-                  .alignItems(HorizontalAlign.Start)
-                    // 选中指示器
-                      if (this.selectedBook?.getBookId() === book.getBookId()) {
-                        // Text('✓').fontColor(Color.Green).margin({ right: 8 })
-                        Image($r('app.media.Right'))
-                          .margin({right:8})
-                          .objectFit(ImageFit.Contain)
-                          .width('20')
-                          .height('20')
-
-                      }
-                }
-                .width('100%')
-                .padding(12)
-                .backgroundColor(this.selectedBook?.getBookId() === book.getBookId() ? '#F0F0F0' : Color.White)
-                .borderRadius(8)
-                .onClick(() => this.selectBook(book))
-                .gesture(
-                  LongPressGesture({repeat:false,allowableMovement: 200})
-                    .onAction((event:GestureEvent)=>{
-                      this.showDeleteDialog(book);//触发删除确认对话框
-                    })
-                )
-
+                BookListItem({
+                  book: book,
+                  isSelected: this.selectedBook?.getBookId() === book.getBookId(),
+                  progressText: this.getChapterDisplay(book),
+                  onSelect: (): void => this.selectBook(book),
+                  onLongPress: (): void => this.showDeleteDialog(book)
+                })
 
               }
               .height(100)
-            })
+              .borderRadius(8)
+
+            },(book: BookParserInfo) => book.getBookId())
           }
           .width('100%')
           .height(390)
@@ -687,9 +646,98 @@ export struct Index {
     }
   }
 
+
+
   //删除页面过渡动画以加快阅读器的页面访问速度
   pageTransition() {
     PageTransitionEnter({ duration: 0, curve: Curve.Sharp });
     PageTransitionExit({ duration: 0, curve: Curve.Sharp });
   }
+}
+
+@Component
+struct BookListItem {
+
+  @Prop book: BookParserInfo // 书籍信息
+  @Prop isSelected: boolean // 是否被选中（高亮）
+  @Prop progressText: string // 进度显示文本（章节名）
+  onSelect: () => void = () => {} // 点击回调,要提前赋一个空值哦
+  onLongPress: () => void = () => {} // 长按回调（删除）
+
+  @State private isPressed: boolean = false  // 独立按压状态
+
+  build() {
+    Row() {
+      //这里使用绝对路径无法显示图片，改为协议路径就好了->file://,因为获取的路径是从/data开始的
+      Image(this.book.getCoverPath() ? 'file://' + this.book.getCoverPath() : $r('app.media.default_cover'))
+        .width(60)
+        .height(80)
+        .objectFit(ImageFit.Cover)
+        .borderRadius(8)
+        .margin({ right: 12 })
+        .onError((err) => {
+          hilog.error(0x0000, 'BookListItem', `Image load error: ${JSON.stringify(err)}`);
+        })
+
+      Column() {
+        // 书名
+        Text(this.book.getBookName())
+          .fontSize(16)
+          .maxLines(1)
+          .textOverflow({ overflow: TextOverflow.Ellipsis })
+          .layoutWeight(1)
+          .fontColor($r('sys.color.black'))
+        // 当前章节
+        Text(this.progressText)
+          .fontSize(14)
+          .fontColor('#666666')
+          .margin({ top: 4 })
+          .width('100%')
+      }
+      .layoutWeight(1)
+      .alignItems(HorizontalAlign.Start)
+
+      if (this.isSelected) {
+        // 选中指示器
+        Image($r('app.media.Right'))
+          .margin({ right: 8 })
+          .objectFit(ImageFit.Contain)
+          .width(20)
+          .height(20)
+      }
+    }
+    .width('100%')
+    .padding(12)
+    .backgroundColor(this.getBackgroundColor())
+    .borderRadius(8)
+    .onClick(() => this.onSelect())
+    .onTouch((event: TouchEvent) => {
+      // 按下时立即变暗，抬起或取消时恢复
+      if (event.type === TouchType.Down) {
+        this.isPressed = true;
+      } else if (event.type === TouchType.Up || event.type === TouchType.Cancel) {
+        this.isPressed = false;
+      }
+    })
+    .gesture(
+      LongPressGesture({ repeat: false, allowableMovement: 200 })
+        .onAction(() => {
+          // 长按时触发删除回调
+          this.onLongPress();
+        })
+
+    )
+  }
+
+  // 根据状态返回背景色
+  private getBackgroundColor(): string | Resource {
+    if (this.isPressed) {
+      return '#ffe5e5e5';   // 按压态变暗
+    }
+    if (this.isSelected) {
+      return '#F0F0F0';     // 选中态
+    }
+    return '#ffffff';
+  }
+
 }
