@@ -26,20 +26,20 @@ interface Index_Params {
     currentUser?: string;
 }
 import picker from "@ohos:file.picker";
-import { WindowAbility } from "@bundle:com.example.readerkitdemo/entry/ets/entryability/WindowAbility";
-import { LocalBookImporter } from "@bundle:com.example.readerkitdemo/entry/ets/utils/LocalBookImporter";
+import { WindowAbility } from "@bundle:com.example.reader/entry/ets/entryability/WindowAbility";
+import { LocalBookImporter } from "@bundle:com.example.reader/entry/ets/utils/LocalBookImporter";
 import { bookParser } from "@hms:core.readerservice.bookParser";
 import hilog from "@ohos:hilog";
-import { BookUtils } from "@bundle:com.example.readerkitdemo/entry/ets/utils/BookUtils";
+import { BookUtils } from "@bundle:com.example.reader/entry/ets/utils/BookUtils";
 import type common from "@ohos:app.ability.common";
-import { BookStorage } from "@bundle:com.example.readerkitdemo/entry/ets/common/BookStorage";
+import { BookStorage } from "@bundle:com.example.reader/entry/ets/common/BookStorage";
 import type { BookParserInfo } from '../common/BookParserInfo';
-import { ProgressStorage } from "@bundle:com.example.readerkitdemo/entry/ets/common/ProgressStorage";
-import type { BookProgress } from "@bundle:com.example.readerkitdemo/entry/ets/common/ProgressStorage";
+import { ProgressStorage } from "@bundle:com.example.reader/entry/ets/common/ProgressStorage";
+import type { BookProgress } from "@bundle:com.example.reader/entry/ets/common/ProgressStorage";
 import image from "@ohos:multimedia.image";
-import { FileUtils } from "@bundle:com.example.readerkitdemo/entry/ets/utils/FileUtils";
+import { FileUtils } from "@bundle:com.example.reader/entry/ets/utils/FileUtils";
 import fs from "@ohos:file.fs";
-import { StorageUtil } from "@bundle:com.example.readerkitdemo/entry/ets/utils/StorageUtil";
+import { StorageUtil } from "@bundle:com.example.reader/entry/ets/utils/StorageUtil";
 import type { BusinessError } from "@ohos:base";
 const TAG: string = 'IndexPage';
 export class Index extends ViewPU {
@@ -335,7 +335,6 @@ export class Index extends ViewPU {
         this.filePath = book.getFilePath();
         this.bookName = book.getBookName();
         hilog.info(0x0000, TAG, `selectBook: this.filePath set to ${this.filePath}`);
-        // 不再操作 this.currentData
     }
     // 监听当前登录用户
     private __currentUser: ObservedPropertyAbstractPU<string>;
@@ -349,7 +348,7 @@ export class Index extends ViewPU {
         hilog.info(0x0000, TAG, 'User changed to: ' + this.currentUser);
         await this.reloadData();
     }
-    // 进度更新监听回调
+    // 进度更新监听回调 要加Component
     async onProgressUpdated() {
         hilog.info(0x0000, TAG, `Progress updated detected, reloading data... (timestamp: ${this.progressUpdated})`);
         await this.reloadData();
@@ -374,7 +373,7 @@ export class Index extends ViewPU {
                 const timeB = progressMap.get(b.getFilePath()) || 0;
                 return timeB - timeA; // 降序，最新的在前
             });
-            // 打印所有进度和书籍的filePath用于调试
+            // 调试
             this.progresses.forEach((p, idx) => {
                 hilog.info(0x0000, TAG, `Progress[${idx}]: filePath=${p.filePath}, chapter=${p.chapterName}`);
             });
@@ -403,7 +402,7 @@ export class Index extends ViewPU {
         const context = this.getUIContext().getHostContext() as common.UIAbilityContext;
         this.progresses = await ProgressStorage.loadAllProgresses(context);
     }
-    //刷新列表信息
+    //刷新列表信息，历史遗留产物
     private async handleRefresh() {
         try {
             const context = this.getUIContext().getHostContext() as common.UIAbilityContext;
@@ -454,7 +453,7 @@ export class Index extends ViewPU {
             RelativeContainer.create();
             RelativeContainer.height('100%');
             RelativeContainer.width('100%');
-            RelativeContainer.backgroundColor(this.eyeMode ? '#FAF9DE' : { "id": 16777263, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+            RelativeContainer.backgroundColor(this.eyeMode ? '#FAF9DE' : { "id": 16777263, "type": 10001, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
             RelativeContainer.padding({ left: 16, right: 16 });
         }, RelativeContainer);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
@@ -472,7 +471,7 @@ export class Index extends ViewPU {
         }, Row);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             //大标题
-            Text.create({ "id": 16777223, "type": 10003, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+            Text.create({ "id": 16777223, "type": 10003, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
             //大标题
             Text.fontSize(30);
             //大标题
@@ -484,7 +483,7 @@ export class Index extends ViewPU {
             //大标题
             Text.alignSelf(ItemAlign.Start);
             //大标题
-            Text.fontColor({ "id": 125831025, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+            Text.fontColor({ "id": 125831025, "type": 10001, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
         }, Text);
         //大标题
         Text.pop();
@@ -502,7 +501,7 @@ export class Index extends ViewPU {
         }, Text);
         Text.pop();
         this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Image.create({ "id": 16777272, "type": 20000, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+            Image.create({ "id": 16777272, "type": 20000, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
             Image.width('30');
             Image.height('30');
             Image.onClick(async () => {
@@ -518,9 +517,9 @@ export class Index extends ViewPU {
             if (this.selectedBook) {
                 this.ifElseBranchUpdateFunction(0, () => {
                     this.observeComponentCreation2((elmtId, isInitialRender) => {
-                        Text.create({ "id": 16777225, "type": 10003, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+                        Text.create({ "id": 16777225, "type": 10003, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
                         Text.fontSize(14);
-                        Text.fontColor({ "id": 16777244, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+                        Text.fontColor({ "id": 16777244, "type": 10001, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
                         Text.alignSelf(ItemAlign.Start);
                         Text.margin({ top: 28, left: 16 });
                         Text.fontWeight(FontWeight.Bold);
@@ -532,7 +531,7 @@ export class Index extends ViewPU {
                         //获取书籍名称
                         Text.fontSize(16);
                         //获取书籍名称
-                        Text.fontColor({ "id": 16777245, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+                        Text.fontColor({ "id": 16777245, "type": 10001, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
                         //获取书籍名称
                         Text.backgroundColor(Color.White);
                         //获取书籍名称
@@ -563,12 +562,12 @@ export class Index extends ViewPU {
             if (this.importedBooks.length > 0) {
                 this.ifElseBranchUpdateFunction(0, () => {
                     this.observeComponentCreation2((elmtId, isInitialRender) => {
-                        Text.create({ "id": 16777220, "type": 10003, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+                        Text.create({ "id": 16777220, "type": 10003, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
                         Text.fontSize(18);
                         Text.fontWeight(FontWeight.Bold);
                         Text.alignSelf(ItemAlign.Start);
                         Text.margin({ top: 20, left: 16 });
-                        Text.fontColor({ "id": 125831025, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+                        Text.fontColor({ "id": 125831025, "type": 10001, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
                         Text.margin({ bottom: 7, top: 7 });
                     }, Text);
                     Text.pop();
@@ -675,7 +674,7 @@ export class Index extends ViewPU {
             Button.width('100%');
             Button.height(40);
             Button.margin({ top: 13, bottom: 35 });
-            Button.backgroundColor({ "id": 16777246, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+            Button.backgroundColor({ "id": 16777246, "type": 10001, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
             Button.enabled(!!this.selectedBook);
             Button.onClick(async () => {
                 if (!this.selectedBook) {
@@ -732,14 +731,14 @@ export class Index extends ViewPU {
     private getButtonText(): ResourceStr {
         try {
             if (!this.selectedBook) {
-                return { "id": 16777232, "type": 10003, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" };
+                return { "id": 16777232, "type": 10003, params: [], "bundleName": "com.example.reader", "moduleName": "entry" };
             }
             const progress = this.findProgress(this.selectedBook);
-            return progress ? { "id": 16777227, "type": 10003, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" } : { "id": 16777232, "type": 10003, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" };
+            return progress ? { "id": 16777227, "type": 10003, params: [], "bundleName": "com.example.reader", "moduleName": "entry" } : { "id": 16777232, "type": 10003, params: [], "bundleName": "com.example.reader", "moduleName": "entry" };
         }
         catch (error) {
             hilog.error(0x0000, TAG, `getButtonText error: ${error}`);
-            return { "id": 16777232, "type": 10003, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" };
+            return { "id": 16777232, "type": 10003, params: [], "bundleName": "com.example.reader", "moduleName": "entry" };
         }
     }
     //获取章节并展示
@@ -885,7 +884,7 @@ class BookListItem extends ViewPU {
         this.__book = new SynchedPropertyObjectOneWayPU(params.book, this, "book");
         this.__isSelected = new SynchedPropertySimpleOneWayPU(params.isSelected, this, "isSelected");
         this.__progressText = new SynchedPropertySimpleOneWayPU(params.progressText, this, "progressText");
-        this.onSelect = () => { } // 点击回调
+        this.onSelect = () => { } // 点击回调,要提前赋一个空值哦
         ;
         this.onLongPress = () => { } // 长按回调（删除）
         ;
@@ -948,7 +947,7 @@ class BookListItem extends ViewPU {
     ) {
         this.__progressText.set(newValue);
     }
-    private onSelect: () => void; // 点击回调
+    private onSelect: () => void; // 点击回调,要提前赋一个空值哦
     private onLongPress: () => void; // 长按回调（删除）
     private __isPressed: ObservedPropertySimplePU<boolean>; // 独立按压状态
     get isPressed() {
@@ -977,7 +976,7 @@ class BookListItem extends ViewPU {
             Gesture.create(GesturePriority.Low);
             LongPressGesture.create({ repeat: false, allowableMovement: 200 });
             LongPressGesture.onAction(() => {
-                // 长按时触发删除回调（不直接修改 isPressed，因为 onTouch 已经处理按下）
+                // 长按时触发删除回调
                 this.onLongPress();
             });
             LongPressGesture.pop();
@@ -985,7 +984,7 @@ class BookListItem extends ViewPU {
         }, Row);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             //这里使用绝对路径无法显示图片，改为协议路径就好了->file://,因为获取的路径是从/data开始的
-            Image.create(this.book.getCoverPath() ? 'file://' + this.book.getCoverPath() : { "id": 16777285, "type": 20000, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+            Image.create(this.book.getCoverPath() ? 'file://' + this.book.getCoverPath() : { "id": 16777285, "type": 20000, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
             //这里使用绝对路径无法显示图片，改为协议路径就好了->file://,因为获取的路径是从/data开始的
             Image.width(60);
             //这里使用绝对路径无法显示图片，改为协议路径就好了->file://,因为获取的路径是从/data开始的
@@ -1018,7 +1017,7 @@ class BookListItem extends ViewPU {
             // 书名
             Text.layoutWeight(1);
             // 书名
-            Text.fontColor({ "id": 125831025, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+            Text.fontColor({ "id": 125831025, "type": 10001, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
         }, Text);
         // 书名
         Text.pop();
@@ -1043,7 +1042,7 @@ class BookListItem extends ViewPU {
                 this.ifElseBranchUpdateFunction(0, () => {
                     this.observeComponentCreation2((elmtId, isInitialRender) => {
                         // 选中指示器
-                        Image.create({ "id": 16777273, "type": 20000, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+                        Image.create({ "id": 16777273, "type": 20000, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
                         // 选中指示器
                         Image.margin({ right: 8 });
                         // 选中指示器
@@ -1069,9 +1068,9 @@ class BookListItem extends ViewPU {
             return '#ffe5e5e5'; // 按压态变暗
         }
         if (this.isSelected) {
-            return '#F0F0F0'; // 选中态（浅灰）
+            return '#F0F0F0'; // 选中态
         }
-        return '#ffffff'; // 正常白色
+        return '#ffffff';
     }
     rerender() {
         this.updateDirtyElements();

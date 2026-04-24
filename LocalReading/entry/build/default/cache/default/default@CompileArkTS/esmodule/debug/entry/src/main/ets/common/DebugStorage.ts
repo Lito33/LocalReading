@@ -9,7 +9,7 @@ interface DebugStorage_Params {
 }
 import promptAction from "@ohos:promptAction";
 import router from "@ohos:router";
-import { StorageUtil } from "@bundle:com.example.readerkitdemo/entry/ets/utils/StorageUtil";
+import { StorageUtil } from "@bundle:com.example.reader/entry/ets/utils/StorageUtil";
 class DebugStorage extends ViewPU {
     constructor(parent, params, __localStorage, elmtId = -1, paramsLambda = undefined, extraInfo) {
         super(parent, __localStorage, elmtId, extraInfo);
@@ -190,4 +190,4 @@ class DebugStorage extends ViewPU {
         return "DebugStorage";
     }
 }
-registerNamedRoute(() => new DebugStorage(undefined, {}), "", { bundleName: "com.example.readerkitdemo", moduleName: "entry", pagePath: "common/DebugStorage", pageFullPath: "entry/src/main/ets/common/DebugStorage", integratedHsp: "false", moduleType: "followWithHap" });
+registerNamedRoute(() => new DebugStorage(undefined, {}), "", { bundleName: "com.example.reader", moduleName: "entry", pagePath: "common/DebugStorage", pageFullPath: "entry/src/main/ets/common/DebugStorage", integratedHsp: "false", moduleType: "followWithHap" });

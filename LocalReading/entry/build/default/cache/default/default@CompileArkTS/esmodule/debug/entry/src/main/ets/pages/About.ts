@@ -122,7 +122,7 @@ class About extends ViewPU {
             Column.create();
             Column.width('100%');
             Column.height('100%');
-            Column.backgroundColor(this.eyeMode ? '#FAF9DE' : { "id": 16777263, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+            Column.backgroundColor(this.eyeMode ? '#FAF9DE' : { "id": 16777263, "type": 10001, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
         }, Column);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Row.create();
@@ -130,7 +130,7 @@ class About extends ViewPU {
             Row.margin({ top: this.isTablet() ? 60 : 50, bottom: this.isTablet() ? 60 : 50 });
         }, Row);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Image.create({ "id": 16777277, "type": 20000, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+            Image.create({ "id": 16777277, "type": 20000, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
             Image.width(this.getIconSize());
             Image.height(this.getIconSize());
             Image.margin({ left: 20 });
@@ -163,14 +163,14 @@ class About extends ViewPU {
             Column.margin({ bottom: this.isTablet() ? 45 : 35 });
         }, Column);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Image.create({ "id": 16777217, "type": 20000, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+            Image.create({ "id": 16777217, "type": 20000, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
             Image.width(this.isTablet() ? 90 : 70);
             Image.height(this.isTablet() ? 90 : 70);
             Image.margin({ bottom: 9 });
             Image.borderRadius(10);
         }, Image);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Text.create({ "id": 16777222, "type": 10003, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+            Text.create({ "id": 16777222, "type": 10003, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
             Text.fontSize(this.isTablet() ? 20 : 16);
             Text.fontColor(Color.Black);
         }, Text);
@@ -331,18 +331,54 @@ class About extends ViewPU {
         }, Text);
         Text.pop();
         this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Image.create({ "id": 16777300, "type": 20000, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+            Image.create({ "id": 16777300, "type": 20000, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
             Image.width(this.isTablet() ? 24 : 20);
             Image.height(this.isTablet() ? 24 : 20);
         }, Image);
         Row.pop();
         this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Image.create({ "id": 16777278, "type": 20000, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+            Image.create({ "id": 16777278, "type": 20000, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
             Image.margin({ right: 5 });
             Image.width(this.isTablet() ? 24 : 20);
             Image.height(this.isTablet() ? 24 : 20);
         }, Image);
         // 数据同步
+        Row.pop();
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Row.create();
+            Row.width('100%');
+            Row.height(50);
+            Row.padding({ left: 6, right: 6, top: 6, bottom: 6 });
+            Row.justifyContent(FlexAlign.SpaceBetween);
+            Row.backgroundColor(this.isSyncPressed ? '#E0E0E0' : Color.White);
+            Row.onClick(() => {
+                router.pushUrl({ url: 'pages/SyncTest' }).catch((err: Error) => {
+                    hilog.error(0x0000, TAG, `pushUrl failed: ${err.message}`);
+                });
+            });
+        }, Row);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Row.create({ space: 7 });
+        }, Row);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Text.create("数据测试");
+            Text.fontSize(14);
+            Text.fontColor(Color.Black);
+            Text.margin({ left: 5 });
+        }, Text);
+        Text.pop();
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Image.create({ "id": 16777300, "type": 20000, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
+            Image.width(20);
+            Image.height(20);
+        }, Image);
+        Row.pop();
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Image.create({ "id": 16777278, "type": 20000, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
+            Image.margin({ right: 5 });
+            Image.width(20);
+            Image.height(20);
+        }, Image);
         Row.pop();
         //文字
         Column.pop();
@@ -382,7 +418,7 @@ class About extends ViewPU {
         }, Text);
         Text.pop();
         this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Text.create({ "id": 16777321, "type": 10003, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+            Text.create({ "id": 16777321, "type": 10003, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
             Text.fontSize(this.isTablet() ? 18 : 16);
             Text.fontWeight(FontWeight.Bold);
             Text.fontColor(Color.Black);
@@ -437,7 +473,7 @@ class About extends ViewPU {
         }, Text);
         Text.pop();
         this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Text.create('若导入数据后阅读字体没有正常改变，请先手动修改一次主题，重启应用即可。');
+            Text.create('导入书籍前请先阅读一本书籍在进行导入,若直接开始阅读可以进入更加深色模式哦~');
             Text.fontSize(this.isTablet() ? 15 : 13);
             Text.fontColor('#333333');
         }, Text);
@@ -468,4 +504,4 @@ class About extends ViewPU {
         return "About";
     }
 }
-registerNamedRoute(() => new About(undefined, {}), "", { bundleName: "com.example.readerkitdemo", moduleName: "entry", pagePath: "pages/About", pageFullPath: "entry/src/main/ets/pages/About", integratedHsp: "false", moduleType: "followWithHap" });
+registerNamedRoute(() => new About(undefined, {}), "", { bundleName: "com.example.reader", moduleName: "entry", pagePath: "pages/About", pageFullPath: "entry/src/main/ets/pages/About", integratedHsp: "false", moduleType: "followWithHap" });

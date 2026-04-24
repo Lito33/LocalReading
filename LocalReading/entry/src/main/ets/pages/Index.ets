@@ -216,7 +216,7 @@ export struct Index {
     this.filePath = book.getFilePath();
     this.bookName = book.getBookName();
     hilog.info(0x0000, TAG, `selectBook: this.filePath set to ${this.filePath}`);
-    // 不再操作 this.currentData
+
   }
 
   // 监听当前登录用户
@@ -227,7 +227,7 @@ export struct Index {
     await this.reloadData();
   }
   
-  // 进度更新监听回调
+  // 进度更新监听回调 要加Component
   async onProgressUpdated() {
     hilog.info(0x0000, TAG, `Progress updated detected, reloading data... (timestamp: ${this.progressUpdated})`);
     await this.reloadData();
@@ -256,7 +256,7 @@ export struct Index {
         return timeB - timeA; // 降序，最新的在前
       });
 
-      // 打印所有进度和书籍的filePath用于调试
+      // 调试
       this.progresses.forEach((p, idx) => {
         hilog.info(0x0000, TAG, `Progress[${idx}]: filePath=${p.filePath}, chapter=${p.chapterName}`);
       });
@@ -287,7 +287,7 @@ export struct Index {
     this.progresses = await ProgressStorage.loadAllProgresses(context);
   }
 
-  //刷新列表信息
+  //刷新列表信息，历史遗留产物
   private async handleRefresh() {
     try {
       const context = this.getUIContext().getHostContext() as common.UIAbilityContext;

@@ -13,12 +13,12 @@ interface ReadingRecord_Params {
 }
 import router from "@ohos:router";
 import type common from "@ohos:app.ability.common";
-import { ProgressStorage } from "@bundle:com.example.readerkitdemo/entry/ets/common/ProgressStorage";
-import type { BookProgress } from "@bundle:com.example.readerkitdemo/entry/ets/common/ProgressStorage";
-import { BookStorage } from "@bundle:com.example.readerkitdemo/entry/ets/common/BookStorage";
+import { ProgressStorage } from "@bundle:com.example.reader/entry/ets/common/ProgressStorage";
+import type { BookProgress } from "@bundle:com.example.reader/entry/ets/common/ProgressStorage";
+import { BookStorage } from "@bundle:com.example.reader/entry/ets/common/BookStorage";
 import type { BookParserInfo } from '../common/BookParserInfo';
 import hilog from "@ohos:hilog";
-import { WindowAbility } from "@bundle:com.example.readerkitdemo/entry/ets/entryability/WindowAbility";
+import { WindowAbility } from "@bundle:com.example.reader/entry/ets/entryability/WindowAbility";
 const TAG = 'ReadingRecord';
 class ReadingRecord extends ViewPU {
     constructor(parent, params, __localStorage, elmtId = -1, paramsLambda = undefined, extraInfo) {
@@ -200,7 +200,7 @@ class ReadingRecord extends ViewPU {
             Column.create();
             Column.width('100%');
             Column.height('100%');
-            Column.backgroundColor(this.eyeMode ? '#FAF9DE' : { "id": 16777263, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+            Column.backgroundColor(this.eyeMode ? '#FAF9DE' : { "id": 16777263, "type": 10001, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
         }, Column);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             // 标题栏
@@ -211,7 +211,7 @@ class ReadingRecord extends ViewPU {
             Row.margin({ top: 50, bottom: 8 });
         }, Row);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Image.create({ "id": 16777277, "type": 20000, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+            Image.create({ "id": 16777277, "type": 20000, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
             Image.width(25);
             Image.height(25);
             Image.margin({ left: 20 });
@@ -465,7 +465,7 @@ class ReadingRecord extends ViewPU {
         }, Row);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             //封面
-            Image.create(book.getCoverPath() ? 'file://' + book.getCoverPath() : { "id": 16777285, "type": 20000, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+            Image.create(book.getCoverPath() ? 'file://' + book.getCoverPath() : { "id": 16777285, "type": 20000, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
             //封面
             Image.width(60);
             //封面
@@ -506,7 +506,7 @@ class ReadingRecord extends ViewPU {
         Column.pop();
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             // 箭头
-            Image.create({ "id": 16777278, "type": 20000, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+            Image.create({ "id": 16777278, "type": 20000, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
             // 箭头
             Image.width(20);
             // 箭头
@@ -542,4 +542,4 @@ class ReadingRecord extends ViewPU {
         return "ReadingRecord";
     }
 }
-registerNamedRoute(() => new ReadingRecord(undefined, {}), "", { bundleName: "com.example.readerkitdemo", moduleName: "entry", pagePath: "pages/ReadingRecord", pageFullPath: "entry/src/main/ets/pages/ReadingRecord", integratedHsp: "false", moduleType: "followWithHap" });
+registerNamedRoute(() => new ReadingRecord(undefined, {}), "", { bundleName: "com.example.reader", moduleName: "entry", pagePath: "pages/ReadingRecord", pageFullPath: "entry/src/main/ets/pages/ReadingRecord", integratedHsp: "false", moduleType: "followWithHap" });

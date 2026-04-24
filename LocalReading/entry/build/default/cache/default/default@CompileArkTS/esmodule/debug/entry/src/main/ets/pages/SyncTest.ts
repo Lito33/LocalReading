@@ -9,18 +9,18 @@ interface SyncTest_Params {
     networkInfo?: NetworkInfo | null;
     wifiOnlySync?: boolean;
 }
-import { DistributedSyncManager } from "@bundle:com.example.readerkitdemo/entry/ets/utils/DistributedSyncManager";
-import type { SyncStatus } from "@bundle:com.example.readerkitdemo/entry/ets/utils/DistributedSyncManager";
-import { StorageUtil } from "@bundle:com.example.readerkitdemo/entry/ets/utils/StorageUtil";
-import { SettingStorage } from "@bundle:com.example.readerkitdemo/entry/ets/common/SettingStorage";
-import { GlobalContext } from "@bundle:com.example.readerkitdemo/entry/ets/common/GlobalContext";
+import { DistributedSyncManager } from "@bundle:com.example.reader/entry/ets/utils/DistributedSyncManager";
+import type { SyncStatus } from "@bundle:com.example.reader/entry/ets/utils/DistributedSyncManager";
+import { StorageUtil } from "@bundle:com.example.reader/entry/ets/utils/StorageUtil";
+import { SettingStorage } from "@bundle:com.example.reader/entry/ets/common/SettingStorage";
+import { GlobalContext } from "@bundle:com.example.reader/entry/ets/common/GlobalContext";
 import type common from "@ohos:app.ability.common";
 import abilityAccessCtrl from "@ohos:abilityAccessCtrl";
 import type { Permissions } from "@ohos:abilityAccessCtrl";
-import { ProgressStorage } from "@bundle:com.example.readerkitdemo/entry/ets/common/ProgressStorage";
-import type { BookProgress } from "@bundle:com.example.readerkitdemo/entry/ets/common/ProgressStorage";
-import { NetworkManager } from "@bundle:com.example.readerkitdemo/entry/ets/utils/NetworkManager";
-import type { NetworkInfo } from "@bundle:com.example.readerkitdemo/entry/ets/utils/NetworkManager";
+import { ProgressStorage } from "@bundle:com.example.reader/entry/ets/common/ProgressStorage";
+import type { BookProgress } from "@bundle:com.example.reader/entry/ets/common/ProgressStorage";
+import { NetworkManager } from "@bundle:com.example.reader/entry/ets/utils/NetworkManager";
+import type { NetworkInfo } from "@bundle:com.example.reader/entry/ets/utils/NetworkManager";
 class SyncTest extends ViewPU {
     constructor(parent, params, __localStorage, elmtId = -1, paramsLambda = undefined, extraInfo) {
         super(parent, __localStorage, elmtId, extraInfo);
@@ -222,7 +222,8 @@ class SyncTest extends ViewPU {
             // 格式化阅读进度信息
             let progressInfo = '无阅读进度';
             if (progresses.length > 0) {
-                progressInfo = progresses.map((p: BookProgress, index: number) => `  ${index + 1}. ${p.bookName || '未知书籍'}\n     章节: ${p.chapterName || '未知'} (索引: ${p.resourceIndex})\n     最后阅读: ${p.lastReadTime > 0 ? new Date(p.lastReadTime).toLocaleString() : '未知'}`).join('\n');
+                progressInfo = progresses.map((p: BookProgress, index: number) => `  ${index + 1}. ${p.bookName || '未知书籍'}\n     章节: ${p.chapterName || '未知'} (索引: ${p.resourceIndex})\n
+              最后阅读: ${p.lastReadTime > 0 ? new Date(p.lastReadTime).toLocaleString() : '未知'}`).join('\n');
             }
             this.testLog = `✅ 本地数据读取成功！
       
@@ -590,4 +591,4 @@ class SyncTest extends ViewPU {
         return "SyncTest";
     }
 }
-registerNamedRoute(() => new SyncTest(undefined, {}), "", { bundleName: "com.example.readerkitdemo", moduleName: "entry", pagePath: "pages/SyncTest", pageFullPath: "entry/src/main/ets/pages/SyncTest", integratedHsp: "false", moduleType: "followWithHap" });
+registerNamedRoute(() => new SyncTest(undefined, {}), "", { bundleName: "com.example.reader", moduleName: "entry", pagePath: "pages/SyncTest", pageFullPath: "entry/src/main/ets/pages/SyncTest", integratedHsp: "false", moduleType: "followWithHap" });

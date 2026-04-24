@@ -7,7 +7,7 @@
 	},
 	"BuildOptions":{
 		"SELECT_BUILD_PRODUCT":"default",
-		"BUNDLE_NAME":"com.example.readerkitdemo",
+		"BUNDLE_NAME":"com.example.reader",
 		"BUILD_PATH":{
 			"OUTPUT_PATH":"D:\\devecoStudioDriector\\SomeDemo\\LocalReading\\build\\outputs\\default"
 		},

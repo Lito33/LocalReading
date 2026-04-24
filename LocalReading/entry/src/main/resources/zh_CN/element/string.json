@@ -119,6 +119,22 @@
     {
       "name": "SingleModeDescription",
       "value": "点击左右两侧翻到下一页"
+    },
+    {
+      "name": "LoginDialogTitle",
+      "value": "新用户注册"
+    },
+    {
+      "name": "LoginDialogMessage",
+      "value": "该账号尚未注册，是否确认注册？"
+    },
+    {
+      "name": "Login",
+      "value": "登录"
+    },
+    {
+      "name": "RememberPassword",
+      "value": "记住密码"
     }
   ]
 }

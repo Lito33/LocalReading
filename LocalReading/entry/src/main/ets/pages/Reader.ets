@@ -214,8 +214,8 @@ struct Reader {
 
         // 优先使用保存的字体颜色和主题模式设置
         // 如果保存的设置中有有效的 fontColor（非空字符串），直接使用
-        // themeList: ['white', 'yellow', 'pink', 'green', 'dark', 'whiteSky', 'darkSky']
-        // index 4 (dark), 6 (darkSky) 需要白色字体
+       // themeList: ['white', 'yellow', 'pink', 'green', 'dark', 'whiteSky', 'darkSky']
+        //index 4 (dark), 6 (darkSky) 需要白色字体
         if (saved.fontColor && saved.fontColor.length > 0) {
           this.readerSetting.fontColor = saved.fontColor;
           this.readerSetting.nightMode = saved.nightMode;

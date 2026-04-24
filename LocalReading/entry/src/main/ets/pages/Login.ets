@@ -1,4 +1,4 @@
-import { promptAction, router } from '@kit.ArkUI';
+import { App, PromptAction, promptAction, router } from '@kit.ArkUI';
 import { StorageUtil } from '../utils/StorageUtil';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { DistributedSyncManager } from '../utils/DistributedSyncManager';
@@ -232,7 +232,7 @@ struct LoginBottom{
             console.info('Login: 记住密码状态变化:', value);
           })
 
-        Text("记住密码")
+        Text($r('app.string.RememberPassword'))
           .fontSize(14)
           .fontColor("#666666")
           .onClick(() => {
@@ -243,7 +243,7 @@ struct LoginBottom{
       .justifyContent(FlexAlign.Start)
       .margin({ top: 20 })
 
-      Button("登录")
+      Button($r('app.string.Login'))
         .width("80%")
         .height(40)
         .fontSize(16)
@@ -256,45 +256,26 @@ struct LoginBottom{
         .onClick(async () => {
           console.info('Login: 点击登录按钮 - 账号:', this.account, '密码长度:', this.password.length, '记住密码:', this.isRememberPassword);
 
-          await this.simulateLogin();
-          if (this.loginResult.success) {
-            // 登录/注册成功：保存记住密码相关信息
-            console.info('Login: 登录成功，保存用户信息 - 账号:', this.account, '记住密码:', this.isRememberPassword);
-            
-            // 根据记住密码状态保存信息
-            if (this.isRememberPassword) {
-              // 记住密码：保存账号和密码
-              await StorageUtil.saveUserInfo(this.account, this.password, true);
-              console.info('Login: 已保存账号和密码');
-            } else {
-              // 不记住密码：只保存账号，清除密码
-              await StorageUtil.saveUserInfo(this.account, '', false);
-              console.info('Login: 只保存账号，清除密码');
-            }
-            
-            // 设置登录状态
-            await StorageUtil.setLoggedIn(this.account);
-            hilog.info(0x0000, TAG, 'Login successful, setting login status for account: ' + this.account);
-            AppStorage.setOrCreate('currentUser', this.account);
-            
-            // 触发数据同步到其他设备
-            DistributedSyncManager.getInstance().syncData().then((success) => {
-              hilog.info(0x0000, TAG, `Data sync after login: ${success ? 'success' : 'failed'}`);
+          const isUserExists = await StorageUtil.userExists(this.account.trim())
+
+          if(!isUserExists){
+            // 未注册
+            promptAction.showDialog({
+                  title:$r('app.string.LoginDialogTitle'),
+                  message: $r('app.string.LoginDialogMessage'),
+              buttons:[
+                { text: '取消', color: '#999999' },
+                { text: '确认', color: '#007DFF' }
+              ]
+            }).then((result) => {
+              if (result.index === 1) {
+                this.handleRegistration();
+              }
             });
-            
-            // 根据是否为注册显示不同提示
-            const message = this.loginResult.isRegister ? '注册成功' : '登录成功';
-            promptAction.showToast({ message: message, duration: 1500 });
-            
-            // 登录成功后返回到Tab页面
-            setTimeout(() => {
-              router.back();
-            }, 500);
           } else {
-            promptAction.showToast({
-              message: '用户名或密码错误！',
-              duration: 3000
-            });
+            // 正常流程
+            await this.simulateLogin();
+            this.handleLoginResult();
           }
         })
         .width('80%')
@@ -304,10 +285,73 @@ struct LoginBottom{
     .padding({left:12,right:12,top:12})
     .height('60%')
 
-
-
-
   }
+
+  // 集成处理注册流程
+  private async handleRegistration(): Promise<void> {
+    const account = this.account.trim();
+    const password = this.password.trim();
+
+    if (!account || !password) {
+      promptAction.showToast({ message: '账号和密码不能为空', duration: 2000});
+      return
+    }
+
+    await StorageUtil.saveUser(account, password);
+    await StorageUtil.saveUserInfo(account,password,this.isRememberPassword);
+    await StorageUtil.setLoggedIn(account);
+    AppStorage.setOrCreate('currentUser', account);
+    hilog.info(0x0000, TAG, 'Registration successful for account: '+ account);
+
+    // 触发数据同步
+    DistributedSyncManager.getInstance().syncData().then((success)=>{
+      hilog.info(0x0000, TAG, `Data sync after registration: ${success ? 'success' : 'failed'}`);
+    })
+    promptAction.showToast({ message: '注册成功', duration: 1500 });
+
+    // 返回上个页面
+    setTimeout(() => {
+      router.back();
+    }, 500);
+  }
+
+  // 集成处理登录结果
+  private async handleLoginResult(): Promise<void> {
+    if (this.loginResult.success) {
+      // 登录成功：保存记住密码相关信息
+      console.info('Login: 登录成功，保存用户信息 - 账号:', this.account, '记住密码:', this.isRememberPassword);
+
+      // 根据记住密码状态保存信息
+      if (this.isRememberPassword) {
+        await StorageUtil.saveUserInfo(this.account, this.password, true);
+      } else {
+        await StorageUtil.saveUserInfo(this.account, '', false);
+      }
+
+      // 设置登录状态
+      await StorageUtil.setLoggedIn(this.account);
+      AppStorage.setOrCreate('currentUser', this.account);
+      hilog.info(0x0000, TAG, 'Login successful for account: ' + this.account);
+
+      // 数据同步
+      DistributedSyncManager.getInstance().syncData().then((success) => {
+        hilog.info(0x0000, TAG, `Data sync after login: ${success ? 'success' : 'failed'}`);
+      });
+
+      promptAction.showToast({ message: '登录成功', duration: 1500 });
+
+      // 返回Tab页面
+      setTimeout(() => {
+        router.back();
+      }, 500);
+    } else {
+      promptAction.showToast({
+        message: '用户名或密码错误！',
+        duration: 3000
+      });
+    }
+  }
+
   pageTransition() {
     PageTransitionEnter({ duration: 0, curve: Curve.Sharp });
     PageTransitionExit({ duration: 0, curve: Curve.Sharp });

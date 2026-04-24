@@ -1,6 +1,6 @@
 import preferences from "@ohos:data.preferences";
 import type common from "@ohos:app.ability.common";
-import { BookParserInfo } from "@bundle:com.example.readerkitdemo/entry/ets/common/BookParserInfo";
+import { BookParserInfo } from "@bundle:com.example.reader/entry/ets/common/BookParserInfo";
 const BOOKS_KEY = 'imported_books';
 interface StoredBookInfo {
     bookId: string;

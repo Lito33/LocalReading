@@ -41,27 +41,27 @@ interface Reader_Params {
     ttsPitch?: number;
     ttsSpeed?: number;
 }
-import { WindowAbility } from "@bundle:com.example.readerkitdemo/entry/ets/entryability/WindowAbility";
+import { WindowAbility } from "@bundle:com.example.reader/entry/ets/entryability/WindowAbility";
 import display from "@ohos:display";
 import fs from "@ohos:file.fs";
 import image from "@ohos:multimedia.image";
 import type { BusinessError } from "@ohos:base";
-import { FontFileInfo } from "@bundle:com.example.readerkitdemo/entry/ets/common/FontFileInfo";
+import { FontFileInfo } from "@bundle:com.example.reader/entry/ets/common/FontFileInfo";
 import hilog from "@ohos:hilog";
 import { ReadPageComponent } from "@hms:core.readerservice.readerComponent";
 import { readerCore } from "@hms:core.readerservice.readerComponent";
 import { bookParser } from "@hms:core.readerservice.bookParser";
 import type common from "@ohos:app.ability.common";
 import ConfigurationConstant from "@ohos:app.ability.ConfigurationConstant";
-import { BookUtils } from "@bundle:com.example.readerkitdemo/entry/ets/utils/BookUtils";
-import { SettingStorage } from "@bundle:com.example.readerkitdemo/entry/ets/common/SettingStorage";
-import type { PersistedReaderSettings } from "@bundle:com.example.readerkitdemo/entry/ets/common/SettingStorage";
-import { ProgressStorage } from "@bundle:com.example.readerkitdemo/entry/ets/common/ProgressStorage";
-import type { BookProgress } from "@bundle:com.example.readerkitdemo/entry/ets/common/ProgressStorage";
+import { BookUtils } from "@bundle:com.example.reader/entry/ets/utils/BookUtils";
+import { SettingStorage } from "@bundle:com.example.reader/entry/ets/common/SettingStorage";
+import type { PersistedReaderSettings } from "@bundle:com.example.reader/entry/ets/common/SettingStorage";
+import { ProgressStorage } from "@bundle:com.example.reader/entry/ets/common/ProgressStorage";
+import type { BookProgress } from "@bundle:com.example.reader/entry/ets/common/ProgressStorage";
 import emitter from "@ohos:events.emitter";
-import { Speaker } from "@bundle:com.example.readerkitdemo/entry/ets/utils/Speaker";
+import { Speaker } from "@bundle:com.example.reader/entry/ets/utils/Speaker";
 import util from "@ohos:util";
-import { DistributedSyncManager } from "@bundle:com.example.readerkitdemo/entry/ets/utils/DistributedSyncManager";
+import { DistributedSyncManager } from "@bundle:com.example.reader/entry/ets/utils/DistributedSyncManager";
 interface paramType {
     filePath: string;
     resourceIndex: number;
@@ -121,13 +121,13 @@ class Reader extends ViewPU {
             'darkSky'
         ], this, "themeList");
         this.THEME_BUTTON_BACKGROUND = {
-            'white': { "id": 16777260, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" },
-            'yellow': { "id": 16777261, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" },
-            'pink': { "id": 16777258, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" },
-            'green': { "id": 16777257, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" },
-            'dark': { "id": 16777256, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" },
-            'whiteSky': { "id": 16777260, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" },
-            'darkSky': { "id": 16777256, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" }
+            'white': { "id": 16777260, "type": 10001, params: [], "bundleName": "com.example.reader", "moduleName": "entry" },
+            'yellow': { "id": 16777261, "type": 10001, params: [], "bundleName": "com.example.reader", "moduleName": "entry" },
+            'pink': { "id": 16777258, "type": 10001, params: [], "bundleName": "com.example.reader", "moduleName": "entry" },
+            'green': { "id": 16777257, "type": 10001, params: [], "bundleName": "com.example.reader", "moduleName": "entry" },
+            'dark': { "id": 16777256, "type": 10001, params: [], "bundleName": "com.example.reader", "moduleName": "entry" },
+            'whiteSky': { "id": 16777260, "type": 10001, params: [], "bundleName": "com.example.reader", "moduleName": "entry" },
+            'darkSky': { "id": 16777256, "type": 10001, params: [], "bundleName": "com.example.reader", "moduleName": "entry" }
         };
         this.THEME_PAGE_COLOR = {
             'white': '#FFFFFF',
@@ -139,13 +139,13 @@ class Reader extends ViewPU {
             'darkSky': '#202224'
         };
         this.themeBorderColor = {
-            0: { "id": 16777253, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" },
-            1: { "id": 16777254, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" },
-            2: { "id": 16777252, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" },
-            3: { "id": 16777251, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" },
-            4: { "id": 16777253, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" },
-            5: { "id": 16777253, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" },
-            6: { "id": 16777253, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" }
+            0: { "id": 16777253, "type": 10001, params: [], "bundleName": "com.example.reader", "moduleName": "entry" },
+            1: { "id": 16777254, "type": 10001, params: [], "bundleName": "com.example.reader", "moduleName": "entry" },
+            2: { "id": 16777252, "type": 10001, params: [], "bundleName": "com.example.reader", "moduleName": "entry" },
+            3: { "id": 16777251, "type": 10001, params: [], "bundleName": "com.example.reader", "moduleName": "entry" },
+            4: { "id": 16777253, "type": 10001, params: [], "bundleName": "com.example.reader", "moduleName": "entry" },
+            5: { "id": 16777253, "type": 10001, params: [], "bundleName": "com.example.reader", "moduleName": "entry" },
+            6: { "id": 16777253, "type": 10001, params: [], "bundleName": "com.example.reader", "moduleName": "entry" }
         };
         this.__themeSelectIndex = new ObservedPropertySimplePU(0, this, "themeSelectIndex");
         this.__singleHandMode = new ObservedPropertySimplePU(false, this, "singleHandMode");
@@ -599,7 +599,7 @@ class Reader extends ViewPU {
                 // 优先使用保存的字体颜色和主题模式设置
                 // 如果保存的设置中有有效的 fontColor（非空字符串），直接使用
                 // themeList: ['white', 'yellow', 'pink', 'green', 'dark', 'whiteSky', 'darkSky']
-                // index 4 (dark), 6 (darkSky) 需要白色字体
+                //index 4 (dark), 6 (darkSky) 需要白色字体
                 if (saved.fontColor && saved.fontColor.length > 0) {
                     this.readerSetting.fontColor = saved.fontColor;
                     this.readerSetting.nightMode = saved.nightMode;
@@ -1230,7 +1230,7 @@ class Reader extends ViewPU {
             Column.width('100%');
             Column.borderRadius({ topRight: 32, topLeft: 32 });
             Column.visibility(this.currentIndex === 0 ? Visibility.Visible : Visibility.None);
-            Column.backgroundColor(this.eyeMode ? { "id": 16777327, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" } : { "id": 16777263, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+            Column.backgroundColor(this.eyeMode ? { "id": 16777327, "type": 10001, params: [], "bundleName": "com.example.reader", "moduleName": "entry" } : { "id": 16777263, "type": 10001, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
             Column.zIndex(3);
         }, Column);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
@@ -1254,10 +1254,10 @@ class Reader extends ViewPU {
         }, Stack);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             //通过 SymbolGlyph 组件可将图标嵌入界面，并支持多色渲染、动态效果等特性
-            SymbolGlyph.create({ "id": 125831487, "type": 40000, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+            SymbolGlyph.create({ "id": 125831487, "type": 40000, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
             //通过 SymbolGlyph 组件可将图标嵌入界面，并支持多色渲染、动态效果等特性
-            SymbolGlyph.fontColor(this.eyeMode ? [{ "id": 16777253, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" }] :
-                [{ "id": 16777262, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" }]);
+            SymbolGlyph.fontColor(this.eyeMode ? [{ "id": 16777253, "type": 10001, params: [], "bundleName": "com.example.reader", "moduleName": "entry" }] :
+                [{ "id": 16777262, "type": 10001, params: [], "bundleName": "com.example.reader", "moduleName": "entry" }]);
             //通过 SymbolGlyph 组件可将图标嵌入界面，并支持多色渲染、动态效果等特性
             SymbolGlyph.width(18);
             //通过 SymbolGlyph 组件可将图标嵌入界面，并支持多色渲染、动态效果等特性
@@ -1296,11 +1296,11 @@ class Reader extends ViewPU {
             Image.aspectRatio(3 / 4);
             Image.borderRadius(2);
             Image.zIndex(1);
-            Image.alt({ "id": 16777285, "type": 20000, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
-            Image.backgroundColor({ "id": 125829129, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+            Image.alt({ "id": 16777285, "type": 20000, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
+            Image.backgroundColor({ "id": 125829129, "type": 10001, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
         }, Image);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Image.create({ "id": 16777298, "type": 20000, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+            Image.create({ "id": 16777298, "type": 20000, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
             Image.draggable(false);
             Image.aspectRatio(3 / 4);
             Image.width(42);
@@ -1309,7 +1309,7 @@ class Reader extends ViewPU {
             Image.position({ x: 0, y: 0 });
         }, Image);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Image.create({ "id": 16777283, "type": 20000, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+            Image.create({ "id": 16777283, "type": 20000, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
             Image.draggable(false);
             Image.width(42);
             Image.opacity(0.7);
@@ -1320,9 +1320,9 @@ class Reader extends ViewPU {
         Stack.pop();
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Text.create(this.bookTitle);
-            Text.fontSize({ "id": 125829684, "type": 10002, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+            Text.fontSize({ "id": 125829684, "type": 10002, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
             Text.textOverflow({ overflow: TextOverflow.Ellipsis });
-            Text.fontColor(this.eyeMode ? Color.White : { "id": 16777245, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+            Text.fontColor(this.eyeMode ? Color.White : { "id": 16777245, "type": 10001, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
             Text.maxLines(1);
             Text.margin({ right: 12, left: 12 });
             Text.fontWeight(FontWeight.Bold);
@@ -1382,15 +1382,15 @@ class Reader extends ViewPU {
                         this.observeComponentCreation2((elmtId, isInitialRender) => {
                             Text.create(' · ');
                             Text.fontSize(14);
-                            Text.fontColor(this.isCurrentChapterByIndex(item.index) ? { "id": 16777246, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" } :
-                                (this.eyeMode ? Color.White : { "id": 16777245, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" }));
+                            Text.fontColor(this.isCurrentChapterByIndex(item.index) ? { "id": 16777246, "type": 10001, params: [], "bundleName": "com.example.reader", "moduleName": "entry" } :
+                                (this.eyeMode ? Color.White : { "id": 16777245, "type": 10001, params: [], "bundleName": "com.example.reader", "moduleName": "entry" }));
                         }, Text);
                         Text.pop();
                         this.observeComponentCreation2((elmtId, isInitialRender) => {
                             Text.create(item.name);
                             Text.fontSize(14);
-                            Text.fontColor(this.isCurrentChapterByIndex(item.index) ? { "id": 16777246, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" } :
-                                (this.eyeMode ? Color.White : { "id": 16777245, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" }));
+                            Text.fontColor(this.isCurrentChapterByIndex(item.index) ? { "id": 16777246, "type": 10001, params: [], "bundleName": "com.example.reader", "moduleName": "entry" } :
+                                (this.eyeMode ? Color.White : { "id": 16777245, "type": 10001, params: [], "bundleName": "com.example.reader", "moduleName": "entry" }));
                             Text.fontWeight(this.isCurrentChapterByIndex(item.index) ? FontWeight.Bold : FontWeight.Normal);
                             Text.textOverflow({ overflow: TextOverflow.Ellipsis });
                             Text.padding({ top: 8, bottom: 8 });
@@ -1424,7 +1424,7 @@ class Reader extends ViewPU {
             Scroll.width('100%');
             Scroll.height('100%');
             Scroll.visibility(this.currentIndex === 1 ? Visibility.Visible : Visibility.None);
-            Scroll.backgroundColor(this.eyeMode ? { "id": 16777327, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" } : { "id": 16777263, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+            Scroll.backgroundColor(this.eyeMode ? { "id": 16777327, "type": 10001, params: [], "bundleName": "com.example.reader", "moduleName": "entry" } : { "id": 16777263, "type": 10001, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
             Scroll.borderRadius({ topRight: 32, topLeft: 32 });
             Scroll.zIndex(3);
         }, Scroll);
@@ -1501,8 +1501,8 @@ class Reader extends ViewPU {
                     Text.fontColor(this.selectFontPath !== data.getPath() ? Color.Black :
                         Color.Red);
                     Text.textAlign(TextAlign.Center);
-                    Text.backgroundColor(this.selectFontPath !== data.getPath() ? { "id": 16777249, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" } : { "id": 16777248, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
-                    Text.borderColor(this.selectFontPath !== data.getPath() ? { "id": 16777247, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" } : { "id": 16777253, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+                    Text.backgroundColor(this.selectFontPath !== data.getPath() ? { "id": 16777249, "type": 10001, params: [], "bundleName": "com.example.reader", "moduleName": "entry" } : { "id": 16777248, "type": 10001, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
+                    Text.borderColor(this.selectFontPath !== data.getPath() ? { "id": 16777247, "type": 10001, params: [], "bundleName": "com.example.reader", "moduleName": "entry" } : { "id": 16777253, "type": 10001, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
                 }, Text);
                 Text.pop();
                 Column.pop();
@@ -1519,7 +1519,7 @@ class Reader extends ViewPU {
             Text.width('92%');
             Text.height(1);
             Text.margin({ left: 16, top: 12, right: 16 });
-            Text.backgroundColor(this.eyeMode ? { "id": 16777328, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" } : { "id": 16777249, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+            Text.backgroundColor(this.eyeMode ? { "id": 16777328, "type": 10001, params: [], "bundleName": "com.example.reader", "moduleName": "entry" } : { "id": 16777249, "type": 10001, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
         }, Text);
         Text.pop();
         this.observeComponentCreation2((elmtId, isInitialRender) => {
@@ -1531,7 +1531,7 @@ class Reader extends ViewPU {
             Row.margin({ left: 16, top: 16, right: 16 });
         }, Row);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Text.create({ "id": 16777322, "type": 10003, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+            Text.create({ "id": 16777322, "type": 10003, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
             Text.fontColor(this.eyeMode ? Color.White : Color.Black);
             Text.fontSize(15);
             Text.width(65);
@@ -1563,7 +1563,7 @@ class Reader extends ViewPU {
             });
         }, Radio);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Text.create({ "id": 16777230, "type": 10003, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+            Text.create({ "id": 16777230, "type": 10003, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
             Text.fontSize(16);
             Text.lineHeight(21);
             Text.fontColor(this.eyeMode ? Color.White : Color.Black);
@@ -1591,7 +1591,7 @@ class Reader extends ViewPU {
             });
         }, Radio);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Text.create({ "id": 16777241, "type": 10003, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+            Text.create({ "id": 16777241, "type": 10003, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
             Text.fontSize(16);
             Text.lineHeight(21);
             Text.fontColor(this.eyeMode ? Color.White : Color.Black);
@@ -1604,7 +1604,7 @@ class Reader extends ViewPU {
             Text.width('92%');
             Text.height(1);
             Text.margin({ left: 16, top: 12, right: 16 });
-            Text.backgroundColor(this.eyeMode ? { "id": 16777328, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" } : { "id": 16777249, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+            Text.backgroundColor(this.eyeMode ? { "id": 16777328, "type": 10001, params: [], "bundleName": "com.example.reader", "moduleName": "entry" } : { "id": 16777249, "type": 10001, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
         }, Text);
         Text.pop();
         this.observeComponentCreation2((elmtId, isInitialRender) => {
@@ -1616,7 +1616,7 @@ class Reader extends ViewPU {
             Row.margin({ left: 16, top: 16, right: 16 });
         }, Row);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Text.create({ "id": 16777325, "type": 10003, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+            Text.create({ "id": 16777325, "type": 10003, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
             Text.fontColor(this.eyeMode ? Color.White : Color.Black);
             Text.fontSize(15);
             Text.fontWeight(FontWeight.Bold);
@@ -1635,7 +1635,7 @@ class Reader extends ViewPU {
         }, Toggle);
         Toggle.pop();
         this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Text.create({ "id": 16777326, "type": 10003, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+            Text.create({ "id": 16777326, "type": 10003, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
             Text.fontSize(14);
             Text.fontColor(this.eyeMode ? '#ff7c7c7c' : '#666666');
             Text.margin({ left: 8 });
@@ -1648,7 +1648,7 @@ class Reader extends ViewPU {
             Text.width('92%');
             Text.height(1);
             Text.margin({ left: 16, top: 12, right: 16 });
-            Text.backgroundColor(this.eyeMode ? { "id": 16777328, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" } : { "id": 16777249, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+            Text.backgroundColor(this.eyeMode ? { "id": 16777328, "type": 10001, params: [], "bundleName": "com.example.reader", "moduleName": "entry" } : { "id": 16777249, "type": 10001, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
         }, Text);
         Text.pop();
         this.observeComponentCreation2((elmtId, isInitialRender) => {
@@ -1728,7 +1728,7 @@ class Reader extends ViewPU {
                     Row.width('100%');
                     Row.height(40);
                     Row.borderWidth(this.themeSelectIndex !== index ? 1 : 2);
-                    Row.borderColor(this.themeSelectIndex !== index ? { "id": 16777255, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" } :
+                    Row.borderColor(this.themeSelectIndex !== index ? { "id": 16777255, "type": 10001, params: [], "bundleName": "com.example.reader", "moduleName": "entry" } :
                         this.themeBorderColor[this.themeSelectIndex]);
                     Row.backgroundImage(this.getBackgroundImage(item));
                     Row.backgroundColor(this.THEME_BUTTON_BACKGROUND[item.toString()]);
@@ -1751,7 +1751,7 @@ class Reader extends ViewPU {
             Text.width('92%');
             Text.height(1);
             Text.margin({ left: 16, top: 12, right: 16 });
-            Text.backgroundColor(this.eyeMode ? { "id": 16777328, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" } : { "id": 16777249, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+            Text.backgroundColor(this.eyeMode ? { "id": 16777328, "type": 10001, params: [], "bundleName": "com.example.reader", "moduleName": "entry" } : { "id": 16777249, "type": 10001, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
         }, Text);
         Text.pop();
         this.observeComponentCreation2((elmtId, isInitialRender) => {
@@ -1763,7 +1763,7 @@ class Reader extends ViewPU {
             Row.padding({ left: 10, right: 10, bottom: 7 });
         }, Row);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Text.create({ "id": 16777320, "type": 10003, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+            Text.create({ "id": 16777320, "type": 10003, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
             Text.fontColor(this.eyeMode ? Color.White : Color.Black);
             Text.fontSize(16);
             Text.width(50);
@@ -1787,7 +1787,7 @@ class Reader extends ViewPU {
         }, Slider);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Text.create(`${this.ttsVolume.toFixed(1)}`);
-            Text.fontColor(this.eyeMode ? Color.White : { "id": 16777329, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+            Text.fontColor(this.eyeMode ? Color.White : { "id": 16777329, "type": 10001, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
             Text.fontSize(14);
             Text.width(30);
             Text.textAlign(TextAlign.Center);
@@ -1804,7 +1804,7 @@ class Reader extends ViewPU {
             Row.padding({ left: 10, right: 10, bottom: 7 });
         }, Row);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Text.create({ "id": 16777323, "type": 10003, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+            Text.create({ "id": 16777323, "type": 10003, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
             Text.fontColor(this.eyeMode ? Color.White : Color.Black);
             Text.fontSize(16);
             Text.width(50);
@@ -1828,7 +1828,7 @@ class Reader extends ViewPU {
         }, Slider);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Text.create(`${this.ttsPitch.toFixed(2)}`);
-            Text.fontColor(this.eyeMode ? Color.White : { "id": 16777329, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+            Text.fontColor(this.eyeMode ? Color.White : { "id": 16777329, "type": 10001, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
             Text.fontSize(14);
             Text.width(40);
             Text.textAlign(TextAlign.Center);
@@ -1845,7 +1845,7 @@ class Reader extends ViewPU {
             Row.padding({ left: 10, right: 10 });
         }, Row);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Text.create({ "id": 16777324, "type": 10003, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+            Text.create({ "id": 16777324, "type": 10003, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
             Text.fontColor(this.eyeMode ? Color.White : Color.Black);
             Text.fontSize(16);
             Text.width(50);
@@ -1869,7 +1869,7 @@ class Reader extends ViewPU {
         }, Slider);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Text.create(`${this.ttsSpeed.toFixed(2)}x`);
-            Text.fontColor(this.eyeMode ? Color.White : { "id": 16777329, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+            Text.fontColor(this.eyeMode ? Color.White : { "id": 16777329, "type": 10001, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
             Text.fontSize(14);
             Text.width(40);
             Text.textAlign(TextAlign.Center);
@@ -1882,7 +1882,7 @@ class Reader extends ViewPU {
             Text.width('92%');
             Text.height(1);
             Text.margin({ left: 16, top: 12, right: 16 });
-            Text.backgroundColor(this.eyeMode ? { "id": 16777328, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" } : { "id": 16777249, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+            Text.backgroundColor(this.eyeMode ? { "id": 16777328, "type": 10001, params: [], "bundleName": "com.example.reader", "moduleName": "entry" } : { "id": 16777249, "type": 10001, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
         }, Text);
         Text.pop();
         this.observeComponentCreation2((elmtId, isInitialRender) => {
@@ -1894,7 +1894,7 @@ class Reader extends ViewPU {
             Row.padding({ left: 10, right: 10, top: 5 });
         }, Row);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Text.create({ "id": 16777318, "type": 10003, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+            Text.create({ "id": 16777318, "type": 10003, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
             Text.fontColor(this.eyeMode ? Color.White : Color.Black);
             Text.fontSize(14);
             Text.width(50);
@@ -1919,7 +1919,7 @@ class Reader extends ViewPU {
         }, Slider);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Text.create(`${this.fontSize}`);
-            Text.fontColor(this.eyeMode ? Color.White : { "id": 16777329, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+            Text.fontColor(this.eyeMode ? Color.White : { "id": 16777329, "type": 10001, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
             Text.fontSize(14);
             Text.width(30);
             Text.textAlign(TextAlign.Center);
@@ -1938,7 +1938,7 @@ class Reader extends ViewPU {
             Row.margin({ bottom: 10 });
         }, Row);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Text.create({ "id": 16777319, "type": 10003, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+            Text.create({ "id": 16777319, "type": 10003, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
             Text.fontColor(this.eyeMode ? Color.White : Color.Black);
             Text.fontSize(16);
             Text.width(50);
@@ -1963,7 +1963,7 @@ class Reader extends ViewPU {
         }, Slider);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Text.create(`${this.lineHeight.toFixed(1)}`);
-            Text.fontColor(this.eyeMode ? Color.White : { "id": 16777329, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+            Text.fontColor(this.eyeMode ? Color.White : { "id": 16777329, "type": 10001, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
             Text.fontSize(14);
             Text.width(40);
             Text.textAlign(TextAlign.Center);
@@ -2134,7 +2134,7 @@ class Reader extends ViewPU {
                         Context.animation(null);
                     }, Row);
                     this.observeComponentCreation2((elmtId, isInitialRender) => {
-                        Image.create(this.isClicked ? { "id": 16777275, "type": 20000, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" } : { "id": 16777274, "type": 20000, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+                        Image.create(this.isClicked ? { "id": 16777275, "type": 20000, params: [], "bundleName": "com.example.reader", "moduleName": "entry" } : { "id": 16777274, "type": 20000, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
                         Image.width(40);
                         Image.height(40);
                         Image.onClick(async () => {
@@ -2220,7 +2220,7 @@ class Reader extends ViewPU {
                                     //内容区域：目录和设置
                                     Column.width('100%');
                                     //内容区域：目录和设置
-                                    Column.backgroundColor(this.eyeMode ? '#FAF9DE' : { "id": 16777263, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+                                    Column.backgroundColor(this.eyeMode ? '#FAF9DE' : { "id": 16777263, "type": 10001, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
                                     //内容区域：目录和设置
                                     Column.borderRadius({ topRight: 32, topLeft: 32 });
                                 }, Column);
@@ -2251,23 +2251,23 @@ class Reader extends ViewPU {
                                     Row.backgroundColor(this.eyeMode ? "#ff4f4f4f" : Color.White);
                                 }, Row);
                                 this.observeComponentCreation2((elmtId, isInitialRender) => {
-                                    Text.create({ "id": 16777226, "type": 10003, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+                                    Text.create({ "id": 16777226, "type": 10003, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
                                     Text.width('50%');
                                     Text.height('100%');
                                     Text.onClick(() => this.jumpToCatalogList());
                                     Text.textAlign(TextAlign.Center);
                                     Text.fontColor(this.currentIndex === 0 ? Color.Red :
-                                        this.eyeMode ? { "id": 16777329, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" } : Color.Black);
+                                        this.eyeMode ? { "id": 16777329, "type": 10001, params: [], "bundleName": "com.example.reader", "moduleName": "entry" } : Color.Black);
                                 }, Text);
                                 Text.pop();
                                 this.observeComponentCreation2((elmtId, isInitialRender) => {
-                                    Text.create({ "id": 16777238, "type": 10003, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+                                    Text.create({ "id": 16777238, "type": 10003, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
                                     Text.width('50%');
                                     Text.height('100%');
                                     Text.onClick(() => this.jumpToSetting());
                                     Text.textAlign(TextAlign.Center);
                                     Text.fontColor(this.currentIndex === 1 ? Color.Red :
-                                        this.eyeMode ? { "id": 16777329, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" } : Color.Black);
+                                        this.eyeMode ? { "id": 16777329, "type": 10001, params: [], "bundleName": "com.example.reader", "moduleName": "entry" } : Color.Black);
                                 }, Text);
                                 Text.pop();
                                 // 底部按钮栏
@@ -2305,7 +2305,7 @@ class Reader extends ViewPU {
                         LoadingProgress.create();
                         LoadingProgress.width(50);
                         LoadingProgress.height(50);
-                        LoadingProgress.color({ "id": 16777246, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+                        LoadingProgress.color({ "id": 16777246, "type": 10001, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
                     }, LoadingProgress);
                     this.observeComponentCreation2((elmtId, isInitialRender) => {
                         Text.create('正在加载书籍...');
@@ -2383,10 +2383,10 @@ class Reader extends ViewPU {
     //获取背景图片
     getBackgroundImage(themeType: string): Resource | string {
         if (themeType === 'whiteSky') {
-            return { "id": 16777305, "type": 20000, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" };
+            return { "id": 16777305, "type": 20000, params: [], "bundleName": "com.example.reader", "moduleName": "entry" };
         }
         else if (themeType === 'darkSky') {
-            return { "id": 16777284, "type": 20000, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" };
+            return { "id": 16777284, "type": 20000, params: [], "bundleName": "com.example.reader", "moduleName": "entry" };
         }
         return '';
     }
@@ -2437,4 +2437,4 @@ class Reader extends ViewPU {
         return "Reader";
     }
 }
-registerNamedRoute(() => new Reader(undefined, {}), "", { bundleName: "com.example.readerkitdemo", moduleName: "entry", pagePath: "pages/Reader", pageFullPath: "entry/src/main/ets/pages/Reader", integratedHsp: "false", moduleType: "followWithHap" });
+registerNamedRoute(() => new Reader(undefined, {}), "", { bundleName: "com.example.reader", moduleName: "entry", pagePath: "pages/Reader", pageFullPath: "entry/src/main/ets/pages/Reader", integratedHsp: "false", moduleType: "followWithHap" });

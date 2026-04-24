@@ -2,17 +2,17 @@ import distributedDataObject from "@ohos:data.distributedDataObject";
 import type common from "@ohos:app.ability.common";
 import hilog from "@ohos:hilog";
 import type { BusinessError } from "@ohos:base";
-import { StorageUtil } from "@bundle:com.example.readerkitdemo/entry/ets/utils/StorageUtil";
-import { SettingStorage } from "@bundle:com.example.readerkitdemo/entry/ets/common/SettingStorage";
-import type { PersistedReaderSettings } from "@bundle:com.example.readerkitdemo/entry/ets/common/SettingStorage";
-import { GlobalContext } from "@bundle:com.example.readerkitdemo/entry/ets/common/GlobalContext";
+import { StorageUtil } from "@bundle:com.example.reader/entry/ets/utils/StorageUtil";
+import { SettingStorage } from "@bundle:com.example.reader/entry/ets/common/SettingStorage";
+import type { PersistedReaderSettings } from "@bundle:com.example.reader/entry/ets/common/SettingStorage";
+import { GlobalContext } from "@bundle:com.example.reader/entry/ets/common/GlobalContext";
 import type { StoredUserCredential } from './PasswordUtil';
-import { ProgressStorage } from "@bundle:com.example.readerkitdemo/entry/ets/common/ProgressStorage";
-import type { BookProgress } from "@bundle:com.example.readerkitdemo/entry/ets/common/ProgressStorage";
-import { ConflictResolver } from "@bundle:com.example.readerkitdemo/entry/ets/utils/ConflictResolver";
-import type { ResolutionStrategy } from "@bundle:com.example.readerkitdemo/entry/ets/utils/ConflictResolver";
-import { BookStorage } from "@bundle:com.example.readerkitdemo/entry/ets/common/BookStorage";
-import { BookParserInfo } from "@bundle:com.example.readerkitdemo/entry/ets/common/BookParserInfo";
+import { ProgressStorage } from "@bundle:com.example.reader/entry/ets/common/ProgressStorage";
+import type { BookProgress } from "@bundle:com.example.reader/entry/ets/common/ProgressStorage";
+import { ConflictResolver } from "@bundle:com.example.reader/entry/ets/utils/ConflictResolver";
+import type { ResolutionStrategy } from "@bundle:com.example.reader/entry/ets/utils/ConflictResolver";
+import { BookStorage } from "@bundle:com.example.reader/entry/ets/common/BookStorage";
+import { BookParserInfo } from "@bundle:com.example.reader/entry/ets/common/BookParserInfo";
 const TAG = 'DistributedSyncManager';
 const SESSION_ID = 'local_reading_sync_v2'; // 固定sessionId，同账号设备自动同步
 // 书籍同步数据接口

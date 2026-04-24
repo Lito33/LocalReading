@@ -6,9 +6,9 @@ interface MainTab_Params {
     tabsController?: TabsController;
     bgColor?: string;
 }
-import { Index } from "@bundle:com.example.readerkitdemo/entry/ets/pages/Index";
-import { Mine } from "@bundle:com.example.readerkitdemo/entry/ets/pages/Mine";
-import { Notes } from "@bundle:com.example.readerkitdemo/entry@note/Index";
+import { Index } from "@bundle:com.example.reader/entry/ets/pages/Index";
+import { Mine } from "@bundle:com.example.reader/entry/ets/pages/Mine";
+import { Notes } from "@bundle:com.example.reader/entry@note/Index";
 class MainTab extends ViewPU {
     constructor(parent, params, __localStorage, elmtId = -1, paramsLambda = undefined, extraInfo) {
         super(parent, __localStorage, elmtId, extraInfo);
@@ -82,7 +82,7 @@ class MainTab extends ViewPU {
                 }
             });
             TabContent.tabBar({ builder: () => {
-                    this.tabBarBuilder.call(this, "书库", 0, { "id": 16777281, "type": 20000, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" }, { "id": 16777280, "type": 20000, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+                    this.tabBarBuilder.call(this, "书库", 0, { "id": 16777281, "type": 20000, params: [], "bundleName": "com.example.reader", "moduleName": "entry" }, { "id": 16777280, "type": 20000, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
                 } });
         }, TabContent);
         TabContent.pop();
@@ -105,7 +105,7 @@ class MainTab extends ViewPU {
                 }
             });
             TabContent.tabBar({ builder: () => {
-                    this.tabBarBuilder.call(this, "笔记", 1, { "id": 16777293, "type": 20000, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" }, { "id": 16777292, "type": 20000, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+                    this.tabBarBuilder.call(this, "笔记", 1, { "id": 16777293, "type": 20000, params: [], "bundleName": "com.example.reader", "moduleName": "entry" }, { "id": 16777292, "type": 20000, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
                 } });
         }, TabContent);
         TabContent.pop();
@@ -128,7 +128,7 @@ class MainTab extends ViewPU {
                 }
             });
             TabContent.tabBar({ builder: () => {
-                    this.tabBarBuilder.call(this, "我的", 2, { "id": 16777271, "type": 20000, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" }, { "id": 16777270, "type": 20000, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+                    this.tabBarBuilder.call(this, "我的", 2, { "id": 16777271, "type": 20000, params: [], "bundleName": "com.example.reader", "moduleName": "entry" }, { "id": 16777270, "type": 20000, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
                 } });
         }, TabContent);
         TabContent.pop();
@@ -183,4 +183,4 @@ class MainTab extends ViewPU {
         return "MainTab";
     }
 }
-registerNamedRoute(() => new MainTab(undefined, {}), "", { bundleName: "com.example.readerkitdemo", moduleName: "entry", pagePath: "pages/MainTab", pageFullPath: "entry/src/main/ets/pages/MainTab", integratedHsp: "false", moduleType: "followWithHap" });
+registerNamedRoute(() => new MainTab(undefined, {}), "", { bundleName: "com.example.reader", moduleName: "entry", pagePath: "pages/MainTab", pageFullPath: "entry/src/main/ets/pages/MainTab", integratedHsp: "false", moduleType: "followWithHap" });

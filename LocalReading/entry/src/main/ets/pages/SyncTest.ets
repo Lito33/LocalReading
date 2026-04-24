@@ -141,7 +141,8 @@ struct SyncTest {
       let progressInfo = '无阅读进度';
       if (progresses.length > 0) {
         progressInfo = progresses.map((p: BookProgress, index: number) => 
-          `  ${index + 1}. ${p.bookName || '未知书籍'}\n     章节: ${p.chapterName || '未知'} (索引: ${p.resourceIndex})\n     最后阅读: ${p.lastReadTime > 0 ? new Date(p.lastReadTime).toLocaleString() : '未知'}`
+          `  ${index + 1}. ${p.bookName || '未知书籍'}\n     章节: ${p.chapterName || '未知'} (索引: ${p.resourceIndex})\n
+              最后阅读: ${p.lastReadTime > 0 ? new Date(p.lastReadTime).toLocaleString() : '未知'}`
         ).join('\n');
       }
       

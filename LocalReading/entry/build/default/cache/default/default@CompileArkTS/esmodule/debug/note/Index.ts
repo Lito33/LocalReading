@@ -1,1 +1,1 @@
-export { Notes } from "@bundle:com.example.readerkitdemo/entry@note/ets/components/Notes";
+export { Notes } from "@bundle:com.example.reader/entry@note/ets/components/Notes";

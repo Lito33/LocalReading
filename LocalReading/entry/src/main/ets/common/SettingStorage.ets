@@ -9,7 +9,7 @@ export interface PersistedReaderSettings {
   fontPath: string;
   fontSize: number;
   lineHeight: number;
-  nightMode: boolean;//万一呢
+  nightMode: boolean;
   themeColor: string;
   themeBgImg: string;
   flipMode: string;
@@ -36,8 +36,7 @@ export class SettingStorage {
   }
 
 
-
-  //默认设置
+//默认设置
   private static getDefaultSettings(): PersistedReaderSettings {
     return {
       fontPath: '',
@@ -82,9 +81,10 @@ export class SettingStorage {
       const pref = await preferences.getPreferences(context, STORE_NAME);
       const json = await pref.get(SETTINGS_KEY, '');
       if (!json) return null;
+
       
       const loaded = JSON.parse(json as string) as Record<string, Object>;
-      // 合并默认值，确保所有字段都存在（兼容旧版本数据）
+      // 合并默认值，确保所有字段都存在
       return SettingStorage.mergeWithDefaults(loaded);
     } catch (error) {
       console.error('SettingStorage loadSettings failed:', error);

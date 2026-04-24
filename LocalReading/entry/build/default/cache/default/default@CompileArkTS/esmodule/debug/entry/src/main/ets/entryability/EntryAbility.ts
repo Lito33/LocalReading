@@ -4,12 +4,12 @@ import UIAbility from "@ohos:app.ability.UIAbility";
 import type Want from "@ohos:app.ability.Want";
 import hilog from "@ohos:hilog";
 import window from "@ohos:window";
-import { WindowAbility } from "@bundle:com.example.readerkitdemo/entry/ets/entryability/WindowAbility";
+import { WindowAbility } from "@bundle:com.example.reader/entry/ets/entryability/WindowAbility";
 import deviceInfo from "@ohos:deviceInfo";
-import { EyeModeStorage } from "@bundle:com.example.readerkitdemo/entry/ets/common/EyeModeStorage";
-import { GlobalContext } from "@bundle:com.example.readerkitdemo/entry/ets/common/GlobalContext";
-import { StorageUtil } from "@bundle:com.example.readerkitdemo/entry/ets/utils/StorageUtil";
-import { DistributedSyncManager } from "@bundle:com.example.readerkitdemo/entry/ets/utils/DistributedSyncManager";
+import { EyeModeStorage } from "@bundle:com.example.reader/entry/ets/common/EyeModeStorage";
+import { GlobalContext } from "@bundle:com.example.reader/entry/ets/common/GlobalContext";
+import { StorageUtil } from "@bundle:com.example.reader/entry/ets/utils/StorageUtil";
+import { DistributedSyncManager } from "@bundle:com.example.reader/entry/ets/utils/DistributedSyncManager";
 const TAG: string = 'EntryAbility';
 export default class EntryAbility extends UIAbility {
     private windowStage: window.WindowStage | null = null;
@@ -83,7 +83,7 @@ export default class EntryAbility extends UIAbility {
             // 2. 通过 UIContext 获取 Font 对象并注册
             uiContext.getFont().registerFont({
                 familyName: 'HuaKangFont',
-                familySrc: { "id": 0, "type": 30000, params: ['HuaKang.TTC'], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" } //字体文件
+                familySrc: { "id": 0, "type": 30000, params: ['HuaKang.TTC'], "bundleName": "com.example.reader", "moduleName": "entry" } //字体文件
             });
         });
     }

@@ -17,9 +17,9 @@ interface Login_Params {
 }
 import promptAction from "@ohos:promptAction";
 import router from "@ohos:router";
-import { StorageUtil } from "@bundle:com.example.readerkitdemo/entry/ets/utils/StorageUtil";
+import { StorageUtil } from "@bundle:com.example.reader/entry/ets/utils/StorageUtil";
 import hilog from "@ohos:hilog";
-import { DistributedSyncManager } from "@bundle:com.example.readerkitdemo/entry/ets/utils/DistributedSyncManager";
+import { DistributedSyncManager } from "@bundle:com.example.reader/entry/ets/utils/DistributedSyncManager";
 const TAG: string = "Login";
 // 登录结果接口
 interface LoginResult {
@@ -58,7 +58,7 @@ class Login extends ViewPU {
     initialRender() {
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Column.create();
-            Column.backgroundColor(this.eyeMode ? '#FAF9DE' : { "id": 16777263, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+            Column.backgroundColor(this.eyeMode ? '#FAF9DE' : { "id": 16777263, "type": 10001, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
         }, Column);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Row.create();
@@ -67,7 +67,7 @@ class Login extends ViewPU {
             Row.justifyContent(FlexAlign.Start);
         }, Row);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Image.create({ "id": 16777277, "type": 20000, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+            Image.create({ "id": 16777277, "type": 20000, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
             Image.width(25);
             Image.height(25);
             Image.margin({ left: 15 });
@@ -147,7 +147,7 @@ class LoginTitle extends ViewPU {
             Column.alignItems(HorizontalAlign.Center);
         }, Column);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Image.create({ "id": 16777217, "type": 20000, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+            Image.create({ "id": 16777217, "type": 20000, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
             Image.width(100);
             Image.height(100);
             Image.margin({ bottom: 7 });
@@ -176,7 +176,7 @@ class LoginBottom extends ViewPU {
         this.__password = new ObservedPropertySimplePU('', this, "password");
         this.__isRememberPassword = new ObservedPropertySimplePU(false, this, "isRememberPassword");
         this.__isPasswordVisible = new ObservedPropertySimplePU(false, this, "isPasswordVisible");
-        this.__passwordIconRes = new ObservedPropertyObjectPU({ "id": 16777287, "type": 20000, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" }, this, "passwordIconRes");
+        this.__passwordIconRes = new ObservedPropertyObjectPU({ "id": 16777287, "type": 20000, params: [], "bundleName": "com.example.reader", "moduleName": "entry" }, this, "passwordIconRes");
         this.passwordController = new TextInputController();
         this.loginResult = { success: false, isRegister: false };
         this.setInitiallyProvidedValue(params);
@@ -329,7 +329,7 @@ class LoginBottom extends ViewPU {
     //切换密码可见性
     private togglePasswordVisibility(): void {
         this.isPasswordVisible = !this.isPasswordVisible;
-        this.passwordIconRes = this.isPasswordVisible ? { "id": 16777288, "type": 20000, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" } : { "id": 16777287, "type": 20000, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" };
+        this.passwordIconRes = this.isPasswordVisible ? { "id": 16777288, "type": 20000, params: [], "bundleName": "com.example.reader", "moduleName": "entry" } : { "id": 16777287, "type": 20000, params: [], "bundleName": "com.example.reader", "moduleName": "entry" };
     }
     initialRender() {
         this.observeComponentCreation2((elmtId, isInitialRender) => {
@@ -343,7 +343,7 @@ class LoginBottom extends ViewPU {
             Column.borderRadius(24);
         }, Column);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
-            TextInput.create({ placeholder: { "id": 16777224, "type": 10003, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" }, text: this.account });
+            TextInput.create({ placeholder: { "id": 16777224, "type": 10003, params: [], "bundleName": "com.example.reader", "moduleName": "entry" }, text: this.account });
             TextInput.maxLength(11);
             TextInput.type(InputType.USER_NAME);
             TextInput.placeholderColor("#99182431");
@@ -373,7 +373,7 @@ class LoginBottom extends ViewPU {
             Stack.height(48);
         }, Stack);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
-            TextInput.create({ placeholder: { "id": 16777237, "type": 10003, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" }, controller: this.passwordController, text: this.password });
+            TextInput.create({ placeholder: { "id": 16777237, "type": 10003, params: [], "bundleName": "com.example.reader", "moduleName": "entry" }, controller: this.passwordController, text: this.password });
             TextInput.maxLength(11);
             TextInput.type(InputType.Password);
             TextInput.showPasswordIcon(false);
@@ -448,42 +448,26 @@ class LoginBottom extends ViewPU {
             });
             Button.onClick(async () => {
                 console.info('Login: 点击登录按钮 - 账号:', this.account, '密码长度:', this.password.length, '记住密码:', this.isRememberPassword);
-                await this.simulateLogin();
-                if (this.loginResult.success) {
-                    // 登录/注册成功：保存记住密码相关信息
-                    console.info('Login: 登录成功，保存用户信息 - 账号:', this.account, '记住密码:', this.isRememberPassword);
-                    // 根据记住密码状态保存信息
-                    if (this.isRememberPassword) {
-                        // 记住密码：保存账号和密码
-                        await StorageUtil.saveUserInfo(this.account, this.password, true);
-                        console.info('Login: 已保存账号和密码');
-                    }
-                    else {
-                        // 不记住密码：只保存账号，清除密码
-                        await StorageUtil.saveUserInfo(this.account, '', false);
-                        console.info('Login: 只保存账号，清除密码');
-                    }
-                    // 设置登录状态
-                    await StorageUtil.setLoggedIn(this.account);
-                    hilog.info(0x0000, TAG, 'Login successful, setting login status for account: ' + this.account);
-                    AppStorage.setOrCreate('currentUser', this.account);
-                    // 触发数据同步到其他设备
-                    DistributedSyncManager.getInstance().syncData().then((success) => {
-                        hilog.info(0x0000, TAG, `Data sync after login: ${success ? 'success' : 'failed'}`);
+                const isUserExists = await StorageUtil.userExists(this.account.trim());
+                if (!isUserExists) {
+                    // 未注册
+                    promptAction.showDialog({
+                        title: '新用户注册',
+                        message: '该账号尚未注册，是否确认注册？',
+                        buttons: [
+                            { text: '取消', color: '#999999' },
+                            { text: '确认', color: '#007DFF' }
+                        ]
+                    }).then((result) => {
+                        if (result.index === 1) {
+                            this.handleRegistration();
+                        }
                     });
-                    // 根据是否为注册显示不同提示
-                    const message = this.loginResult.isRegister ? '注册成功' : '登录成功';
-                    promptAction.showToast({ message: message, duration: 1500 });
-                    // 登录成功后返回到Tab页面
-                    setTimeout(() => {
-                        router.back();
-                    }, 500);
                 }
                 else {
-                    promptAction.showToast({
-                        message: '用户名或密码错误！',
-                        duration: 3000
-                    });
+                    //正常流程
+                    await this.simulateLogin();
+                    this.handleLoginResult();
                 }
             });
             Button.width('80%');
@@ -491,6 +475,62 @@ class LoginBottom extends ViewPU {
         }, Button);
         Button.pop();
         Column.pop();
+    }
+    // 集成处理注册流程
+    private async handleRegistration(): Promise<void> {
+        const account = this.account.trim();
+        const password = this.password.trim();
+        if (!account || !password) {
+            promptAction.showToast({ message: '账号和密码不能为空', duration: 2000 });
+            return;
+        }
+        await StorageUtil.saveUser(account, password);
+        await StorageUtil.saveUserInfo(account, password, this.isRememberPassword);
+        await StorageUtil.setLoggedIn(account);
+        AppStorage.setOrCreate('currentUser', account);
+        hilog.info(0x0000, TAG, 'Registration successful for account: ' + account);
+        // 触发数据同步
+        DistributedSyncManager.getInstance().syncData().then((success) => {
+            hilog.info(0x0000, TAG, `Data sync after registration: ${success ? 'success' : 'failed'}`);
+        });
+        promptAction.showToast({ message: '注册成功', duration: 1500 });
+        // 返回上个页面
+        setTimeout(() => {
+            router.back();
+        }, 500);
+    }
+    // 集成处理登录结果
+    private async handleLoginResult(): Promise<void> {
+        if (this.loginResult.success) {
+            // 登录成功：保存记住密码相关信息
+            console.info('Login: 登录成功，保存用户信息 - 账号:', this.account, '记住密码:', this.isRememberPassword);
+            // 根据记住密码状态保存信息
+            if (this.isRememberPassword) {
+                await StorageUtil.saveUserInfo(this.account, this.password, true);
+            }
+            else {
+                await StorageUtil.saveUserInfo(this.account, '', false);
+            }
+            // 设置登录状态
+            await StorageUtil.setLoggedIn(this.account);
+            AppStorage.setOrCreate('currentUser', this.account);
+            hilog.info(0x0000, TAG, 'Login successful for account: ' + this.account);
+            // 数据同步
+            DistributedSyncManager.getInstance().syncData().then((success) => {
+                hilog.info(0x0000, TAG, `Data sync after login: ${success ? 'success' : 'failed'}`);
+            });
+            promptAction.showToast({ message: '登录成功', duration: 1500 });
+            // 返回Tab页面
+            setTimeout(() => {
+                router.back();
+            }, 500);
+        }
+        else {
+            promptAction.showToast({
+                message: '用户名或密码错误！',
+                duration: 3000
+            });
+        }
     }
     pageTransition() {
         this.observeComponentCreation2((elmtId, isInitialRender) => {
@@ -508,4 +548,4 @@ class LoginBottom extends ViewPU {
         this.updateDirtyElements();
     }
 }
-registerNamedRoute(() => new Login(undefined, {}), "", { bundleName: "com.example.readerkitdemo", moduleName: "entry", pagePath: "pages/Login", pageFullPath: "entry/src/main/ets/pages/Login", integratedHsp: "false", moduleType: "followWithHap" });
+registerNamedRoute(() => new Login(undefined, {}), "", { bundleName: "com.example.reader", moduleName: "entry", pagePath: "pages/Login", pageFullPath: "entry/src/main/ets/pages/Login", integratedHsp: "false", moduleType: "followWithHap" });

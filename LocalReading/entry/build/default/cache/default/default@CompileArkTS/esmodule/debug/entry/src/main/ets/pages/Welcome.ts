@@ -6,7 +6,7 @@ interface Welcome_Params {
     CoverText?: string;
 }
 import router from "@ohos:router";
-import { WindowAbility } from "@bundle:com.example.readerkitdemo/entry/ets/entryability/WindowAbility";
+import { WindowAbility } from "@bundle:com.example.reader/entry/ets/entryability/WindowAbility";
 class Welcome extends ViewPU {
     constructor(parent, params, __localStorage, elmtId = -1, paramsLambda = undefined, extraInfo) {
         super(parent, __localStorage, elmtId, extraInfo);
@@ -75,7 +75,7 @@ class Welcome extends ViewPU {
             });
         }, Column);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Image.create({ "id": 16777269, "type": 20000, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+            Image.create({ "id": 16777269, "type": 20000, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
             Image.width("70%");
             Image.height("70%");
             Image.objectFit(ImageFit.Contain);
@@ -104,4 +104,4 @@ class Welcome extends ViewPU {
         return "Welcome";
     }
 }
-registerNamedRoute(() => new Welcome(undefined, {}), "", { bundleName: "com.example.readerkitdemo", moduleName: "entry", pagePath: "pages/Welcome", pageFullPath: "entry/src/main/ets/pages/Welcome", integratedHsp: "false", moduleType: "followWithHap" });
+registerNamedRoute(() => new Welcome(undefined, {}), "", { bundleName: "com.example.reader", moduleName: "entry", pagePath: "pages/Welcome", pageFullPath: "entry/src/main/ets/pages/Welcome", integratedHsp: "false", moduleType: "followWithHap" });

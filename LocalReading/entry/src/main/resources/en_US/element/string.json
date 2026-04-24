@@ -115,6 +115,22 @@
     {
       "name": "SingleModeDescription",
       "value": "Click on the left and right to turn to the next page"
+    },
+    {
+      "name": "LoginDialogTitle",
+      "value": "New user registration"
+    },
+    {
+      "name": "LoginDialogMessage",
+      "value": "account is not been registration, please check?"
+    },
+    {
+      "name": "Login",
+      "value": "Login"
+    },
+    {
+      "name": "RememberPassword",
+      "value": "RememberPassword"
     }
   ]
 }

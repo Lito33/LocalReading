@@ -1,7 +1,7 @@
 import preferences from "@ohos:data.preferences";
-import { GlobalContext } from "@bundle:com.example.readerkitdemo/entry/ets/common/GlobalContext";
-import { PasswordUtil } from "@bundle:com.example.readerkitdemo/entry/ets/utils/PasswordUtil";
-import type { StoredUserCredential } from "@bundle:com.example.readerkitdemo/entry/ets/utils/PasswordUtil";
+import { GlobalContext } from "@bundle:com.example.reader/entry/ets/common/GlobalContext";
+import { PasswordUtil } from "@bundle:com.example.reader/entry/ets/utils/PasswordUtil";
+import type { StoredUserCredential } from "@bundle:com.example.reader/entry/ets/utils/PasswordUtil";
 export class StorageUtil {
     // 存储键名常量
     private static readonly USER_DATA_KEY: string = 'user_data'; // 存储所有用户凭证 {账号: {hash, salt}}

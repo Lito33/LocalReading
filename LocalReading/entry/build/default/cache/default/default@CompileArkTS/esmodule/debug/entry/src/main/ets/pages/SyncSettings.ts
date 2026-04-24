@@ -18,11 +18,11 @@ interface SyncSettings_Params {
     AUTO_SYNC_INTERVAL?: number;
     windowWidth?: number;
 }
-import { DistributedSyncManager } from "@bundle:com.example.readerkitdemo/entry/ets/utils/DistributedSyncManager";
-import type { SyncStatus } from "@bundle:com.example.readerkitdemo/entry/ets/utils/DistributedSyncManager";
-import { SyncManager } from "@bundle:com.example.readerkitdemo/entry/ets/utils/SyncManager";
-import { NetworkManager } from "@bundle:com.example.readerkitdemo/entry/ets/utils/NetworkManager";
-import { GlobalContext } from "@bundle:com.example.readerkitdemo/entry/ets/common/GlobalContext";
+import { DistributedSyncManager } from "@bundle:com.example.reader/entry/ets/utils/DistributedSyncManager";
+import type { SyncStatus } from "@bundle:com.example.reader/entry/ets/utils/DistributedSyncManager";
+import { SyncManager } from "@bundle:com.example.reader/entry/ets/utils/SyncManager";
+import { NetworkManager } from "@bundle:com.example.reader/entry/ets/utils/NetworkManager";
+import { GlobalContext } from "@bundle:com.example.reader/entry/ets/common/GlobalContext";
 import type common from "@ohos:app.ability.common";
 import abilityAccessCtrl from "@ohos:abilityAccessCtrl";
 import type { Permissions } from "@ohos:abilityAccessCtrl";
@@ -213,7 +213,7 @@ class SyncSettings extends ViewPU {
             Column.create();
             Column.width('100%');
             Column.height('100%');
-            Column.backgroundColor(this.eyeMode ? '#FAF9DE' : { "id": 16777263, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+            Column.backgroundColor(this.eyeMode ? '#FAF9DE' : { "id": 16777263, "type": 10001, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
         }, Column);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Row.create();
@@ -221,7 +221,7 @@ class SyncSettings extends ViewPU {
             Row.margin({ top: 50, bottom: 10 });
         }, Row);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Image.create({ "id": 16777277, "type": 20000, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+            Image.create({ "id": 16777277, "type": 20000, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
             Image.width(25);
             Image.height(25);
             Image.margin({ left: 20 });
@@ -614,7 +614,7 @@ class SyncSettings extends ViewPU {
             Column.create();
             Column.width('100%');
             Column.padding(16);
-            Column.backgroundColor({ "id": 16777263, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+            Column.backgroundColor({ "id": 16777263, "type": 10001, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
             Column.borderRadius(8);
             Column.shadow({ radius: 4, color: '#00000010', offsetX: 0, offsetY: 2 });
         }, Column);
@@ -1066,4 +1066,4 @@ class SyncSettings extends ViewPU {
         return "SyncSettings";
     }
 }
-registerNamedRoute(() => new SyncSettings(undefined, {}), "", { bundleName: "com.example.readerkitdemo", moduleName: "entry", pagePath: "pages/SyncSettings", pageFullPath: "entry/src/main/ets/pages/SyncSettings", integratedHsp: "false", moduleType: "followWithHap" });
+registerNamedRoute(() => new SyncSettings(undefined, {}), "", { bundleName: "com.example.reader", moduleName: "entry", pagePath: "pages/SyncSettings", pageFullPath: "entry/src/main/ets/pages/SyncSettings", integratedHsp: "false", moduleType: "followWithHap" });
