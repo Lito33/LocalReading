@@ -1,9 +1,9 @@
 import fs from "@ohos:file.fs";
 import hash from "@ohos:file.hash";
 import util from "@ohos:util";
-import { BookParserInfo, LocalBookImportResult } from "@bundle:com.example.readerkitdemo/entry/ets/common/BookParserInfo";
-import { BookUtils } from "@bundle:com.example.readerkitdemo/entry/ets/utils/BookUtils";
-import { FileUtils } from "@bundle:com.example.readerkitdemo/entry/ets/utils/FileUtils";
+import { BookParserInfo, LocalBookImportResult } from "@bundle:com.example.reader/entry/ets/common/BookParserInfo";
+import { BookUtils } from "@bundle:com.example.reader/entry/ets/utils/BookUtils";
+import { FileUtils } from "@bundle:com.example.reader/entry/ets/utils/FileUtils";
 import hilog from "@ohos:hilog";
 const TAG = "LocalBookImporter";
 // 用于文件哈希的算法
@@ -55,7 +55,7 @@ export class LocalBookImporter {
             // 使用 openSync 打开文件（支持 URI）
             let file = fs.openSync(filePath, fs.OpenMode.READ_ONLY);
             fileFd = file.fd;
-            let stat = await fs.stat(file.fd); //异步获取状态信息
+            let stat = await fs.stat(file.fd); //异步获取文件或目录详细属性信息
             if (0 >= stat.size) { //文件大小
                 hilog.error(0x0000, TAG, "checkFileValid LOCAL_BOOK_IMPORT_FILE_EXCEPTION.");
                 return Promise.reject(LocalBookImportResult.LOCAL_BOOK_IMPORT_FILE_EXCEPTION);

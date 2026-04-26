@@ -65,6 +65,7 @@ export class BookUtils {
         let basePath = workPath;
         if (basePath.endsWith('/')) {
             basePath = basePath.slice(0, -1);
+            //basePath = basePath.replace(/\/+$/, ''); 以防万一
         }
         return `${basePath}/import/`;
     }
@@ -75,6 +76,7 @@ export class BookUtils {
     public static isSupportFromType(bookFileType: number): boolean {
         return SUPPORT_BOOK_FILE_TYPES.includes(bookFileType);
     }
+    // 同步获取本地字符串资源
     public static getString(context: Context | undefined, name: string): string {
         try {
             return context?.resourceManager.getStringByNameSync(name) || '';

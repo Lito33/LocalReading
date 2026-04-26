@@ -1,5 +1,6 @@
 import textToSpeech from "@hms:ai.textToSpeech";
 import type { BusinessError } from "@ohos:base";
+import emitter from "@ohos:events.emitter";
 import hilog from "@ohos:hilog";
 const TAG = 'Speaker';
 export class Speaker {
@@ -71,8 +72,11 @@ export class Speaker {
             onStart: (requestId, response) => {
                 hilog.info(0x0000, TAG, `onStart: ${requestId}`);
             },
-            onComplete: (requestId, response) => {
+            onComplete: (requestId, response: textToSpeech.CompleteResponse) => {
                 hilog.info(0x0000, TAG, `onComplete: ${requestId}`);
+                if (response.type === 1) {
+                    emitter.emit("eventId");
+                }
             },
             onStop: (requestId, response) => {
                 hilog.info(0x0000, TAG, `onStop: ${requestId}`);

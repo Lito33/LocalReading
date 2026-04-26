@@ -18,13 +18,13 @@ interface Mine_Params {
     refreshOpacity?: number;
     refreshScale?: number;
 }
-import { WindowAbility } from "@bundle:com.example.readerkitdemo/entry/ets/entryability/WindowAbility";
+import { WindowAbility } from "@bundle:com.example.reader/entry/ets/entryability/WindowAbility";
 import hilog from "@ohos:hilog";
 import router from "@ohos:router";
 import type common from "@ohos:app.ability.common";
-import { EyeModeStorage } from "@bundle:com.example.readerkitdemo/entry/ets/common/EyeModeStorage";
+import { EyeModeStorage } from "@bundle:com.example.reader/entry/ets/common/EyeModeStorage";
 import http from "@ohos:net.http";
-import { StorageUtil } from "@bundle:com.example.readerkitdemo/entry/ets/utils/StorageUtil";
+import { StorageUtil } from "@bundle:com.example.reader/entry/ets/utils/StorageUtil";
 import promptAction from "@ohos:promptAction";
 const TAG = 'MinePage';
 interface DataReception {
@@ -387,7 +387,7 @@ export class Mine extends ViewPU {
             Column.width('95%');
         }, Column);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Image.create({ "id": 16777270, "type": 20000, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+            Image.create({ "id": 16777270, "type": 20000, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
             Image.debugLine("entry/src/main/ets/pages/Mine.ets(198:7)", "entry");
             Context.animation({
                 duration: 200,
@@ -461,7 +461,7 @@ export class Mine extends ViewPU {
             // 使用Refresh组件包裹整个内容，并添加自定义下拉效果
             Refresh.height('100%');
             // 使用Refresh组件包裹整个内容，并添加自定义下拉效果
-            Refresh.backgroundColor(this.eyeMode ? '#FAF9DE' : { "id": 16777304, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+            Refresh.backgroundColor(this.eyeMode ? '#FAF9DE' : { "id": 16777304, "type": 10001, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
         }, Refresh);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Scroll.create();
@@ -490,7 +490,7 @@ export class Mine extends ViewPU {
             Row.justifyContent(FlexAlign.SpaceBetween);
         }, Row);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Image.create({ "id": 16777221, "type": 20000, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+            Image.create({ "id": 16777221, "type": 20000, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
             Image.debugLine("entry/src/main/ets/pages/Mine.ets(237:13)", "entry");
             Image.width(this.isTablet() ? 60 : 50);
             Image.height(this.isTablet() ? 60 : 50);
@@ -604,14 +604,14 @@ export class Mine extends ViewPU {
         }, Text);
         Text.pop();
         this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Image.create({ "id": 16777225, "type": 20000, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+            Image.create({ "id": 16777225, "type": 20000, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
             Image.debugLine("entry/src/main/ets/pages/Mine.ets(294:13)", "entry");
             Image.width(23);
             Image.height(23);
         }, Image);
         Row.pop();
         this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Image.create({ "id": 16777310, "type": 20000, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+            Image.create({ "id": 16777310, "type": 20000, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
             Image.debugLine("entry/src/main/ets/pages/Mine.ets(299:11)", "entry");
             Image.margin({ right: 10 });
             Image.width(25);
@@ -670,7 +670,7 @@ export class Mine extends ViewPU {
         }, Text);
         Text.pop();
         this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Image.create({ "id": 16777308, "type": 20000, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+            Image.create({ "id": 16777308, "type": 20000, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
             Image.debugLine("entry/src/main/ets/pages/Mine.ets(338:13)", "entry");
             Image.width(23);
             Image.height(23);
@@ -678,7 +678,7 @@ export class Mine extends ViewPU {
         }, Image);
         Row.pop();
         this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Image.create({ "id": 16777310, "type": 20000, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+            Image.create({ "id": 16777310, "type": 20000, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
             Image.debugLine("entry/src/main/ets/pages/Mine.ets(345:11)", "entry");
             Image.margin({ right: 10 });
             Image.width(25);
@@ -732,7 +732,7 @@ export class Mine extends ViewPU {
         }, Text);
         Text.pop();
         this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Image.create(this.eyeMode == false ? { "id": 16777309, "type": 20000, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" } : { "id": 16777314, "type": 20000, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+            Image.create(this.eyeMode == false ? { "id": 16777309, "type": 20000, params: [], "bundleName": "com.example.reader", "moduleName": "entry" } : { "id": 16777314, "type": 20000, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
             Image.debugLine("entry/src/main/ets/pages/Mine.ets(384:11)", "entry");
             Image.margin({ right: 10 });
             Image.width(25);
@@ -786,7 +786,7 @@ export class Mine extends ViewPU {
         }, Text);
         Text.pop();
         this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Image.create({ "id": 16777310, "type": 20000, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+            Image.create({ "id": 16777310, "type": 20000, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
             Image.debugLine("entry/src/main/ets/pages/Mine.ets(421:11)", "entry");
             Image.margin({ right: 10 });
             Image.width(25);
@@ -859,4 +859,4 @@ export class Mine extends ViewPU {
         return "Mine";
     }
 }
-registerNamedRoute(() => new Mine(undefined, {}), "", { bundleName: "com.example.readerkitdemo", moduleName: "entry", pagePath: "pages/Mine", pageFullPath: "entry/src/main/ets/pages/Mine", integratedHsp: "false", moduleType: "followWithHap" });
+registerNamedRoute(() => new Mine(undefined, {}), "", { bundleName: "com.example.reader", moduleName: "entry", pagePath: "pages/Mine", pageFullPath: "entry/src/main/ets/pages/Mine", integratedHsp: "false", moduleType: "followWithHap" });

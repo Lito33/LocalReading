@@ -131,7 +131,7 @@ class MainTab extends ViewPU {
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Column.create();
             Column.width("100%");
-            Column.height(37);
+            Column.height(40);
             Column.backgroundColor(this.bgColor == "#333333" ? "#ff777777" : Color.White);
             Column.justifyContent(FlexAlign.Center);
             Column.alignItems(HorizontalAlign.Center);
@@ -222,7 +222,7 @@ tabBarBuilder(title: string, targetIndex: number, selectedIcon: Resource, unsele
         .fontWeight(500)
     }
     .width("100%")
-    .height(37)
+    .height(40)
     .backgroundColor(this.bgColor == "#333333" ? "#ff777777" : Color.White)
     .justifyContent(FlexAlign.Center)
     .alignItems(HorizontalAlign.Center)

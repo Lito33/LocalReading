@@ -1,6 +1,17 @@
 if (!("finalizeConstruction" in ViewPU.prototype)) {
     Reflect.set(ViewPU.prototype, "finalizeConstruction", () => { });
 }
+interface BookListItem_Params {
+    book?: BookParserInfo // 书籍信息
+    ;
+    isSelected?: boolean // 是否被选中（高亮）
+    ;
+    progressText?: string // 进度显示文本（章节名）
+    ;
+    onSelect?: () => void;
+    onLongPress?: () => void;
+    isPressed?: boolean;
+}
 interface Index_Params {
     filePath?: string;
     bookName?: string;
@@ -10,24 +21,25 @@ interface Index_Params {
     selectedBook?: BookParserInfo | null;
     progresses?: BookProgress[];
     isRefreshing?: boolean;
+    isPressing?: boolean;
     progressUpdated?: number;
     currentUser?: string;
 }
 import picker from "@ohos:file.picker";
-import { WindowAbility } from "@bundle:com.example.readerkitdemo/entry/ets/entryability/WindowAbility";
-import { LocalBookImporter } from "@bundle:com.example.readerkitdemo/entry/ets/utils/LocalBookImporter";
+import { WindowAbility } from "@bundle:com.example.reader/entry/ets/entryability/WindowAbility";
+import { LocalBookImporter } from "@bundle:com.example.reader/entry/ets/utils/LocalBookImporter";
 import { bookParser } from "@hms:core.readerservice.bookParser";
 import hilog from "@ohos:hilog";
-import { BookUtils } from "@bundle:com.example.readerkitdemo/entry/ets/utils/BookUtils";
+import { BookUtils } from "@bundle:com.example.reader/entry/ets/utils/BookUtils";
 import type common from "@ohos:app.ability.common";
-import { BookStorage } from "@bundle:com.example.readerkitdemo/entry/ets/common/BookStorage";
+import { BookStorage } from "@bundle:com.example.reader/entry/ets/common/BookStorage";
 import type { BookParserInfo } from '../common/BookParserInfo';
-import { ProgressStorage } from "@bundle:com.example.readerkitdemo/entry/ets/common/ProgressStorage";
-import type { BookProgress } from "@bundle:com.example.readerkitdemo/entry/ets/common/ProgressStorage";
+import { ProgressStorage } from "@bundle:com.example.reader/entry/ets/common/ProgressStorage";
+import type { BookProgress } from "@bundle:com.example.reader/entry/ets/common/ProgressStorage";
 import image from "@ohos:multimedia.image";
-import { FileUtils } from "@bundle:com.example.readerkitdemo/entry/ets/utils/FileUtils";
+import { FileUtils } from "@bundle:com.example.reader/entry/ets/utils/FileUtils";
 import fs from "@ohos:file.fs";
-import { StorageUtil } from "@bundle:com.example.readerkitdemo/entry/ets/utils/StorageUtil";
+import { StorageUtil } from "@bundle:com.example.reader/entry/ets/utils/StorageUtil";
 import type { BusinessError } from "@ohos:base";
 const TAG: string = 'IndexPage';
 export class Index extends ViewPU {
@@ -44,6 +56,7 @@ export class Index extends ViewPU {
         this.__selectedBook = new ObservedPropertyObjectPU(null, this, "selectedBook");
         this.__progresses = new ObservedPropertyObjectPU([], this, "progresses");
         this.__isRefreshing = new ObservedPropertySimplePU(false, this, "isRefreshing");
+        this.__isPressing = new ObservedPropertySimplePU(false, this, "isPressing");
         this.__progressUpdated = this.createStorageLink('progressUpdated', 0, "progressUpdated");
         this.__currentUser = this.createStorageLink('currentUser', '', "currentUser");
         this.setInitiallyProvidedValue(params);
@@ -70,6 +83,9 @@ export class Index extends ViewPU {
         if (params.isRefreshing !== undefined) {
             this.isRefreshing = params.isRefreshing;
         }
+        if (params.isPressing !== undefined) {
+            this.isPressing = params.isPressing;
+        }
     }
     updateStateVars(params: Index_Params) {
     }
@@ -81,6 +97,7 @@ export class Index extends ViewPU {
         this.__selectedBook.purgeDependencyOnElmtId(rmElmtId);
         this.__progresses.purgeDependencyOnElmtId(rmElmtId);
         this.__isRefreshing.purgeDependencyOnElmtId(rmElmtId);
+        this.__isPressing.purgeDependencyOnElmtId(rmElmtId);
         this.__progressUpdated.purgeDependencyOnElmtId(rmElmtId);
         this.__currentUser.purgeDependencyOnElmtId(rmElmtId);
     }
@@ -92,6 +109,7 @@ export class Index extends ViewPU {
         this.__selectedBook.aboutToBeDeleted();
         this.__progresses.aboutToBeDeleted();
         this.__isRefreshing.aboutToBeDeleted();
+        this.__isPressing.aboutToBeDeleted();
         this.__progressUpdated.aboutToBeDeleted();
         this.__currentUser.aboutToBeDeleted();
         SubscriberManager.Get().delete(this.id__());
@@ -153,6 +171,13 @@ export class Index extends ViewPU {
     }
     set isRefreshing(newValue: boolean) {
         this.__isRefreshing.set(newValue);
+    }
+    private __isPressing: ObservedPropertySimplePU<boolean>;
+    get isPressing() {
+        return this.__isPressing.get();
+    }
+    set isPressing(newValue: boolean) {
+        this.__isPressing.set(newValue);
     }
     // 监听进度更新标志，当Reader保存进度时触发刷新
     private __progressUpdated: ObservedPropertyAbstractPU<number>;
@@ -298,6 +323,10 @@ export class Index extends ViewPU {
         }
         catch (error) {
             hilog.error(0x0000, TAG, `loadBook failed , Code: ${error.code}, message: ${error.message}`);
+            this.getUIContext().getPromptAction().showToast({
+                message: `导入失败：${error.message} || 书籍文件损坏 }`,
+                duration: 3000,
+            });
         }
     }
     private selectBook(book: BookParserInfo) {
@@ -306,7 +335,6 @@ export class Index extends ViewPU {
         this.filePath = book.getFilePath();
         this.bookName = book.getBookName();
         hilog.info(0x0000, TAG, `selectBook: this.filePath set to ${this.filePath}`);
-        // 不再操作 this.currentData
     }
     // 监听当前登录用户
     private __currentUser: ObservedPropertyAbstractPU<string>;
@@ -320,7 +348,7 @@ export class Index extends ViewPU {
         hilog.info(0x0000, TAG, 'User changed to: ' + this.currentUser);
         await this.reloadData();
     }
-    // 进度更新监听回调
+    // 进度更新监听回调 要加Component
     async onProgressUpdated() {
         hilog.info(0x0000, TAG, `Progress updated detected, reloading data... (timestamp: ${this.progressUpdated})`);
         await this.reloadData();
@@ -345,7 +373,7 @@ export class Index extends ViewPU {
                 const timeB = progressMap.get(b.getFilePath()) || 0;
                 return timeB - timeA; // 降序，最新的在前
             });
-            // 打印所有进度和书籍的filePath用于调试
+            // 调试
             this.progresses.forEach((p, idx) => {
                 hilog.info(0x0000, TAG, `Progress[${idx}]: filePath=${p.filePath}, chapter=${p.chapterName}`);
             });
@@ -374,7 +402,7 @@ export class Index extends ViewPU {
         const context = this.getUIContext().getHostContext() as common.UIAbilityContext;
         this.progresses = await ProgressStorage.loadAllProgresses(context);
     }
-    //刷新列表信息
+    //刷新列表信息，历史遗留产物
     private async handleRefresh() {
         try {
             const context = this.getUIContext().getHostContext() as common.UIAbilityContext;
@@ -423,15 +451,15 @@ export class Index extends ViewPU {
     initialRender() {
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             RelativeContainer.create();
-            RelativeContainer.debugLine("entry/src/main/ets/pages/Index.ets(332:5)", "entry");
+            RelativeContainer.debugLine("entry/src/main/ets/pages/Index.ets(340:5)", "entry");
             RelativeContainer.height('100%');
             RelativeContainer.width('100%');
-            RelativeContainer.backgroundColor(this.eyeMode ? '#FAF9DE' : { "id": 16777304, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+            RelativeContainer.backgroundColor(this.eyeMode ? '#FAF9DE' : { "id": 16777304, "type": 10001, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
             RelativeContainer.padding({ left: 16, right: 16 });
         }, RelativeContainer);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Column.create();
-            Column.debugLine("entry/src/main/ets/pages/Index.ets(333:7)", "entry");
+            Column.debugLine("entry/src/main/ets/pages/Index.ets(341:7)", "entry");
             Column.alignRules({
                 top: { anchor: '__container__', align: VerticalAlign.Top },
                 start: { anchor: '__container__', align: HorizontalAlign.Start },
@@ -440,14 +468,14 @@ export class Index extends ViewPU {
         }, Column);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Row.create();
-            Row.debugLine("entry/src/main/ets/pages/Index.ets(334:9)", "entry");
+            Row.debugLine("entry/src/main/ets/pages/Index.ets(342:9)", "entry");
             Row.width('100%');
             Row.justifyContent(FlexAlign.SpaceBetween);
         }, Row);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             //大标题
-            Text.create({ "id": 16777239, "type": 10003, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
-            Text.debugLine("entry/src/main/ets/pages/Index.ets(336:11)", "entry");
+            Text.create({ "id": 16777239, "type": 10003, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
+            Text.debugLine("entry/src/main/ets/pages/Index.ets(344:11)", "entry");
             //大标题
             Text.fontSize(30);
             //大标题
@@ -459,28 +487,28 @@ export class Index extends ViewPU {
             //大标题
             Text.alignSelf(ItemAlign.Start);
             //大标题
-            Text.fontColor({ "id": 125831025, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+            Text.fontColor({ "id": 125831025, "type": 10001, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
         }, Text);
         //大标题
         Text.pop();
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             //导入书籍
             Row.create();
-            Row.debugLine("entry/src/main/ets/pages/Index.ets(345:11)", "entry");
+            Row.debugLine("entry/src/main/ets/pages/Index.ets(353:11)", "entry");
             //导入书籍
             Row.margin({ top: 100, right: 5 });
         }, Row);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Text.create('导入书籍');
-            Text.debugLine("entry/src/main/ets/pages/Index.ets(346:13)", "entry");
+            Text.debugLine("entry/src/main/ets/pages/Index.ets(354:13)", "entry");
             Text.fontColor(Color.Black);
             Text.margin({ right: 4 });
             Text.fontWeight(FontWeight.Bold);
         }, Text);
         Text.pop();
         this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Image.create({ "id": 16777275, "type": 20000, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
-            Image.debugLine("entry/src/main/ets/pages/Index.ets(351:13)", "entry");
+            Image.create({ "id": 16777275, "type": 20000, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
+            Image.debugLine("entry/src/main/ets/pages/Index.ets(359:13)", "entry");
             Image.width('30');
             Image.height('30');
             Image.onClick(async () => {
@@ -496,10 +524,10 @@ export class Index extends ViewPU {
             if (this.selectedBook) {
                 this.ifElseBranchUpdateFunction(0, () => {
                     this.observeComponentCreation2((elmtId, isInitialRender) => {
-                        Text.create({ "id": 16777249, "type": 10003, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
-                        Text.debugLine("entry/src/main/ets/pages/Index.ets(368:11)", "entry");
+                        Text.create({ "id": 16777249, "type": 10003, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
+                        Text.debugLine("entry/src/main/ets/pages/Index.ets(376:11)", "entry");
                         Text.fontSize(14);
-                        Text.fontColor({ "id": 16777282, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+                        Text.fontColor({ "id": 16777282, "type": 10001, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
                         Text.alignSelf(ItemAlign.Start);
                         Text.margin({ top: 28, left: 16 });
                         Text.fontWeight(FontWeight.Bold);
@@ -508,11 +536,11 @@ export class Index extends ViewPU {
                     this.observeComponentCreation2((elmtId, isInitialRender) => {
                         //获取书籍名称
                         Text.create(this.selectedBook?.getBookName() ?? '未选择书籍');
-                        Text.debugLine("entry/src/main/ets/pages/Index.ets(376:11)", "entry");
+                        Text.debugLine("entry/src/main/ets/pages/Index.ets(384:11)", "entry");
                         //获取书籍名称
                         Text.fontSize(16);
                         //获取书籍名称
-                        Text.fontColor({ "id": 16777283, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+                        Text.fontColor({ "id": 16777283, "type": 10001, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
                         //获取书籍名称
                         Text.backgroundColor(Color.White);
                         //获取书籍名称
@@ -543,13 +571,13 @@ export class Index extends ViewPU {
             if (this.importedBooks.length > 0) {
                 this.ifElseBranchUpdateFunction(0, () => {
                     this.observeComponentCreation2((elmtId, isInitialRender) => {
-                        Text.create({ "id": 16777235, "type": 10003, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
-                        Text.debugLine("entry/src/main/ets/pages/Index.ets(389:11)", "entry");
+                        Text.create({ "id": 16777235, "type": 10003, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
+                        Text.debugLine("entry/src/main/ets/pages/Index.ets(397:11)", "entry");
                         Text.fontSize(18);
                         Text.fontWeight(FontWeight.Bold);
                         Text.alignSelf(ItemAlign.Start);
                         Text.margin({ top: 20, left: 16 });
-                        Text.fontColor({ "id": 125831025, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+                        Text.fontColor({ "id": 125831025, "type": 10001, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
                         Text.margin({ bottom: 7, top: 7 });
                     }, Text);
                     Text.pop();
@@ -557,7 +585,7 @@ export class Index extends ViewPU {
                         Refresh.create({
                             refreshing: this.isRefreshing
                         });
-                        Refresh.debugLine("entry/src/main/ets/pages/Index.ets(397:11)", "entry");
+                        Refresh.debugLine("entry/src/main/ets/pages/Index.ets(405:11)", "entry");
                         Refresh.onRefreshing(() => {
                             this.isRefreshing = true;
                             this.handleRefresh();
@@ -565,7 +593,7 @@ export class Index extends ViewPU {
                     }, Refresh);
                     this.observeComponentCreation2((elmtId, isInitialRender) => {
                         List.create({ space: 11 });
-                        List.debugLine("entry/src/main/ets/pages/Index.ets(400:13)", "entry");
+                        List.debugLine("entry/src/main/ets/pages/Index.ets(408:13)", "entry");
                         List.width('100%');
                         List.height(390);
                         List.borderRadius({ topLeft: 8, topRight: 8 });
@@ -587,118 +615,49 @@ export class Index extends ViewPU {
                                 const itemCreation2 = (elmtId, isInitialRender) => {
                                     ListItem.create(deepRenderFunction, true);
                                     ListItem.height(100);
-                                    ListItem.debugLine("entry/src/main/ets/pages/Index.ets(402:15)", "entry");
+                                    ListItem.borderRadius(8);
+                                    ListItem.debugLine("entry/src/main/ets/pages/Index.ets(410:15)", "entry");
                                 };
                                 const deepRenderFunction = (elmtId, isInitialRender) => {
                                     itemCreation(elmtId, isInitialRender);
-                                    this.observeComponentCreation2((elmtId, isInitialRender) => {
-                                        Row.create();
-                                        Row.debugLine("entry/src/main/ets/pages/Index.ets(403:17)", "entry");
-                                        Row.width('100%');
-                                        Row.padding(12);
-                                        Row.backgroundColor(this.selectedBook?.getBookId() === book.getBookId() ? '#F0F0F0' : Color.White);
-                                        Row.borderRadius(8);
-                                        Row.onClick(() => this.selectBook(book));
-                                        Gesture.create(GesturePriority.Low);
-                                        LongPressGesture.create({ repeat: false, allowableMovement: 200 });
-                                        LongPressGesture.onAction((event: GestureEvent) => {
-                                            this.showDeleteDialog(book); //触发删除确认对话框
-                                        });
-                                        LongPressGesture.pop();
-                                        Gesture.pop();
-                                    }, Row);
-                                    this.observeComponentCreation2((elmtId, isInitialRender) => {
-                                        //这里使用绝对路径无法显示图片，改为协议路径就好了->file://,因为获取的路径是从/data开始的
-                                        Image.create(book.getCoverPath() ? 'file://' + book.getCoverPath() : { "id": 16777276, "type": 20000, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
-                                        Image.debugLine("entry/src/main/ets/pages/Index.ets(405:19)", "entry");
-                                        //这里使用绝对路径无法显示图片，改为协议路径就好了->file://,因为获取的路径是从/data开始的
-                                        Image.width(60);
-                                        //这里使用绝对路径无法显示图片，改为协议路径就好了->file://,因为获取的路径是从/data开始的
-                                        Image.height(80);
-                                        //这里使用绝对路径无法显示图片，改为协议路径就好了->file://,因为获取的路径是从/data开始的
-                                        Image.objectFit(ImageFit.Cover);
-                                        //这里使用绝对路径无法显示图片，改为协议路径就好了->file://,因为获取的路径是从/data开始的
-                                        Image.borderRadius(8);
-                                        //这里使用绝对路径无法显示图片，改为协议路径就好了->file://,因为获取的路径是从/data开始的
-                                        Image.margin({ right: 12 });
-                                        //这里使用绝对路径无法显示图片，改为协议路径就好了->file://,因为获取的路径是从/data开始的
-                                        Image.onError((err) => {
-                                            hilog.error(0x0000, TAG, `Image load error for ${book.getCoverPath()}: ${JSON.stringify(err)}`);
-                                        });
-                                    }, Image);
-                                    this.observeComponentCreation2((elmtId, isInitialRender) => {
-                                        Column.create();
-                                        Column.debugLine("entry/src/main/ets/pages/Index.ets(415:19)", "entry");
-                                        Column.layoutWeight(1);
-                                        Column.alignItems(HorizontalAlign.Start);
-                                    }, Column);
-                                    this.observeComponentCreation2((elmtId, isInitialRender) => {
-                                        //书名
-                                        Text.create(book.getBookName());
-                                        Text.debugLine("entry/src/main/ets/pages/Index.ets(417:21)", "entry");
-                                        //书名
-                                        Text.fontSize(16);
-                                        //书名
-                                        Text.maxLines(1);
-                                        //书名
-                                        Text.textOverflow({ overflow: TextOverflow.Ellipsis });
-                                        //书名
-                                        Text.layoutWeight(1);
-                                        //书名
-                                        Text.fontColor({ "id": 125831025, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
-                                    }, Text);
-                                    //书名
-                                    Text.pop();
-                                    this.observeComponentCreation2((elmtId, isInitialRender) => {
-                                        //当前章节
-                                        Text.create(this.getChapterDisplay(book));
-                                        Text.debugLine("entry/src/main/ets/pages/Index.ets(424:21)", "entry");
-                                        //当前章节
-                                        Text.fontSize(14);
-                                        //当前章节
-                                        Text.fontColor('#666666');
-                                        //当前章节
-                                        Text.margin({ top: 4 });
-                                        //当前章节
-                                        Text.width('100%');
-                                    }, Text);
-                                    //当前章节
-                                    Text.pop();
-                                    Column.pop();
-                                    this.observeComponentCreation2((elmtId, isInitialRender) => {
-                                        If.create();
-                                        // 选中指示器
-                                        if (this.selectedBook?.getBookId() === book.getBookId()) {
-                                            this.ifElseBranchUpdateFunction(0, () => {
-                                                this.observeComponentCreation2((elmtId, isInitialRender) => {
-                                                    // Text('✓').fontColor(Color.Green).margin({ right: 8 })
-                                                    Image.create({ "id": 16777279, "type": 20000, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
-                                                    Image.debugLine("entry/src/main/ets/pages/Index.ets(435:25)", "entry");
-                                                    // Text('✓').fontColor(Color.Green).margin({ right: 8 })
-                                                    Image.margin({ right: 8 });
-                                                    // Text('✓').fontColor(Color.Green).margin({ right: 8 })
-                                                    Image.objectFit(ImageFit.Contain);
-                                                    // Text('✓').fontColor(Color.Green).margin({ right: 8 })
-                                                    Image.width('20');
-                                                    // Text('✓').fontColor(Color.Green).margin({ right: 8 })
-                                                    Image.height('20');
-                                                }, Image);
-                                            });
-                                        }
-                                        else {
-                                            this.ifElseBranchUpdateFunction(1, () => {
-                                            });
-                                        }
-                                    }, If);
-                                    If.pop();
-                                    Row.pop();
+                                    {
+                                        this.observeComponentCreation2((elmtId, isInitialRender) => {
+                                            if (isInitialRender) {
+                                                let componentCall = new BookListItem(this, {
+                                                    book: book,
+                                                    isSelected: this.selectedBook?.getBookId() === book.getBookId(),
+                                                    progressText: this.getChapterDisplay(book),
+                                                    onSelect: (): void => this.selectBook(book),
+                                                    onLongPress: (): void => this.showDeleteDialog(book)
+                                                }, undefined, elmtId, () => { }, { page: "entry/src/main/ets/pages/Index.ets", line: 411, col: 17 });
+                                                ViewPU.create(componentCall);
+                                                let paramsLambda = () => {
+                                                    return {
+                                                        book: book,
+                                                        isSelected: this.selectedBook?.getBookId() === book.getBookId(),
+                                                        progressText: this.getChapterDisplay(book),
+                                                        onSelect: (): void => this.selectBook(book),
+                                                        onLongPress: (): void => this.showDeleteDialog(book)
+                                                    };
+                                                };
+                                                componentCall.paramsGenerator_ = paramsLambda;
+                                            }
+                                            else {
+                                                this.updateStateVarsOfChildByElmtId(elmtId, {
+                                                    book: book,
+                                                    isSelected: this.selectedBook?.getBookId() === book.getBookId(),
+                                                    progressText: this.getChapterDisplay(book)
+                                                });
+                                            }
+                                        }, { name: "BookListItem" });
+                                    }
                                     ListItem.pop();
                                 };
                                 this.observeComponentCreation2(itemCreation2, ListItem);
                                 ListItem.pop();
                             }
                         };
-                        this.forEachUpdateFunction(elmtId, this.importedBooks, forEachItemGenFunction);
+                        this.forEachUpdateFunction(elmtId, this.importedBooks, forEachItemGenFunction, (book: BookParserInfo) => book.getBookId(), false, false);
                     }, ForEach);
                     ForEach.pop();
                     List.pop();
@@ -715,7 +674,7 @@ export class Index extends ViewPU {
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             // 底部按钮
             Column.create();
-            Column.debugLine("entry/src/main/ets/pages/Index.ets(478:7)", "entry");
+            Column.debugLine("entry/src/main/ets/pages/Index.ets(443:7)", "entry");
             // 底部按钮
             Column.alignRules({
                 bottom: { anchor: '__container__', align: VerticalAlign.Bottom },
@@ -726,11 +685,11 @@ export class Index extends ViewPU {
         }, Column);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Button.createWithLabel(this.getButtonText());
-            Button.debugLine("entry/src/main/ets/pages/Index.ets(480:9)", "entry");
+            Button.debugLine("entry/src/main/ets/pages/Index.ets(445:9)", "entry");
             Button.width('100%');
             Button.height(40);
             Button.margin({ top: 13, bottom: 35 });
-            Button.backgroundColor({ "id": 16777284, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+            Button.backgroundColor({ "id": 16777284, "type": 10001, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
             Button.enabled(!!this.selectedBook);
             Button.onClick(async () => {
                 if (!this.selectedBook) {
@@ -787,14 +746,14 @@ export class Index extends ViewPU {
     private getButtonText(): ResourceStr {
         try {
             if (!this.selectedBook) {
-                return { "id": 16777256, "type": 10003, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" };
+                return { "id": 16777256, "type": 10003, params: [], "bundleName": "com.example.reader", "moduleName": "entry" };
             }
             const progress = this.findProgress(this.selectedBook);
-            return progress ? { "id": 16777251, "type": 10003, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" } : { "id": 16777256, "type": 10003, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" };
+            return progress ? { "id": 16777251, "type": 10003, params: [], "bundleName": "com.example.reader", "moduleName": "entry" } : { "id": 16777256, "type": 10003, params: [], "bundleName": "com.example.reader", "moduleName": "entry" };
         }
         catch (error) {
             hilog.error(0x0000, TAG, `getButtonText error: ${error}`);
-            return { "id": 16777256, "type": 10003, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" };
+            return { "id": 16777256, "type": 10003, params: [], "bundleName": "com.example.reader", "moduleName": "entry" };
         }
     }
     //获取章节并展示
@@ -926,6 +885,213 @@ export class Index extends ViewPU {
             PageTransitionExit.create({ duration: 0, curve: Curve.Sharp });
         }, null);
         PageTransition.pop();
+    }
+    rerender() {
+        this.updateDirtyElements();
+    }
+}
+class BookListItem extends ViewPU {
+    constructor(parent, params, __localStorage, elmtId = -1, paramsLambda = undefined, extraInfo) {
+        super(parent, __localStorage, elmtId, extraInfo);
+        if (typeof paramsLambda === "function") {
+            this.paramsGenerator_ = paramsLambda;
+        }
+        this.__book = new SynchedPropertyObjectOneWayPU(params.book, this, "book");
+        this.__isSelected = new SynchedPropertySimpleOneWayPU(params.isSelected, this, "isSelected");
+        this.__progressText = new SynchedPropertySimpleOneWayPU(params.progressText, this, "progressText");
+        this.onSelect = () => { } // 点击回调,要提前赋一个空值哦
+        ;
+        this.onLongPress = () => { } // 长按回调（删除）
+        ;
+        this.__isPressed = new ObservedPropertySimplePU(false // 独立按压状态
+        , this, "isPressed");
+        this.setInitiallyProvidedValue(params);
+        this.finalizeConstruction();
+    }
+    setInitiallyProvidedValue(params: BookListItem_Params) {
+        if (params.onSelect !== undefined) {
+            this.onSelect = params.onSelect;
+        }
+        if (params.onLongPress !== undefined) {
+            this.onLongPress = params.onLongPress;
+        }
+        if (params.isPressed !== undefined) {
+            this.isPressed = params.isPressed;
+        }
+    }
+    updateStateVars(params: BookListItem_Params) {
+        this.__book.reset(params.book);
+        this.__isSelected.reset(params.isSelected);
+        this.__progressText.reset(params.progressText);
+    }
+    purgeVariableDependenciesOnElmtId(rmElmtId) {
+        this.__book.purgeDependencyOnElmtId(rmElmtId);
+        this.__isSelected.purgeDependencyOnElmtId(rmElmtId);
+        this.__progressText.purgeDependencyOnElmtId(rmElmtId);
+        this.__isPressed.purgeDependencyOnElmtId(rmElmtId);
+    }
+    aboutToBeDeleted() {
+        this.__book.aboutToBeDeleted();
+        this.__isSelected.aboutToBeDeleted();
+        this.__progressText.aboutToBeDeleted();
+        this.__isPressed.aboutToBeDeleted();
+        SubscriberManager.Get().delete(this.id__());
+        this.aboutToBeDeletedInternal();
+    }
+    private __book: SynchedPropertySimpleOneWayPU<BookParserInfo>; // 书籍信息
+    get book() {
+        return this.__book.get();
+    }
+    set book(newValue: BookParserInfo // 书籍信息
+    ) {
+        this.__book.set(newValue);
+    }
+    private __isSelected: SynchedPropertySimpleOneWayPU<boolean>; // 是否被选中（高亮）
+    get isSelected() {
+        return this.__isSelected.get();
+    }
+    set isSelected(newValue: boolean // 是否被选中（高亮）
+    ) {
+        this.__isSelected.set(newValue);
+    }
+    private __progressText: SynchedPropertySimpleOneWayPU<string>; // 进度显示文本（章节名）
+    get progressText() {
+        return this.__progressText.get();
+    }
+    set progressText(newValue: string // 进度显示文本（章节名）
+    ) {
+        this.__progressText.set(newValue);
+    }
+    private onSelect: () => void; // 点击回调,要提前赋一个空值哦
+    private onLongPress: () => void; // 长按回调（删除）
+    private __isPressed: ObservedPropertySimplePU<boolean>; // 独立按压状态
+    get isPressed() {
+        return this.__isPressed.get();
+    }
+    set isPressed(newValue: boolean) {
+        this.__isPressed.set(newValue);
+    }
+    initialRender() {
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Row.create();
+            Row.debugLine("entry/src/main/ets/pages/Index.ets(670:5)", "entry");
+            Row.width('100%');
+            Row.padding(12);
+            Row.backgroundColor(this.getBackgroundColor());
+            Row.borderRadius(8);
+            Row.onClick(() => this.onSelect());
+            Row.onTouch((event: TouchEvent) => {
+                // 按下时立即变暗，抬起或取消时恢复
+                if (event.type === TouchType.Down) {
+                    this.isPressed = true;
+                }
+                else if (event.type === TouchType.Up || event.type === TouchType.Cancel) {
+                    this.isPressed = false;
+                }
+            });
+            Gesture.create(GesturePriority.Low);
+            LongPressGesture.create({ repeat: false, allowableMovement: 200 });
+            LongPressGesture.onAction(() => {
+                // 长按时触发删除回调
+                this.onLongPress();
+            });
+            LongPressGesture.pop();
+            Gesture.pop();
+        }, Row);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            //这里使用绝对路径无法显示图片，改为协议路径就好了->file://,因为获取的路径是从/data开始的
+            Image.create(this.book.getCoverPath() ? 'file://' + this.book.getCoverPath() : { "id": 16777276, "type": 20000, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
+            Image.debugLine("entry/src/main/ets/pages/Index.ets(672:7)", "entry");
+            //这里使用绝对路径无法显示图片，改为协议路径就好了->file://,因为获取的路径是从/data开始的
+            Image.width(60);
+            //这里使用绝对路径无法显示图片，改为协议路径就好了->file://,因为获取的路径是从/data开始的
+            Image.height(80);
+            //这里使用绝对路径无法显示图片，改为协议路径就好了->file://,因为获取的路径是从/data开始的
+            Image.objectFit(ImageFit.Cover);
+            //这里使用绝对路径无法显示图片，改为协议路径就好了->file://,因为获取的路径是从/data开始的
+            Image.borderRadius(8);
+            //这里使用绝对路径无法显示图片，改为协议路径就好了->file://,因为获取的路径是从/data开始的
+            Image.margin({ right: 12 });
+            //这里使用绝对路径无法显示图片，改为协议路径就好了->file://,因为获取的路径是从/data开始的
+            Image.onError((err) => {
+                hilog.error(0x0000, 'BookListItem', `Image load error: ${JSON.stringify(err)}`);
+            });
+        }, Image);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Column.create();
+            Column.debugLine("entry/src/main/ets/pages/Index.ets(682:7)", "entry");
+            Column.layoutWeight(1);
+            Column.alignItems(HorizontalAlign.Start);
+        }, Column);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            // 书名
+            Text.create(this.book.getBookName());
+            Text.debugLine("entry/src/main/ets/pages/Index.ets(684:9)", "entry");
+            // 书名
+            Text.fontSize(16);
+            // 书名
+            Text.maxLines(1);
+            // 书名
+            Text.textOverflow({ overflow: TextOverflow.Ellipsis });
+            // 书名
+            Text.layoutWeight(1);
+            // 书名
+            Text.fontColor({ "id": 125831025, "type": 10001, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
+        }, Text);
+        // 书名
+        Text.pop();
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            // 当前章节
+            Text.create(this.progressText);
+            Text.debugLine("entry/src/main/ets/pages/Index.ets(691:9)", "entry");
+            // 当前章节
+            Text.fontSize(14);
+            // 当前章节
+            Text.fontColor('#666666');
+            // 当前章节
+            Text.margin({ top: 4 });
+            // 当前章节
+            Text.width('100%');
+        }, Text);
+        // 当前章节
+        Text.pop();
+        Column.pop();
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            If.create();
+            if (this.isSelected) {
+                this.ifElseBranchUpdateFunction(0, () => {
+                    this.observeComponentCreation2((elmtId, isInitialRender) => {
+                        // 选中指示器
+                        Image.create({ "id": 16777279, "type": 20000, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
+                        Image.debugLine("entry/src/main/ets/pages/Index.ets(702:9)", "entry");
+                        // 选中指示器
+                        Image.margin({ right: 8 });
+                        // 选中指示器
+                        Image.objectFit(ImageFit.Contain);
+                        // 选中指示器
+                        Image.width(20);
+                        // 选中指示器
+                        Image.height(20);
+                    }, Image);
+                });
+            }
+            else {
+                this.ifElseBranchUpdateFunction(1, () => {
+                });
+            }
+        }, If);
+        If.pop();
+        Row.pop();
+    }
+    // 根据状态返回背景色
+    private getBackgroundColor(): string | Resource {
+        if (this.isPressed) {
+            return '#ffe5e5e5'; // 按压态变暗
+        }
+        if (this.isSelected) {
+            return '#F0F0F0'; // 选中态
+        }
+        return '#ffffff';
     }
     rerender() {
         this.updateDirtyElements();

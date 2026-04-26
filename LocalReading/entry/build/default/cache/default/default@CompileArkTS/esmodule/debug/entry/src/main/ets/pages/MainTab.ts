@@ -139,7 +139,7 @@ class MainTab extends ViewPU {
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Column.create();
             Column.width("100%");
-            Column.height(37);
+            Column.height(40);
             Column.backgroundColor(this.bgColor == "#333333" ? "#ff777777" : Color.White);
             Column.justifyContent(FlexAlign.Center);
             Column.alignItems(HorizontalAlign.Center);

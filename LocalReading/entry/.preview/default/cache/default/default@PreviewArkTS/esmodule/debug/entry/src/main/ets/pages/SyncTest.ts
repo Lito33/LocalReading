@@ -9,18 +9,18 @@ interface SyncTest_Params {
     networkInfo?: NetworkInfo | null;
     wifiOnlySync?: boolean;
 }
-import { DistributedSyncManager } from "@bundle:com.example.readerkitdemo/entry/ets/utils/DistributedSyncManager";
-import type { SyncStatus } from "@bundle:com.example.readerkitdemo/entry/ets/utils/DistributedSyncManager";
-import { StorageUtil } from "@bundle:com.example.readerkitdemo/entry/ets/utils/StorageUtil";
-import { SettingStorage } from "@bundle:com.example.readerkitdemo/entry/ets/common/SettingStorage";
-import { GlobalContext } from "@bundle:com.example.readerkitdemo/entry/ets/common/GlobalContext";
+import { DistributedSyncManager } from "@bundle:com.example.reader/entry/ets/utils/DistributedSyncManager";
+import type { SyncStatus } from "@bundle:com.example.reader/entry/ets/utils/DistributedSyncManager";
+import { StorageUtil } from "@bundle:com.example.reader/entry/ets/utils/StorageUtil";
+import { SettingStorage } from "@bundle:com.example.reader/entry/ets/common/SettingStorage";
+import { GlobalContext } from "@bundle:com.example.reader/entry/ets/common/GlobalContext";
 import type common from "@ohos:app.ability.common";
 import abilityAccessCtrl from "@ohos:abilityAccessCtrl";
 import type { Permissions } from "@ohos:abilityAccessCtrl";
-import { ProgressStorage } from "@bundle:com.example.readerkitdemo/entry/ets/common/ProgressStorage";
-import type { BookProgress } from "@bundle:com.example.readerkitdemo/entry/ets/common/ProgressStorage";
-import { NetworkManager } from "@bundle:com.example.readerkitdemo/entry/ets/utils/NetworkManager";
-import type { NetworkInfo } from "@bundle:com.example.readerkitdemo/entry/ets/utils/NetworkManager";
+import { ProgressStorage } from "@bundle:com.example.reader/entry/ets/common/ProgressStorage";
+import type { BookProgress } from "@bundle:com.example.reader/entry/ets/common/ProgressStorage";
+import { NetworkManager } from "@bundle:com.example.reader/entry/ets/utils/NetworkManager";
+import type { NetworkInfo } from "@bundle:com.example.reader/entry/ets/utils/NetworkManager";
 class SyncTest extends ViewPU {
     constructor(parent, params, __localStorage, elmtId = -1, paramsLambda = undefined, extraInfo) {
         super(parent, __localStorage, elmtId, extraInfo);
@@ -222,7 +222,8 @@ class SyncTest extends ViewPU {
             // 格式化阅读进度信息
             let progressInfo = '无阅读进度';
             if (progresses.length > 0) {
-                progressInfo = progresses.map((p: BookProgress, index: number) => `  ${index + 1}. ${p.bookName || '未知书籍'}\n     章节: ${p.chapterName || '未知'} (索引: ${p.resourceIndex})\n     最后阅读: ${p.lastReadTime > 0 ? new Date(p.lastReadTime).toLocaleString() : '未知'}`).join('\n');
+                progressInfo = progresses.map((p: BookProgress, index: number) => `  ${index + 1}. ${p.bookName || '未知书籍'}\n     章节: ${p.chapterName || '未知'} (索引: ${p.resourceIndex})\n
+              最后阅读: ${p.lastReadTime > 0 ? new Date(p.lastReadTime).toLocaleString() : '未知'}`).join('\n');
             }
             this.testLog = `✅ 本地数据读取成功！
       
@@ -398,7 +399,7 @@ class SyncTest extends ViewPU {
     initialRender() {
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Column.create({ space: 16 });
-            Column.debugLine("entry/src/main/ets/pages/SyncTest.ets(346:5)", "entry");
+            Column.debugLine("entry/src/main/ets/pages/SyncTest.ets(347:5)", "entry");
             Column.width('100%');
             Column.height('100%');
             Column.backgroundColor('#FAFAFA');
@@ -406,7 +407,7 @@ class SyncTest extends ViewPU {
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             // 标题
             Text.create('分布式同步功能测试');
-            Text.debugLine("entry/src/main/ets/pages/SyncTest.ets(348:7)", "entry");
+            Text.debugLine("entry/src/main/ets/pages/SyncTest.ets(349:7)", "entry");
             // 标题
             Text.fontSize(24);
             // 标题
@@ -425,7 +426,7 @@ class SyncTest extends ViewPU {
                 this.ifElseBranchUpdateFunction(0, () => {
                     this.observeComponentCreation2((elmtId, isInitialRender) => {
                         Row.create({ space: 8 });
-                        Row.debugLine("entry/src/main/ets/pages/SyncTest.ets(356:9)", "entry");
+                        Row.debugLine("entry/src/main/ets/pages/SyncTest.ets(357:9)", "entry");
                         Row.width('90%');
                         Row.padding(10);
                         Row.backgroundColor('#F5F5F5');
@@ -433,20 +434,20 @@ class SyncTest extends ViewPU {
                     }, Row);
                     this.observeComponentCreation2((elmtId, isInitialRender) => {
                         Text.create('同步状态:');
-                        Text.debugLine("entry/src/main/ets/pages/SyncTest.ets(357:11)", "entry");
+                        Text.debugLine("entry/src/main/ets/pages/SyncTest.ets(358:11)", "entry");
                         Text.fontSize(14);
                     }, Text);
                     Text.pop();
                     this.observeComponentCreation2((elmtId, isInitialRender) => {
                         Text.create(this.syncStatus.isSyncing ? '同步中...' : '空闲');
-                        Text.debugLine("entry/src/main/ets/pages/SyncTest.ets(359:11)", "entry");
+                        Text.debugLine("entry/src/main/ets/pages/SyncTest.ets(360:11)", "entry");
                         Text.fontSize(14);
                         Text.fontColor(this.syncStatus.isSyncing ? '#FF9800' : '#4CAF50');
                     }, Text);
                     Text.pop();
                     this.observeComponentCreation2((elmtId, isInitialRender) => {
                         Text.create(`| 最后同步: ${this.syncStatus.lastSyncTime > 0 ? new Date(this.syncStatus.lastSyncTime).toLocaleString() : '从未'}`);
-                        Text.debugLine("entry/src/main/ets/pages/SyncTest.ets(362:11)", "entry");
+                        Text.debugLine("entry/src/main/ets/pages/SyncTest.ets(363:11)", "entry");
                         Text.fontSize(12);
                         Text.fontColor('#666');
                     }, Text);
@@ -468,7 +469,7 @@ class SyncTest extends ViewPU {
                 this.ifElseBranchUpdateFunction(0, () => {
                     this.observeComponentCreation2((elmtId, isInitialRender) => {
                         Row.create({ space: 8 });
-                        Row.debugLine("entry/src/main/ets/pages/SyncTest.ets(374:9)", "entry");
+                        Row.debugLine("entry/src/main/ets/pages/SyncTest.ets(375:9)", "entry");
                         Row.width('90%');
                         Row.padding(10);
                         Row.backgroundColor('#E8F5E9');
@@ -476,14 +477,14 @@ class SyncTest extends ViewPU {
                     }, Row);
                     this.observeComponentCreation2((elmtId, isInitialRender) => {
                         Text.create('📚 阅读进度:');
-                        Text.debugLine("entry/src/main/ets/pages/SyncTest.ets(375:11)", "entry");
+                        Text.debugLine("entry/src/main/ets/pages/SyncTest.ets(376:11)", "entry");
                         Text.fontSize(14);
                         Text.fontColor('#666');
                     }, Text);
                     Text.pop();
                     this.observeComponentCreation2((elmtId, isInitialRender) => {
                         Text.create(`${this.progressCount} 条`);
-                        Text.debugLine("entry/src/main/ets/pages/SyncTest.ets(378:11)", "entry");
+                        Text.debugLine("entry/src/main/ets/pages/SyncTest.ets(379:11)", "entry");
                         Text.fontSize(14);
                         Text.fontColor('#4CAF50');
                         Text.fontWeight(FontWeight.Medium);
@@ -502,20 +503,20 @@ class SyncTest extends ViewPU {
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             // 测试按钮
             Column.create({ space: 12 });
-            Column.debugLine("entry/src/main/ets/pages/SyncTest.ets(390:7)", "entry");
+            Column.debugLine("entry/src/main/ets/pages/SyncTest.ets(391:7)", "entry");
             // 测试按钮
             Column.width('100%');
         }, Column);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Button.createWithLabel('1. 初始化分布式管理器');
-            Button.debugLine("entry/src/main/ets/pages/SyncTest.ets(391:9)", "entry");
+            Button.debugLine("entry/src/main/ets/pages/SyncTest.ets(392:9)", "entry");
             Button.width('90%');
             Button.onClick(() => this.testInitialize());
         }, Button);
         Button.pop();
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Button.createWithLabel('2. 同步数据到分布式对象');
-            Button.debugLine("entry/src/main/ets/pages/SyncTest.ets(395:9)", "entry");
+            Button.debugLine("entry/src/main/ets/pages/SyncTest.ets(396:9)", "entry");
             Button.width('90%');
             Button.enabled(this.isInitialized);
             Button.backgroundColor(this.isInitialized ? '#2196F3' : '#BDBDBD');
@@ -524,7 +525,7 @@ class SyncTest extends ViewPU {
         Button.pop();
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Button.createWithLabel('3. 从分布式对象恢复数据');
-            Button.debugLine("entry/src/main/ets/pages/SyncTest.ets(401:9)", "entry");
+            Button.debugLine("entry/src/main/ets/pages/SyncTest.ets(402:9)", "entry");
             Button.width('90%');
             Button.enabled(this.isInitialized);
             Button.backgroundColor(this.isInitialized ? '#2196F3' : '#BDBDBD');
@@ -533,7 +534,7 @@ class SyncTest extends ViewPU {
         Button.pop();
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Button.createWithLabel('4. 查看本地数据');
-            Button.debugLine("entry/src/main/ets/pages/SyncTest.ets(407:9)", "entry");
+            Button.debugLine("entry/src/main/ets/pages/SyncTest.ets(408:9)", "entry");
             Button.width('90%');
             Button.backgroundColor('#9C27B0');
             Button.onClick(() => this.testLocalData());
@@ -541,7 +542,7 @@ class SyncTest extends ViewPU {
         Button.pop();
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Button.createWithLabel('5. 测试阅读进度同步');
-            Button.debugLine("entry/src/main/ets/pages/SyncTest.ets(412:9)", "entry");
+            Button.debugLine("entry/src/main/ets/pages/SyncTest.ets(413:9)", "entry");
             Button.width('90%');
             Button.backgroundColor('#FF9800');
             Button.onClick(() => this.testProgressSync());
@@ -549,7 +550,7 @@ class SyncTest extends ViewPU {
         Button.pop();
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Button.createWithLabel('6. 测试仅WiFi同步功能');
-            Button.debugLine("entry/src/main/ets/pages/SyncTest.ets(417:9)", "entry");
+            Button.debugLine("entry/src/main/ets/pages/SyncTest.ets(418:9)", "entry");
             Button.width('90%');
             Button.backgroundColor('#00BCD4');
             Button.onClick(() => this.testWifiOnlySync());
@@ -557,7 +558,7 @@ class SyncTest extends ViewPU {
         Button.pop();
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Button.createWithLabel('🚀 完整流程测试');
-            Button.debugLine("entry/src/main/ets/pages/SyncTest.ets(422:9)", "entry");
+            Button.debugLine("entry/src/main/ets/pages/SyncTest.ets(423:9)", "entry");
             Button.width('90%');
             Button.backgroundColor('#4CAF50');
             Button.onClick(() => this.testFullFlow());
@@ -568,7 +569,7 @@ class SyncTest extends ViewPU {
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             // 日志显示
             Column.create();
-            Column.debugLine("entry/src/main/ets/pages/SyncTest.ets(430:7)", "entry");
+            Column.debugLine("entry/src/main/ets/pages/SyncTest.ets(431:7)", "entry");
             // 日志显示
             Column.width('100%');
             // 日志显示
@@ -576,7 +577,7 @@ class SyncTest extends ViewPU {
         }, Column);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Text.create('测试日志:');
-            Text.debugLine("entry/src/main/ets/pages/SyncTest.ets(431:9)", "entry");
+            Text.debugLine("entry/src/main/ets/pages/SyncTest.ets(432:9)", "entry");
             Text.fontSize(14);
             Text.fontWeight(FontWeight.Medium);
             Text.width('90%');
@@ -584,7 +585,7 @@ class SyncTest extends ViewPU {
         Text.pop();
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Scroll.create();
-            Scroll.debugLine("entry/src/main/ets/pages/SyncTest.ets(436:9)", "entry");
+            Scroll.debugLine("entry/src/main/ets/pages/SyncTest.ets(437:9)", "entry");
             Scroll.width('90%');
             Scroll.height(200);
             Scroll.backgroundColor('#263238');
@@ -593,7 +594,7 @@ class SyncTest extends ViewPU {
         }, Scroll);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Text.create(this.testLog);
-            Text.debugLine("entry/src/main/ets/pages/SyncTest.ets(437:11)", "entry");
+            Text.debugLine("entry/src/main/ets/pages/SyncTest.ets(438:11)", "entry");
             Text.fontSize(12);
             Text.fontFamily('monospace');
             Text.width('100%');
@@ -611,4 +612,4 @@ class SyncTest extends ViewPU {
         return "SyncTest";
     }
 }
-registerNamedRoute(() => new SyncTest(undefined, {}), "", { bundleName: "com.example.readerkitdemo", moduleName: "entry", pagePath: "pages/SyncTest", pageFullPath: "entry/src/main/ets/pages/SyncTest", integratedHsp: "false", moduleType: "followWithHap" });
+registerNamedRoute(() => new SyncTest(undefined, {}), "", { bundleName: "com.example.reader", moduleName: "entry", pagePath: "pages/SyncTest", pageFullPath: "entry/src/main/ets/pages/SyncTest", integratedHsp: "false", moduleType: "followWithHap" });

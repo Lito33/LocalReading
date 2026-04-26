@@ -29,6 +29,7 @@ export class Speaker {
     };
     // 分块大小（字符数）
     private readonly CHUNK_SIZE = 500;
+    //异步初始化引擎
     constructor() {
         this.engineReadyPromise = new Promise((resolve, reject) => {
             this.resolveEngineReady = resolve;

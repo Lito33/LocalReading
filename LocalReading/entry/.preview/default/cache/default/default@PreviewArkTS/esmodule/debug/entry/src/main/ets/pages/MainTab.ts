@@ -6,9 +6,9 @@ interface MainTab_Params {
     tabsController?: TabsController;
     bgColor?: string;
 }
-import { Index } from "@bundle:com.example.readerkitdemo/entry/ets/pages/Index";
-import { Mine } from "@bundle:com.example.readerkitdemo/entry/ets/pages/Mine";
-import { Notes } from "@bundle:com.example.readerkitdemo/entry@note/Index";
+import { Index } from "@bundle:com.example.reader/entry/ets/pages/Index";
+import { Mine } from "@bundle:com.example.reader/entry/ets/pages/Mine";
+import { Notes } from "@bundle:com.example.reader/entry@note/Index";
 class MainTab extends ViewPU {
     constructor(parent, params, __localStorage, elmtId = -1, paramsLambda = undefined, extraInfo) {
         super(parent, __localStorage, elmtId, extraInfo);
@@ -83,7 +83,7 @@ class MainTab extends ViewPU {
                 }
             });
             TabContent.tabBar({ builder: () => {
-                    this.tabBarBuilder.call(this, "书库", 0, { "id": 16777277, "type": 20000, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" }, { "id": 16777272, "type": 20000, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+                    this.tabBarBuilder.call(this, "书库", 0, { "id": 16777277, "type": 20000, params: [], "bundleName": "com.example.reader", "moduleName": "entry" }, { "id": 16777272, "type": 20000, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
                 } });
             TabContent.debugLine("entry/src/main/ets/pages/MainTab.ets(14:7)", "entry");
         }, TabContent);
@@ -107,7 +107,7 @@ class MainTab extends ViewPU {
                 }
             });
             TabContent.tabBar({ builder: () => {
-                    this.tabBarBuilder.call(this, "笔记", 1, { "id": 16777269, "type": 20000, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" }, { "id": 16777227, "type": 20000, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+                    this.tabBarBuilder.call(this, "笔记", 1, { "id": 16777269, "type": 20000, params: [], "bundleName": "com.example.reader", "moduleName": "entry" }, { "id": 16777227, "type": 20000, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
                 } });
             TabContent.debugLine("entry/src/main/ets/pages/MainTab.ets(19:7)", "entry");
         }, TabContent);
@@ -131,7 +131,7 @@ class MainTab extends ViewPU {
                 }
             });
             TabContent.tabBar({ builder: () => {
-                    this.tabBarBuilder.call(this, "我的", 2, { "id": 16777233, "type": 20000, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" }, { "id": 16777311, "type": 20000, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+                    this.tabBarBuilder.call(this, "我的", 2, { "id": 16777233, "type": 20000, params: [], "bundleName": "com.example.reader", "moduleName": "entry" }, { "id": 16777311, "type": 20000, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
                 } });
             TabContent.debugLine("entry/src/main/ets/pages/MainTab.ets(24:7)", "entry");
         }, TabContent);
@@ -144,7 +144,7 @@ class MainTab extends ViewPU {
             Column.create();
             Column.debugLine("entry/src/main/ets/pages/MainTab.ets(37:5)", "entry");
             Column.width("100%");
-            Column.height(37);
+            Column.height(40);
             Column.backgroundColor(this.bgColor == "#333333" ? "#ff777777" : Color.White);
             Column.justifyContent(FlexAlign.Center);
             Column.alignItems(HorizontalAlign.Center);
@@ -190,4 +190,4 @@ class MainTab extends ViewPU {
         return "MainTab";
     }
 }
-registerNamedRoute(() => new MainTab(undefined, {}), "", { bundleName: "com.example.readerkitdemo", moduleName: "entry", pagePath: "pages/MainTab", pageFullPath: "entry/src/main/ets/pages/MainTab", integratedHsp: "false", moduleType: "followWithHap" });
+registerNamedRoute(() => new MainTab(undefined, {}), "", { bundleName: "com.example.reader", moduleName: "entry", pagePath: "pages/MainTab", pageFullPath: "entry/src/main/ets/pages/MainTab", integratedHsp: "false", moduleType: "followWithHap" });

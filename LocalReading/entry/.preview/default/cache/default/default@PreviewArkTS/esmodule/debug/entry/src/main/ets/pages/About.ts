@@ -123,7 +123,7 @@ class About extends ViewPU {
             Column.debugLine("entry/src/main/ets/pages/About.ets(53:5)", "entry");
             Column.width('100%');
             Column.height('100%');
-            Column.backgroundColor(this.eyeMode ? '#FAF9DE' : { "id": 16777304, "type": 10001, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+            Column.backgroundColor(this.eyeMode ? '#FAF9DE' : { "id": 16777304, "type": 10001, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
         }, Column);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Row.create();
@@ -132,7 +132,7 @@ class About extends ViewPU {
             Row.margin({ top: this.isTablet() ? 60 : 50, bottom: this.isTablet() ? 60 : 50 });
         }, Row);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Image.create({ "id": 16777318, "type": 20000, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+            Image.create({ "id": 16777318, "type": 20000, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
             Image.debugLine("entry/src/main/ets/pages/About.ets(56:9)", "entry");
             Image.width(this.getIconSize());
             Image.height(this.getIconSize());
@@ -170,7 +170,7 @@ class About extends ViewPU {
             Column.margin({ bottom: this.isTablet() ? 45 : 35 });
         }, Column);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Image.create({ "id": 16777216, "type": 20000, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+            Image.create({ "id": 16777216, "type": 20000, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
             Image.debugLine("entry/src/main/ets/pages/About.ets(83:9)", "entry");
             Image.width(this.isTablet() ? 90 : 70);
             Image.height(this.isTablet() ? 90 : 70);
@@ -178,7 +178,7 @@ class About extends ViewPU {
             Image.borderRadius(10);
         }, Image);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Text.create({ "id": 16777237, "type": 10003, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+            Text.create({ "id": 16777237, "type": 10003, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
             Text.debugLine("entry/src/main/ets/pages/About.ets(88:9)", "entry");
             Text.fontSize(this.isTablet() ? 20 : 16);
             Text.fontColor(Color.Black);
@@ -356,14 +356,14 @@ class About extends ViewPU {
         }, Text);
         Text.pop();
         this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Image.create({ "id": 16777220, "type": 20000, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+            Image.create({ "id": 16777220, "type": 20000, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
             Image.debugLine("entry/src/main/ets/pages/About.ets(189:13)", "entry");
             Image.width(this.isTablet() ? 24 : 20);
             Image.height(this.isTablet() ? 24 : 20);
         }, Image);
         Row.pop();
         this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Image.create({ "id": 16777310, "type": 20000, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+            Image.create({ "id": 16777310, "type": 20000, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
             Image.debugLine("entry/src/main/ets/pages/About.ets(194:11)", "entry");
             Image.margin({ right: 5 });
             Image.width(this.isTablet() ? 24 : 20);
@@ -371,12 +371,53 @@ class About extends ViewPU {
         }, Image);
         // 数据同步
         Row.pop();
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Row.create();
+            Row.debugLine("entry/src/main/ets/pages/About.ets(218:9)", "entry");
+            Row.width('100%');
+            Row.height(50);
+            Row.padding({ left: 6, right: 6, top: 6, bottom: 6 });
+            Row.justifyContent(FlexAlign.SpaceBetween);
+            Row.backgroundColor(this.isSyncPressed ? '#E0E0E0' : Color.White);
+            Row.onClick(() => {
+                router.pushUrl({ url: 'pages/SyncTest' }).catch((err: Error) => {
+                    hilog.error(0x0000, TAG, `pushUrl failed: ${err.message}`);
+                });
+            });
+        }, Row);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Row.create({ space: 7 });
+            Row.debugLine("entry/src/main/ets/pages/About.ets(219:11)", "entry");
+        }, Row);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Text.create("数据测试");
+            Text.debugLine("entry/src/main/ets/pages/About.ets(220:13)", "entry");
+            Text.fontSize(14);
+            Text.fontColor(Color.Black);
+            Text.margin({ left: 5 });
+        }, Text);
+        Text.pop();
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Image.create({ "id": 16777220, "type": 20000, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
+            Image.debugLine("entry/src/main/ets/pages/About.ets(225:13)", "entry");
+            Image.width(20);
+            Image.height(20);
+        }, Image);
+        Row.pop();
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Image.create({ "id": 16777310, "type": 20000, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
+            Image.debugLine("entry/src/main/ets/pages/About.ets(230:11)", "entry");
+            Image.margin({ right: 5 });
+            Image.width(20);
+            Image.height(20);
+        }, Image);
+        Row.pop();
         //文字
         Column.pop();
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             // 通知栏
             Column.create();
-            Column.debugLine("entry/src/main/ets/pages/About.ets(255:5)", "entry");
+            Column.debugLine("entry/src/main/ets/pages/About.ets(284:5)", "entry");
             // 通知栏
             Column.margin({ top: 20 });
             // 通知栏
@@ -396,7 +437,7 @@ class About extends ViewPU {
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             // 标题栏
             Row.create();
-            Row.debugLine("entry/src/main/ets/pages/About.ets(257:7)", "entry");
+            Row.debugLine("entry/src/main/ets/pages/About.ets(286:7)", "entry");
             // 标题栏
             Row.width('100%');
             // 标题栏
@@ -406,14 +447,14 @@ class About extends ViewPU {
         }, Row);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Text.create('📢');
-            Text.debugLine("entry/src/main/ets/pages/About.ets(258:9)", "entry");
+            Text.debugLine("entry/src/main/ets/pages/About.ets(287:9)", "entry");
             Text.fontSize(this.isTablet() ? 22 : 18);
             Text.margin({ right: 8 });
         }, Text);
         Text.pop();
         this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Text.create({ "id": 16777241, "type": 10003, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
-            Text.debugLine("entry/src/main/ets/pages/About.ets(262:9)", "entry");
+            Text.create({ "id": 16777241, "type": 10003, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
+            Text.debugLine("entry/src/main/ets/pages/About.ets(291:9)", "entry");
             Text.fontSize(this.isTablet() ? 18 : 16);
             Text.fontWeight(FontWeight.Bold);
             Text.fontColor(Color.Black);
@@ -423,7 +464,7 @@ class About extends ViewPU {
         Row.pop();
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Divider.create();
-            Divider.debugLine("entry/src/main/ets/pages/About.ets(271:7)", "entry");
+            Divider.debugLine("entry/src/main/ets/pages/About.ets(300:7)", "entry");
             Divider.color('#E5E5E5');
             Divider.strokeWidth(1);
             Divider.margin({ left: 16, right: 16 });
@@ -431,7 +472,7 @@ class About extends ViewPU {
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             // 通知内容
             Column.create();
-            Column.debugLine("entry/src/main/ets/pages/About.ets(277:7)", "entry");
+            Column.debugLine("entry/src/main/ets/pages/About.ets(306:7)", "entry");
             // 通知内容
             Column.width('100%');
             // 通知内容
@@ -441,13 +482,13 @@ class About extends ViewPU {
         }, Column);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Row.create();
-            Row.debugLine("entry/src/main/ets/pages/About.ets(278:9)", "entry");
+            Row.debugLine("entry/src/main/ets/pages/About.ets(307:9)", "entry");
             Row.width('100%');
             Row.margin({ bottom: 8 });
         }, Row);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Text.create('•');
-            Text.debugLine("entry/src/main/ets/pages/About.ets(279:11)", "entry");
+            Text.debugLine("entry/src/main/ets/pages/About.ets(308:11)", "entry");
             Text.fontSize(this.isTablet() ? 16 : 14);
             Text.fontColor('#FF6B6B');
             Text.margin({ right: 6 });
@@ -455,7 +496,7 @@ class About extends ViewPU {
         Text.pop();
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Text.create('若手动导入数据后请重启一次应用。');
-            Text.debugLine("entry/src/main/ets/pages/About.ets(284:11)", "entry");
+            Text.debugLine("entry/src/main/ets/pages/About.ets(313:11)", "entry");
             Text.fontSize(this.isTablet() ? 15 : 13);
             Text.fontColor('#333333');
         }, Text);
@@ -463,20 +504,20 @@ class About extends ViewPU {
         Row.pop();
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Row.create();
-            Row.debugLine("entry/src/main/ets/pages/About.ets(291:9)", "entry");
+            Row.debugLine("entry/src/main/ets/pages/About.ets(320:9)", "entry");
             Row.width('100%');
         }, Row);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Text.create('•');
-            Text.debugLine("entry/src/main/ets/pages/About.ets(292:11)", "entry");
+            Text.debugLine("entry/src/main/ets/pages/About.ets(321:11)", "entry");
             Text.fontSize(this.isTablet() ? 16 : 14);
             Text.fontColor('#FF6B6B');
             Text.margin({ right: 6 });
         }, Text);
         Text.pop();
         this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Text.create('若导入数据后阅读字体没有正常改变，请先手动修改一次主题，重启应用即可。');
-            Text.debugLine("entry/src/main/ets/pages/About.ets(297:11)", "entry");
+            Text.create('导入书籍前请先阅读一本书籍在进行导入,若直接开始阅读可以进入更加深色模式哦~');
+            Text.debugLine("entry/src/main/ets/pages/About.ets(326:11)", "entry");
             Text.fontSize(this.isTablet() ? 15 : 13);
             Text.fontColor('#333333');
         }, Text);
@@ -507,4 +548,4 @@ class About extends ViewPU {
         return "About";
     }
 }
-registerNamedRoute(() => new About(undefined, {}), "", { bundleName: "com.example.readerkitdemo", moduleName: "entry", pagePath: "pages/About", pageFullPath: "entry/src/main/ets/pages/About", integratedHsp: "false", moduleType: "followWithHap" });
+registerNamedRoute(() => new About(undefined, {}), "", { bundleName: "com.example.reader", moduleName: "entry", pagePath: "pages/About", pageFullPath: "entry/src/main/ets/pages/About", integratedHsp: "false", moduleType: "followWithHap" });

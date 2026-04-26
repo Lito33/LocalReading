@@ -1560,20 +1560,21 @@ struct Reader {
               this.getUIContext().getPromptAction().showToast({ message: '当前页面无文本', duration: 1000 });
               return;
             }
-            const newState = !this.isClicked;
-            this.isClicked = newState; // 先切换状态，让按钮图标变化
+            // const newState = !this.isClicked;
+            // this.isClicked = newState; // 先切换状态，让按钮图标变化
 
-            if (newState) {
+            this.isClicked = !this.isClicked ;
+            if (this.isClicked  === true) {
               try {
-                await this.speaker.startSpeak(this.currentPageText);
+                this.speaker.startSpeak(this.currentPageText)
               } catch (error) {
-                hilog.error(0x0000, TAG, `startSpeak error: ${error}`);
-                this.isClicked = false; // 朗读失败时恢复状态
                 this.getUIContext().getPromptAction().showToast({ message: '朗读失败', duration: 1000 });
               }
             } else {
-              this.speaker.stopSpeak();
+              this.isClicked = false; // 朗读失败时恢复状态
+              this.speaker.stopSpeak()
             }
+
           })
       }
       .position({ top: 30, right: 20 })

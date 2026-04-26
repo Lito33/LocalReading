@@ -44,7 +44,7 @@ tabBarBuilder(title: string, targetIndex: number, selectedIcon: Resource, unsele
         .fontWeight(500)
     }
     .width("100%")
-    .height(37)
+    .height(40)
     .backgroundColor(this.bgColor == "#333333" ? "#ff777777" : Color.White)
     .justifyContent(FlexAlign.Center)
     .alignItems(HorizontalAlign.Center)

@@ -455,5 +455,21 @@
 			"type":	"color",
 			"name":	"page_Reader_font",
 			"id":	"0x01000071"
+		}, {
+			"type":	"string",
+			"name":	"Login",
+			"id":	"0x01000072"
+		}, {
+			"type":	"string",
+			"name":	"LoginDialogMessage",
+			"id":	"0x01000073"
+		}, {
+			"type":	"string",
+			"name":	"LoginDialogTitle",
+			"id":	"0x01000074"
+		}, {
+			"type":	"string",
+			"name":	"RememberPassword",
+			"id":	"0x01000075"
 		}]
 }

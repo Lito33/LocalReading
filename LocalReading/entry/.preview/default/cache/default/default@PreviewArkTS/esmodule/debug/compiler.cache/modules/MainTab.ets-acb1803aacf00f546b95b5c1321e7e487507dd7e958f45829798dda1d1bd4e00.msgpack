@@ -1,4 +1,4 @@
-Ôr@Ÿªassertions¤code´customTransformCache¬dependencies¢id¤meta±moduleSideEffects¬originalCode±originalSourcemap«resolvedIds®sourcemapChainµsyntheticNamedExportsµtransformDependencies®transformFiles¨cacheAstÔrAÚ$&if (!("finalizeConstruction" in ViewPU.prototype)) {
+Ôr@Ÿªassertions¤code´customTransformCache¬dependencies¢id¤meta±moduleSideEffects¬originalCode±originalSourcemap«resolvedIds®sourcemapChainµsyntheticNamedExportsµtransformDependencies®transformFiles¨cacheAstÔrAÚ#õif (!("finalizeConstruction" in ViewPU.prototype)) {
     Reflect.set(ViewPU.prototype, "finalizeConstruction", () => { });
 }
 import { Index } from './Index';
@@ -75,7 +75,7 @@ class MainTab extends ViewPU {
                 }
             });
             TabContent.tabBar({ builder: () => {
-                    this.tabBarBuilder.call(this, "ä¹¦åº“", 0, { "id": 16777277, "type": 20000, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" }, { "id": 16777272, "type": 20000, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+                    this.tabBarBuilder.call(this, "ä¹¦åº“", 0, { "id": 16777277, "type": 20000, params: [], "bundleName": "com.example.reader", "moduleName": "entry" }, { "id": 16777272, "type": 20000, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
                 } });
             TabContent.debugLine("entry/src/main/ets/pages/MainTab.ets(14:7)", "entry");
         }, TabContent);
@@ -99,7 +99,7 @@ class MainTab extends ViewPU {
                 }
             });
             TabContent.tabBar({ builder: () => {
-                    this.tabBarBuilder.call(this, "ç¬”è®°", 1, { "id": 16777269, "type": 20000, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" }, { "id": 16777227, "type": 20000, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+                    this.tabBarBuilder.call(this, "ç¬”è®°", 1, { "id": 16777269, "type": 20000, params: [], "bundleName": "com.example.reader", "moduleName": "entry" }, { "id": 16777227, "type": 20000, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
                 } });
             TabContent.debugLine("entry/src/main/ets/pages/MainTab.ets(19:7)", "entry");
         }, TabContent);
@@ -123,7 +123,7 @@ class MainTab extends ViewPU {
                 }
             });
             TabContent.tabBar({ builder: () => {
-                    this.tabBarBuilder.call(this, "æˆ‘çš„", 2, { "id": 16777233, "type": 20000, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" }, { "id": 16777311, "type": 20000, params: [], "bundleName": "com.example.readerkitdemo", "moduleName": "entry" });
+                    this.tabBarBuilder.call(this, "æˆ‘çš„", 2, { "id": 16777233, "type": 20000, params: [], "bundleName": "com.example.reader", "moduleName": "entry" }, { "id": 16777311, "type": 20000, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
                 } });
             TabContent.debugLine("entry/src/main/ets/pages/MainTab.ets(24:7)", "entry");
         }, TabContent);
@@ -136,7 +136,7 @@ class MainTab extends ViewPU {
             Column.create();
             Column.debugLine("entry/src/main/ets/pages/MainTab.ets(37:5)", "entry");
             Column.width("100%");
-            Column.height(37);
+            Column.height(40);
             Column.backgroundColor(this.bgColor == "#333333" ? "#ff777777" : Color.White);
             Column.justifyContent(FlexAlign.Center);
             Column.alignItems(HorizontalAlign.Center);
@@ -182,7 +182,7 @@ class MainTab extends ViewPU {
         return "MainTab";
     }
 }
-registerNamedRoute(() => new MainTab(undefined, {}), "", { bundleName: "com.example.readerkitdemo", moduleName: "entry", pagePath: "pages/MainTab", pageFullPath: "entry/src/main/ets/pages/MainTab", integratedHsp: "false", moduleType: "followWithHap" });
+registerNamedRoute(() => new MainTab(undefined, {}), "", { bundleName: "com.example.reader", moduleName: "entry", pagePath: "pages/MainTab", pageFullPath: "entry/src/main/ets/pages/MainTab", integratedHsp: "false", moduleType: "followWithHap" });
 //# sourceMappingURL=MainTab.js.mapÂ“ÙPD:\devecoStudioDriector\SomeDemo\LocalReading\entry\src\main\ets\pages\Index.etsÙOD:\devecoStudioDriector\SomeDemo\LocalReading\entry\src\main\ets\pages\Mine.etsÙFD:\devecoStudioDriector\SomeDemo\LocalReading\exfeature\note\Index.etsÙRD:\devecoStudioDriector\SomeDemo\LocalReading\entry\src\main\ets\pages\MainTab.etsÔrB›ªmoduleName±isLocalDependency¯isNodeEntryFile§pkgPath±belongProjectPath§pkgNameªpkgVersion±dependencyPkgInfo°belongModulePath§checker¬shouldEmitJs¥entryÃÂÙ3D:\devecoStudioDriector\SomeDemo\LocalReading\entryÙ-D:\devecoStudioDriector\SomeDemo\LocalReading¥entry¥1.0.0Ô  Ù3D:\devecoStudioDriector\SomeDemo\LocalReading\entryÔrCÜ ®¬getNodeCount²getIdentifierCount®getSymbolCount¬getTypeCountµgetInstantiationCountµgetRelationCacheSizes±isUndefinedSymbol±isArgumentsSymbol¯isUnknownSymbol¯getMergedSymbol®getDiagnostics´getGlobalDiagnostics´getRecursionIdentity¶getUnmatchedProperties¹getTypeOfSymbolAtLocation¯getTypeOfSymbolÙ(getSymbolsOfParameterPropertyDeclaration·getDeclaredTypeOfSymbol³getPropertiesOfType±getPropertyOfTypeÙ"getPrivateIdentifierPropertyOfType·getTypeOfPropertyOfType²getIndexInfoOfType³getIndexInfosOfTypeºgetIndexInfosOfIndexSymbol³getSignaturesOfType²getIndexTypeOfType¬getIndexType¬getBaseTypes¸getBaseTypeOfLiteralType®getWidenedType³getTypeFromTypeNode°getParameterTypeÙ$getParameterIdentifierNameAtPosition¸getPromisedTypeOfPromise®getAwaitedType¸getReturnTypeOfSignature®isNullableType¯getNullableType²getNonNullableType²getNonOptionalType°getTypeArguments®typeToTypeNodeÙ$indexInfoToIndexSignatureDeclaration¿signatureToSignatureDeclaration²symbolToEntityName²symbolToExpression¬symbolToNodeÙ!symbolToTypeParameterDeclarations¼symbolToParameterDeclarationºtypeParameterToDeclaration±getSymbolsInScope³getSymbolAtLocation·getIndexInfosAtLocationÙ!getShorthandAssignmentValueSymbolÙ#getExportSpecifierLocalTargetSymbol·getExportSymbolOfSymbol±getTypeAtLocationºgetTypeAtLocationForLinterÙ tryGetTypeAtLocationWithoutCheckºgetTypeOfAssignmentPatternÙ*getPropertySymbolOfDestructuringAssignment±signatureToString¬typeToString®symbolToStringµtypePredicateToString®writeSignature©writeType«writeSymbol²writeTypePredicate¼getAugmentedPropertiesOfType®getRootSymbols²getSymbolOfExpando±getContextualTypeÙ(getContextualTypeForObjectLiteralElementÙ#getContextualTypeForArgumentAtIndexÙ getContextualTypeForJsxAttribute²isContextSensitiveÙ!getTypeOfPropertyOfContextualTypeµgetFullyQualifiedNameÙ#tryGetResolvedSignatureWithoutCheck´getResolvedSignatureÙ/getResolvedSignatureForStringLiteralCompletionsÙ$getResolvedSignatureForSignatureHelpµgetExpandedParameters¹hasEffectiveRestParameterºcontainsArgumentsReference°getConstantValueµisValidPropertyAccessÙ#isValidPropertyAccessForCompletions»getSignatureFromDeclarationºisImplementationOfOverload¹getImmediateAliasedSymbol°getAliasedSymbol¯getEmitResolver²getExportsOfModule¿getExportsAndPropertiesOfModuleÙ forEachExportAndPropertyOfModule¯getSymbolWalker±getAmbientModules¹getJsxIntrinsicTagNamesAt³isOptionalParameter»tryGetMemberInModuleExportsÙ(tryGetMemberInModuleExportsAndProperties´tryFindAmbientModuleÙ(tryFindAmbientModuleWithoutAugmentations¯getApparentType¬getUnionType²isTypeAssignableTo³createAnonymousType¯createSignature¬createSymbol¯createIndexInfoªgetAnyType­getStringType­getNumberType±createPromiseType¯createArrayType¹getElementTypeOfArrayType®getBooleanType¬getFalseType«getTrueType«getVoidType°getUndefinedType«getNullType¯getESSymbolType¬getNeverType¯getOptionalType®getPromiseType²getPromiseLikeType´getAsyncIterableType²isSymbolAccessible«isArrayType«isTupleType¯isArrayLikeTypeÙ#isTypeInvalidDueToUnionDiscriminantºgetExactOptionalProperties¿getAllPossiblePropertiesOfTypesÙ(getSuggestedSymbolForNonexistentPropertyÙ#getSuggestionForNonexistentPropertyÙ,getSuggestedSymbolForNonexistentJSXAttributeÙ&getSuggestedSymbolForNonexistentSymbolÙ!getSuggestionForNonexistentSymbolÙ&getSuggestedSymbolForNonexistentModuleÙ!getSuggestionForNonexistentExportÙ+getSuggestedSymbolForNonexistentClassMember·getBaseConstraintOfType»getDefaultFromTypeParameter«resolveName¯getJsxNamespaceµgetJsxFragmentFactory¸getAccessibleSymbolChain»getTypePredicateOfSignature¹resolveExternalModuleName»resolveExternalModuleSymbol°tryGetThisTypeAt¹getTypeArgumentConstraint¸getSuggestionDiagnostics¸runWithCancellationTokenÙ3getLocalTypeParametersOfClassOrInterfaceOrTypeAlias´isDeclarationVisible´isPropertyAccessible»getTypeOnlyAliasDeclaration¿getMemberOverrideModifierStatusÙ!isTypeParameterPossiblyReferenced²getConstEnumRelate´clearConstEnumRelateµdeleteConstEnumRelateÙ$getTypeArgumentsForResolvedSignatureµgetCheckedSourceFilesÙ"collectHaveTsNoCheckFilesForLinter·clearQualifiedNameCache®isStaticRecord²isStaticSourceFileÔ  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  ÃÃÚ}import { Index } from './Index';
 import { Mine } from './Mine';
 import { Notes } from 'note'
@@ -229,7 +229,7 @@ tabBarBuilder(title: string, targetIndex: number, selectedIcon: Resource, unsele
         .fontWeight(500)
     }
     .width("100%")
-    .height(37)
+    .height(40)
     .backgroundColor(this.bgColor == "#333333" ? "#ff777777" : Color.White)
     .justifyContent(FlexAlign.Center)
     .alignItems(HorizontalAlign.Center)

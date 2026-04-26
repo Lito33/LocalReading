@@ -1,5 +1,5 @@
 import { textToSpeech } from '@kit.CoreSpeechKit';
-import { BusinessError } from '@kit.BasicServicesKit';
+import { BusinessError, emitter } from '@kit.BasicServicesKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 
 const TAG = 'Speaker';
@@ -78,8 +78,11 @@ export class Speaker {
       onStart: (requestId, response) => {
         hilog.info(0x0000, TAG, `onStart: ${requestId}`);
       },
-      onComplete: (requestId, response) => {
+      onComplete: (requestId, response:textToSpeech.CompleteResponse) => {
         hilog.info(0x0000, TAG, `onComplete: ${requestId}`);
+        if(response.type === 1){
+          emitter.emit("eventId");
+        }
       },
       onStop: (requestId, response) => {
         hilog.info(0x0000, TAG, `onStop: ${requestId}`);

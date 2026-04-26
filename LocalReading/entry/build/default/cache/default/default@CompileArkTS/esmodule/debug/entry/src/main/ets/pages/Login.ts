@@ -425,7 +425,7 @@ class LoginBottom extends ViewPU {
         }, Checkbox);
         Checkbox.pop();
         this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Text.create("记住密码");
+            Text.create({ "id": 16777333, "type": 10003, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
             Text.fontSize(14);
             Text.fontColor("#666666");
             Text.onClick(() => {
@@ -436,7 +436,7 @@ class LoginBottom extends ViewPU {
         //记住密码
         Row.pop();
         this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Button.createWithLabel("登录");
+            Button.createWithLabel({ "id": 16777330, "type": 10003, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
             Button.width("80%");
             Button.height(40);
             Button.fontSize(16);
@@ -452,8 +452,8 @@ class LoginBottom extends ViewPU {
                 if (!isUserExists) {
                     // 未注册
                     promptAction.showDialog({
-                        title: '新用户注册',
-                        message: '该账号尚未注册，是否确认注册？',
+                        title: { "id": 16777332, "type": 10003, params: [], "bundleName": "com.example.reader", "moduleName": "entry" },
+                        message: { "id": 16777331, "type": 10003, params: [], "bundleName": "com.example.reader", "moduleName": "entry" },
                         buttons: [
                             { text: '取消', color: '#999999' },
                             { text: '确认', color: '#007DFF' }
@@ -465,7 +465,7 @@ class LoginBottom extends ViewPU {
                     });
                 }
                 else {
-                    //正常流程
+                    // 正常流程
                     await this.simulateLogin();
                     this.handleLoginResult();
                 }

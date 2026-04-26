@@ -4,8 +4,12 @@ string EntryAbility_label 0x01000015
 string FontSize 0x01000016
 string Library 0x01000017
 string LineHeight 0x01000018
+string Login 0x01000072
+string LoginDialogMessage 0x01000073
+string LoginDialogTitle 0x01000074
 string Notice 0x01000019
 string PageMode 0x0100001a
+string RememberPassword 0x01000075
 string SingleMode 0x0100001b
 string SingleModeDescription 0x0100001c
 string SpeechPitch 0x0100001d

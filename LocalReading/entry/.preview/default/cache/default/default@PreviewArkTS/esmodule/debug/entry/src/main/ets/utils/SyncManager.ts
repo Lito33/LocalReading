@@ -1,17 +1,17 @@
 import fileIo from "@ohos:file.fs";
 import type common from "@ohos:app.ability.common";
 import hilog from "@ohos:hilog";
-import { StorageUtil } from "@bundle:com.example.readerkitdemo/entry/ets/utils/StorageUtil";
-import { SettingStorage } from "@bundle:com.example.readerkitdemo/entry/ets/common/SettingStorage";
-import type { PersistedReaderSettings } from "@bundle:com.example.readerkitdemo/entry/ets/common/SettingStorage";
-import { GlobalContext } from "@bundle:com.example.readerkitdemo/entry/ets/common/GlobalContext";
+import { StorageUtil } from "@bundle:com.example.reader/entry/ets/utils/StorageUtil";
+import { SettingStorage } from "@bundle:com.example.reader/entry/ets/common/SettingStorage";
+import type { PersistedReaderSettings } from "@bundle:com.example.reader/entry/ets/common/SettingStorage";
+import { GlobalContext } from "@bundle:com.example.reader/entry/ets/common/GlobalContext";
 import buffer from "@ohos:buffer";
 import type { StoredUserCredential } from './PasswordUtil';
 import picker from "@ohos:file.picker";
-import { BookStorage } from "@bundle:com.example.readerkitdemo/entry/ets/common/BookStorage";
-import { ProgressStorage } from "@bundle:com.example.readerkitdemo/entry/ets/common/ProgressStorage";
-import type { BookProgress } from "@bundle:com.example.readerkitdemo/entry/ets/common/ProgressStorage";
-import { ConflictResolver } from "@bundle:com.example.readerkitdemo/entry/ets/utils/ConflictResolver";
+import { BookStorage } from "@bundle:com.example.reader/entry/ets/common/BookStorage";
+import { ProgressStorage } from "@bundle:com.example.reader/entry/ets/common/ProgressStorage";
+import type { BookProgress } from "@bundle:com.example.reader/entry/ets/common/ProgressStorage";
+import { ConflictResolver } from "@bundle:com.example.reader/entry/ets/utils/ConflictResolver";
 const TAG = 'SyncManager';
 // 简化的同步数据结构
 export interface SyncData {

@@ -157,7 +157,8 @@
         "D:\\what down\\vediodown\\tool\\devecostudio\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.InsightIntentExecutor.d.ts",
         "D:\\what down\\vediodown\\tool\\devecostudio\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.InsightIntentEntryExecutor.d.ts",
         "D:\\what down\\vediodown\\tool\\devecostudio\\DevEco Studio\\sdk\\default\\openharmony\\ets\\kits\\@kit.ArkUI.d.ts",
-        "D:\\what down\\vediodown\\tool\\devecostudio\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.arkui.advanced.FoldSplitContainer.d.ets"
+        "D:\\what down\\vediodown\\tool\\devecostudio\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.arkui.advanced.FoldSplitContainer.d.ets",
+        "D:\\what down\\vediodown\\tool\\devecostudio\\DevEco Studio\\sdk\\default\\hms\\ets\\api\\@hms.ai.textReader.d.ets"
       ],
       "error": false
     },
@@ -418,7 +419,8 @@
         "D:\\what down\\vediodown\\tool\\devecostudio\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.zlib.d.ts",
         "D:\\what down\\vediodown\\tool\\devecostudio\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.commonEventManager.d.ts",
         "D:\\what down\\vediodown\\tool\\devecostudio\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\commonEvent\\commonEventSubscriber.d.ts",
-        "D:\\what down\\vediodown\\tool\\devecostudio\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.resourceschedule.systemload.d.ts"
+        "D:\\what down\\vediodown\\tool\\devecostudio\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.resourceschedule.systemload.d.ts",
+        "D:\\what down\\vediodown\\tool\\devecostudio\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.telephony.call.d.ts"
       ],
       "error": false
     },
@@ -717,7 +719,8 @@
         "D:\\what down\\vediodown\\tool\\devecostudio\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.data.sendablePreferences.d.ets",
         "D:\\what down\\vediodown\\tool\\devecostudio\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.PiPWindow.d.ts",
         "D:\\what down\\vediodown\\tool\\devecostudio\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.window.floatingBall.d.ts",
-        "D:\\what down\\vediodown\\tool\\devecostudio\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.request.d.ts"
+        "D:\\what down\\vediodown\\tool\\devecostudio\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.request.d.ts",
+        "D:\\what down\\vediodown\\tool\\devecostudio\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.telephony.call.d.ts"
       ],
       "error": false
     },
@@ -755,7 +758,8 @@
         "D:\\what down\\vediodown\\tool\\devecostudio\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.multimedia.sendableImage.d.ets",
         "D:\\what down\\vediodown\\tool\\devecostudio\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.multimedia.videoProcessingEngine.d.ts",
         "D:\\what down\\vediodown\\tool\\devecostudio\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.pasteboard.d.ts",
-        "D:\\what down\\vediodown\\tool\\devecostudio\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.wallpaper.d.ts"
+        "D:\\what down\\vediodown\\tool\\devecostudio\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.wallpaper.d.ts",
+        "D:\\what down\\vediodown\\tool\\devecostudio\\DevEco Studio\\sdk\\default\\hms\\ets\\api\\@hms.ai.textReader.d.ets"
       ],
       "error": false
     },
@@ -1060,7 +1064,8 @@
         "D:\\what down\\vediodown\\tool\\devecostudio\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.sendableContextManager.d.ets",
         "D:\\devecoStudioDriector\\SomeDemo\\LocalReading\\entry\\src\\main\\ets\\pages\\SyncTest.ets",
         "D:\\devecoStudioDriector\\SomeDemo\\LocalReading\\entry\\src\\main\\ets\\pages\\CorruptFileTest.ets",
-        "D:\\devecoStudioDriector\\SomeDemo\\LocalReading\\entry\\src\\main\\ets\\utils\\CorruptFileTestUtil.ets"
+        "D:\\devecoStudioDriector\\SomeDemo\\LocalReading\\entry\\src\\main\\ets\\utils\\CorruptFileTestUtil.ets",
+        "D:\\what down\\vediodown\\tool\\devecostudio\\DevEco Studio\\sdk\\default\\hms\\ets\\api\\@hms.ai.textReader.d.ets"
       ],
       "error": false
     },
@@ -2062,7 +2067,8 @@
       "parent": [
         "D:\\what down\\vediodown\\tool\\devecostudio\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.util.stream.d.ts",
         "D:\\devecoStudioDriector\\SomeDemo\\LocalReading\\entry\\src\\main\\ets\\pages\\Reader.ets",
-        "D:\\what down\\vediodown\\tool\\devecostudio\\DevEco Studio\\sdk\\default\\openharmony\\ets\\kits\\@kit.BasicServicesKit.d.ts"
+        "D:\\what down\\vediodown\\tool\\devecostudio\\DevEco Studio\\sdk\\default\\openharmony\\ets\\kits\\@kit.BasicServicesKit.d.ts",
+        "D:\\devecoStudioDriector\\SomeDemo\\LocalReading\\entry\\src\\main\\ets\\utils\\Speaker.ets"
       ],
       "error": false
     },
@@ -2224,7 +2230,7 @@
       "error": false
     },
     "D:\\devecoStudioDriector\\SomeDemo\\LocalReading\\entry\\src\\main\\ets\\pages\\MainTab.ets": {
-      "mtimeMs": 1772977912000,
+      "mtimeMs": 1777194308038.4604,
       "children": [
         "D:\\devecoStudioDriector\\SomeDemo\\LocalReading\\entry\\src\\main\\ets\\pages\\Index.ets",
         "D:\\devecoStudioDriector\\SomeDemo\\LocalReading\\entry\\src\\main\\ets\\pages\\Mine.ets",
@@ -2278,7 +2284,7 @@
       "error": false
     },
     "D:\\devecoStudioDriector\\SomeDemo\\LocalReading\\entry\\src\\main\\ets\\utils\\BookUtils.ets": {
-      "mtimeMs": 1774778357016.837,
+      "mtimeMs": 1777037113486.7412,
       "children": [],
       "parent": [
         "D:\\devecoStudioDriector\\SomeDemo\\LocalReading\\entry\\src\\main\\ets\\pages\\Index.ets",
@@ -2509,10 +2515,11 @@
       "error": false
     },
     "D:\\devecoStudioDriector\\SomeDemo\\LocalReading\\entry\\src\\main\\ets\\utils\\Speaker.ets": {
-      "mtimeMs": 1776773533009.4976,
+      "mtimeMs": 1777206465090.2803,
       "children": [
         "D:\\what down\\vediodown\\tool\\devecostudio\\DevEco Studio\\sdk\\default\\hms\\ets\\api\\@hms.ai.textToSpeech.d.ts",
         "D:\\what down\\vediodown\\tool\\devecostudio\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.base.d.ts",
+        "D:\\what down\\vediodown\\tool\\devecostudio\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.events.emitter.d.ts",
         "D:\\what down\\vediodown\\tool\\devecostudio\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.hilog.d.ts"
       ],
       "parent": [
@@ -2524,7 +2531,7 @@
       ]
     },
     "D:\\devecoStudioDriector\\SomeDemo\\LocalReading\\entry\\src\\main\\ets\\pages\\Reader.ets": {
-      "mtimeMs": 1776912664634.7517,
+      "mtimeMs": 1777206614978.2427,
       "children": [
         "D:\\devecoStudioDriector\\SomeDemo\\LocalReading\\entry\\src\\main\\ets\\entryability\\WindowAbility.ets",
         "D:\\what down\\vediodown\\tool\\devecostudio\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.display.d.ts",
@@ -2563,7 +2570,7 @@
       "error": false
     },
     "D:\\devecoStudioDriector\\SomeDemo\\LocalReading\\entry\\src\\main\\ets\\pages\\Login.ets": {
-      "mtimeMs": 1777022821097.5955,
+      "mtimeMs": 1777024304653.1174,
       "children": [
         "D:\\what down\\vediodown\\tool\\devecostudio\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@system.app.d.ts",
         "D:\\what down\\vediodown\\tool\\devecostudio\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.arkui.UIContext.d.ts",
@@ -6550,6 +6557,29 @@
         "D:\\devecoStudioDriector\\SomeDemo\\LocalReading\\entry\\src\\main\\ets\\common\\GlobalContext.ets"
       ],
       "parent": [],
+      "error": false
+    },
+    "D:\\what down\\vediodown\\tool\\devecostudio\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.telephony.call.d.ts": {
+      "mtimeMs": 1768795642000,
+      "children": [
+        "D:\\what down\\vediodown\\tool\\devecostudio\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.base.d.ts",
+        "D:\\what down\\vediodown\\tool\\devecostudio\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\application\\BaseContext.d.ts"
+      ],
+      "parent": [
+        "D:\\devecoStudioDriector\\SomeDemo\\LocalReading\\entry\\src\\main\\ets\\utils\\Speaker.ets"
+      ],
+      "error": false
+    },
+    "D:\\what down\\vediodown\\tool\\devecostudio\\DevEco Studio\\sdk\\default\\hms\\ets\\api\\@hms.ai.textReader.d.ets": {
+      "mtimeMs": 1768795642000,
+      "children": [
+        "D:\\what down\\vediodown\\tool\\devecostudio\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.multimedia.image.d.ts",
+        "D:\\what down\\vediodown\\tool\\devecostudio\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.app.ability.common.d.ts",
+        "D:\\what down\\vediodown\\tool\\devecostudio\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.window.d.ts"
+      ],
+      "parent": [
+        "D:\\devecoStudioDriector\\SomeDemo\\LocalReading\\entry\\src\\main\\ets\\pages\\Reader.ets"
+      ],
       "error": false
     }
   }
