@@ -139,8 +139,9 @@ export class ProgressStorage {
   }
 
   /**
-   * 合并远程进度到本地（用于同步）
+   * 合并远程进度到本地（用于同步）单个
    * 如果本地有相同书籍，更新进度；否则添加新进度
+   * 以优化被mergeReadingProgresses
    */
   static async mergeProgress(
     context: common.UIAbilityContext,

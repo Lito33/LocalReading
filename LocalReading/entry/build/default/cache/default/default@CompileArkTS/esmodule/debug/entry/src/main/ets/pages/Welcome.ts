@@ -14,7 +14,7 @@ class Welcome extends ViewPU {
             this.paramsGenerator_ = paramsLambda;
         }
         this.timeId = -1;
-        this.__CoverText = new ObservedPropertySimplePU('阅读越聪明', this, "CoverText");
+        this.__CoverText = new ObservedPropertySimplePU(`\u9605\u8bfb\u8d8a\u806a\u660e`, this, "CoverText");
         this.setInitiallyProvidedValue(params);
         this.finalizeConstruction();
     }

@@ -531,7 +531,8 @@ class ReadingRecord extends ViewPU {
             PageTransitionEnter.create({ duration: 0, curve: Curve.Sharp });
         }, null);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
-            PageTransitionExit.create({ duration: 0, curve: Curve.Sharp });
+            PageTransitionExit.create({ duration: 200, curve: Curve.Sharp });
+            PageTransitionExit.slide(SlideEffect.Right);
         }, null);
         PageTransition.pop();
     }

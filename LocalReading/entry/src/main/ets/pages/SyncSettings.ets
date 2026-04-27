@@ -786,7 +786,7 @@ struct SyncSettings {
   
 
   pageTransition() {
-    PageTransitionEnter({ duration: 0, curve: Curve.Sharp });
-    PageTransitionExit({ duration: 0, curve: Curve.Sharp });
+    PageTransitionEnter({ duration: 300, curve: Curve.Sharp });
+    PageTransitionExit({ duration: 300, curve: Curve.Sharp }).slide(SlideEffect.Right);
   }
 }

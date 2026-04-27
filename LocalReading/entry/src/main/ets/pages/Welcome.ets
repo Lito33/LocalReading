@@ -7,7 +7,7 @@ import { WindowAbility } from '../entryability/WindowAbility';
 struct Welcome{
   //用于存储定时器ID
   private timeId: number = -1;
-  @State CoverText: string = '阅读越聪明';
+  @State CoverText: string = `\u9605\u8bfb\u8d8a\u806a\u660e`;
 
   aboutToAppear() {
     //隐藏状态栏和导航栏，实现沉浸式闪屏

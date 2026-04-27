@@ -1546,7 +1546,7 @@ class Reader extends ViewPU {
             Radio.width(20);
             Radio.checked(true);
             Radio.radioStyle({
-                checkedBackgroundColor: Color.Blue,
+                checkedBackgroundColor: { "id": 16777334, "type": 10001, params: [], "bundleName": "com.example.reader", "moduleName": "entry" },
             });
             Radio.onClick(async () => {
                 const currentResourceIndex = this.currentData?.resourceIndex ?? 0;
@@ -1577,7 +1577,7 @@ class Reader extends ViewPU {
             Radio.width(20);
             Radio.checked(false);
             Radio.radioStyle({
-                checkedBackgroundColor: Color.Blue,
+                checkedBackgroundColor: { "id": 16777334, "type": 10001, params: [], "bundleName": "com.example.reader", "moduleName": "entry" },
             });
             Radio.onClick(() => {
                 this.readerSetting.flipMode = '1';
@@ -1626,7 +1626,7 @@ class Reader extends ViewPU {
         Text.pop();
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Toggle.create({ type: ToggleType.Switch, isOn: this.singleHandMode });
-            Toggle.selectedColor(Color.Blue);
+            Toggle.selectedColor({ "id": 16777334, "type": 10001, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
             Toggle.onChange((isOn: boolean) => {
                 this.singleHandMode = isOn;
                 this.saveCurrentSettings();
@@ -1699,7 +1699,7 @@ class Reader extends ViewPU {
                             this.readerSetting.fontColor = '#ffffff';
                             this.readerSetting.nightMode = true;
                         }
-                        else if (index == 4) {
+                        else if (index === 4) {
                             this.readerSetting.themeBgImg = '';
                             this.readerSetting.nightMode = true;
                             this.readerSetting.fontColor = '#ffffff';
@@ -1774,7 +1774,7 @@ class Reader extends ViewPU {
             Slider.create({ value: this.ttsVolume, min: 0, max: 2, step: 0.5, style: SliderStyle.InSet });
             Slider.blockColor('#191970');
             Slider.trackColor('#ADD8E6');
-            Slider.selectedColor('#4169E1');
+            Slider.selectedColor({ "id": 16777334, "type": 10001, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
             Slider.showSteps(true);
             Slider.showTips(true);
             Slider.width('60%');
@@ -1815,7 +1815,7 @@ class Reader extends ViewPU {
             Slider.create({ value: this.ttsPitch, min: 0.5, max: 2.0, step: 0.25, style: SliderStyle.InSet });
             Slider.blockColor('#191970');
             Slider.trackColor('#ADD8E6');
-            Slider.selectedColor('#4169E1');
+            Slider.selectedColor({ "id": 16777334, "type": 10001, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
             Slider.showSteps(true);
             Slider.showTips(true);
             Slider.width('60%');
@@ -1856,7 +1856,7 @@ class Reader extends ViewPU {
             Slider.create({ value: this.ttsSpeed, min: 0.5, max: 2.0, step: 0.25, style: SliderStyle.InSet });
             Slider.blockColor('#191970');
             Slider.trackColor('#ADD8E6');
-            Slider.selectedColor('#4169E1');
+            Slider.selectedColor({ "id": 16777334, "type": 10001, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
             Slider.showSteps(true);
             Slider.showTips(true);
             Slider.width('60%');
@@ -1905,7 +1905,7 @@ class Reader extends ViewPU {
             Slider.create({ value: this.fontSize, min: 12, max: 32, step: 1, style: SliderStyle.InSet });
             Slider.blockColor('#191970');
             Slider.trackColor('#ADD8E6');
-            Slider.selectedColor('#4169E1');
+            Slider.selectedColor({ "id": 16777334, "type": 10001, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
             Slider.showSteps(true);
             Slider.showTips(true);
             Slider.width('60%');
@@ -1949,7 +1949,7 @@ class Reader extends ViewPU {
             Slider.create({ value: this.lineHeight, min: 1.0, max: 3.0, step: 0.1, style: SliderStyle.InSet });
             Slider.blockColor('#191970');
             Slider.trackColor('#ADD8E6');
-            Slider.selectedColor('#4169E1');
+            Slider.selectedColor({ "id": 16777334, "type": 10001, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
             Slider.showSteps(true);
             Slider.showTips(true);
             Slider.width('60%');
@@ -2148,22 +2148,17 @@ class Reader extends ViewPU {
                             // this.isClicked = newState; // 先切换状态，让按钮图标变化
                             this.isClicked = !this.isClicked;
                             if (this.isClicked === true) {
-                                this.speaker.startSpeak(this.currentPageText);
+                                try {
+                                    this.speaker.startSpeak(this.currentPageText);
+                                }
+                                catch (error) {
+                                    this.getUIContext().getPromptAction().showToast({ message: '朗读失败', duration: 1000 });
+                                }
                             }
                             else {
+                                this.isClicked = false; // 朗读失败时恢复状态
                                 this.speaker.stopSpeak();
                             }
-                            // if (newState) {
-                            //   try {
-                            //     await this.speaker.startSpeak(this.currentPageText);
-                            //   } catch (error) {
-                            //     hilog.error(0x0000, TAG, `startSpeak error: ${error}`);
-                            //     this.isClicked = false; // 朗读失败时恢复状态
-                            //     this.getUIContext().getPromptAction().showToast({ message: '朗读失败', duration: 1000 });
-                            //   }
-                            // } else {
-                            //   this.speaker.stopSpeak();
-                            // }
                         });
                     }, Image);
                     //播放图标

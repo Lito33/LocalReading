@@ -243,8 +243,8 @@ export struct Mine {
               Text(this.isLoggedIn ? this.currentUser : "未登录")//显示用户名
                 .fontColor(Color.Black)
                 .fontSize(this.getTitleFontSize())
-              //如果未登录则显示"登录"，如果已经登录则显示"退出登录"
-              //点击后如果未登录，则跳转到登录界面
+              // 如果未登录则显示"登录"，如果已经登录则显示"退出登录"
+              // 点击后如果未登录，则跳转到登录界面
               if (this.isLoggedIn) {
                 Button("退出登录")
                   .width(this.isTablet() ? 120 : 100)
@@ -522,10 +522,10 @@ export struct Mine {
   }
 
 
-  //删除页面过渡动画以加快阅读器的页面访问速度
-  pageTransition() {
-    PageTransitionEnter({ duration: 0, curve: Curve.Sharp });
-    PageTransitionExit({ duration: 0, curve: Curve.Sharp });
-  }
+  //
+  // pageTransition() {
+  //   PageTransitionEnter({ duration: 0, curve: Curve.Sharp });
+  //   PageTransitionExit({ duration: 0, curve: Curve.Sharp });
+  // }
 
 }

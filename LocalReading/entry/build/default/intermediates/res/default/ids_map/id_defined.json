@@ -471,5 +471,9 @@
 			"type":	"string",
 			"name":	"RememberPassword",
 			"id":	"0x01000075"
+		}, {
+			"type":	"color",
+			"name":	"blue2",
+			"id":	"0x01000076"
 		}]
 }

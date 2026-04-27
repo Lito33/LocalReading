@@ -502,8 +502,8 @@ export class Mine extends ViewPU {
         Text.pop();
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             If.create();
-            //如果未登录则显示"登录"，如果已经登录则显示"退出登录"
-            //点击后如果未登录，则跳转到登录界面
+            // 如果未登录则显示"登录"，如果已经登录则显示"退出登录"
+            // 点击后如果未登录，则跳转到登录界面
             if (this.isLoggedIn) {
                 this.ifElseBranchUpdateFunction(0, () => {
                     this.observeComponentCreation2((elmtId, isInitialRender) => {
@@ -808,19 +808,6 @@ export class Mine extends ViewPU {
         Scroll.pop();
         // 使用Refresh组件包裹整个内容，并添加自定义下拉效果
         Refresh.pop();
-    }
-    //删除页面过渡动画以加快阅读器的页面访问速度
-    pageTransition() {
-        this.observeComponentCreation2((elmtId, isInitialRender) => {
-            PageTransition.create();
-        }, null);
-        this.observeComponentCreation2((elmtId, isInitialRender) => {
-            PageTransitionEnter.create({ duration: 0, curve: Curve.Sharp });
-        }, null);
-        this.observeComponentCreation2((elmtId, isInitialRender) => {
-            PageTransitionExit.create({ duration: 0, curve: Curve.Sharp });
-        }, null);
-        PageTransition.pop();
     }
     rerender() {
         this.updateDirtyElements();

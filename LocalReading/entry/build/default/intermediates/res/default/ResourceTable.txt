@@ -49,6 +49,7 @@ color black_5_opacity 0x0100001b
 color black_60_opacity 0x0100001c
 color black_90_opacity 0x0100001d
 color blue 0x0100001e
+color blue2 0x01000076
 color color_transparent 0x0100001f
 color ic_bg_black 0x01000070
 color ic_bg_font_selected 0x01000020

@@ -280,6 +280,7 @@ struct About{
       .backgroundColor(Color.White)
 
 
+
     // 通知栏
     Column() {
       // 标题栏
@@ -352,11 +353,15 @@ struct About{
     .backgroundColor(this.eyeMode ? '#FAF9DE' : $r('app.color.page_background1'))
 
 
+
+
+
   }
 
-  pageTransition() {
-    PageTransitionEnter({ duration: 0, curve: Curve.Sharp });
-    PageTransitionExit({ duration: 0, curve: Curve.Sharp });
+  pageTransition(){
+    PageTransitionEnter({ duration: 200, curve: Curve.Sharp });
+    PageTransitionExit({ duration: 200, curve: Curve.Sharp }).slide(SlideEffect.Right);
   }
+
 
 }

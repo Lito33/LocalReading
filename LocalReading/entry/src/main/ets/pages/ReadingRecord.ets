@@ -231,6 +231,7 @@ struct ReadingRecord {
     .width('100%')
     .height('100%')
     .backgroundColor(this.eyeMode ? '#FAF9DE' : $r('app.color.page_background1'))
+
   }
 
   @Builder
@@ -305,9 +306,8 @@ struct ReadingRecord {
     }
     return '暂无进度';
   }
-
   pageTransition() {
     PageTransitionEnter({ duration: 0, curve: Curve.Sharp });
-    PageTransitionExit({ duration: 0, curve: Curve.Sharp });
+    PageTransitionExit({ duration: 200, curve: Curve.Sharp }).slide(SlideEffect.Right);
   }
 }

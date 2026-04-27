@@ -1134,7 +1134,7 @@ struct Reader {
           .width(20)
           .checked(true)
           .radioStyle({
-            checkedBackgroundColor: Color.Blue,
+            checkedBackgroundColor: $r('app.color.blue2'),
           })
           .onClick(async () => {//仿真翻页组件,翻页方式代码
             const currentResourceIndex = this.currentData?.resourceIndex ?? 0;
@@ -1161,7 +1161,7 @@ struct Reader {
           .width(20)
           .checked(false)
           .radioStyle({
-            checkedBackgroundColor: Color.Blue,
+            checkedBackgroundColor: $r('app.color.blue2'),
           })
           .onClick(() => {//横滑翻页组件
             this.readerSetting.flipMode = '1';
@@ -1196,7 +1196,7 @@ struct Reader {
           .margin({ left: 5 ,right: 5 })
 
         Toggle({ type: ToggleType.Switch, isOn: this.singleHandMode })
-          .selectedColor(Color.Blue)
+          .selectedColor($r('app.color.blue2'))
           .onChange((isOn: boolean) => {
             this.singleHandMode = isOn;
             this.saveCurrentSettings();
@@ -1255,7 +1255,7 @@ struct Reader {
                 this.readerSetting.themeBgImg = 'dark_sky_first.jpg';
                 this.readerSetting.fontColor = '#ffffff';
                 this.readerSetting.nightMode = true;
-              } else if (index == 4) {
+              } else if (index === 4) {
                 this.readerSetting.themeBgImg = '';
                 this.readerSetting.nightMode = true;
                 this.readerSetting.fontColor = '#ffffff';
@@ -1311,7 +1311,7 @@ struct Reader {
         Slider({value:this.ttsVolume,min:0,max:2,step:0.5,style:SliderStyle.InSet})
           .blockColor('#191970')
           .trackColor('#ADD8E6')
-          .selectedColor('#4169E1')
+          .selectedColor($r('app.color.blue2'))
           .showSteps(true)// 显示刻度点
           .showTips(true)
           .width('60%')
@@ -1342,7 +1342,7 @@ struct Reader {
         Slider({value:this.ttsPitch,min:0.5,max:2.0,step:0.25,style:SliderStyle.InSet})
           .blockColor('#191970')
           .trackColor('#ADD8E6')
-          .selectedColor('#4169E1')
+          .selectedColor($r('app.color.blue2'))
           .showSteps(true)// 显示刻度点
           .showTips(true)
           .width('60%')
@@ -1374,7 +1374,7 @@ struct Reader {
         Slider({value:this.ttsSpeed,min:0.5,max:2.0,step:0.25,style:SliderStyle.InSet})
           .blockColor('#191970')
           .trackColor('#ADD8E6')
-          .selectedColor('#4169E1')
+          .selectedColor($r('app.color.blue2'))
           .showSteps(true)// 显示刻度点
           .showTips(true)
           .width('60%')
@@ -1411,7 +1411,7 @@ struct Reader {
         Slider({value: this.fontSize, min: 12, max: 32, step: 1, style: SliderStyle.InSet})
           .blockColor('#191970')
           .trackColor('#ADD8E6')
-          .selectedColor('#4169E1')
+          .selectedColor($r('app.color.blue2'))
           .showSteps(true)
           .showTips(true)
           .width('60%')
@@ -1444,7 +1444,7 @@ struct Reader {
         Slider({value: this.lineHeight, min: 1.0, max: 3.0, step: 0.1, style: SliderStyle.InSet})
           .blockColor('#191970')
           .trackColor('#ADD8E6')
-          .selectedColor('#4169E1')
+          .selectedColor($r('app.color.blue2'))
           .showSteps(true)
           .showTips(true)
           .width('60%')
