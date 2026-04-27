@@ -38,7 +38,7 @@
     },
     {
       "name": "content_input_tip",
-      "value": "Please input the content"
+      "value": "Please input the content,Exit automatic save"
     }
   ]
 }

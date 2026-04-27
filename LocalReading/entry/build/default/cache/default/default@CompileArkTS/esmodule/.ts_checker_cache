@@ -944,7 +944,8 @@
         "D:\\devecoStudioDriector\\SomeDemo\\LocalReading\\entry\\src\\main\\ets\\pages\\ReadingRecord.ets",
         "D:\\devecoStudioDriector\\SomeDemo\\LocalReading\\entry\\src\\main\\ets\\common\\DebugStorage.ets",
         "D:\\devecoStudioDriector\\SomeDemo\\LocalReading\\entry\\src\\main\\ets\\pages\\SyncSettings.ets",
-        "D:\\what down\\vediodown\\tool\\devecostudio\\DevEco Studio\\sdk\\default\\openharmony\\ets\\kits\\@kit.ArkUI.d.ts"
+        "D:\\what down\\vediodown\\tool\\devecostudio\\DevEco Studio\\sdk\\default\\openharmony\\ets\\kits\\@kit.ArkUI.d.ts",
+        "D:\\devecoStudioDriector\\SomeDemo\\LocalReading\\exfeature\\note\\src\\main\\ets\\view\\NoteItemEdit.ets"
       ],
       "error": false
     },
@@ -2445,7 +2446,7 @@
       "error": false
     },
     "D:\\devecoStudioDriector\\SomeDemo\\LocalReading\\exfeature\\note\\src\\main\\ets\\components\\Notes.ets": {
-      "mtimeMs": 1776432886430.9817,
+      "mtimeMs": 1777288915290.9082,
       "children": [
         "D:\\devecoStudioDriector\\SomeDemo\\LocalReading\\exfeature\\note\\src\\main\\ets\\viewmodel\\NoteData.ets",
         "D:\\devecoStudioDriector\\SomeDemo\\LocalReading\\exfeature\\note\\src\\main\\ets\\view\\NoteItemEdit.ets",
@@ -2467,10 +2468,11 @@
       "error": false
     },
     "D:\\devecoStudioDriector\\SomeDemo\\LocalReading\\exfeature\\note\\src\\main\\ets\\view\\NoteItemEdit.ets": {
-      "mtimeMs": 1772633882000,
+      "mtimeMs": 1777289825457.5608,
       "children": [
         "D:\\devecoStudioDriector\\SomeDemo\\LocalReading\\exfeature\\note\\src\\main\\ets\\viewmodel\\NoteData.ets",
-        "D:\\devecoStudioDriector\\SomeDemo\\LocalReading\\exfeature\\note\\src\\main\\ets\\model\\NotePreferenceModel.ets"
+        "D:\\devecoStudioDriector\\SomeDemo\\LocalReading\\exfeature\\note\\src\\main\\ets\\model\\NotePreferenceModel.ets",
+        "D:\\what down\\vediodown\\tool\\devecostudio\\DevEco Studio\\sdk\\default\\openharmony\\ets\\api\\@ohos.router.d.ts"
       ],
       "parent": [
         "D:\\devecoStudioDriector\\SomeDemo\\LocalReading\\exfeature\\note\\src\\main\\ets\\components\\Notes.ets"

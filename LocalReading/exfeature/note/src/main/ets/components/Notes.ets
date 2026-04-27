@@ -122,10 +122,11 @@ export struct Notes {
     Text(title)
       .fontSize("28fp")
       .fontWeight(FontWeight.Bold)
-      .fontColor(Color.Black)//this.getTextColor()
+      .fontColor(Color.Black)
       .textAlign(TextAlign.Start)
       .width("100%")
       .height("100%")
+
   }
   //展示item和控制添加和删除
   @Builder
@@ -133,11 +134,13 @@ export struct Notes {
     Column() {
       Row() {
         Text(noteData.title)
-          .fontColor(Color.Black)//this.getTextColor()
-          .fontSize("20fp")
+          .fontColor("#ff545454")
+          .fontSize("18fp")
           .fontWeight(FontWeight.Bold)
           .textAlign(TextAlign.Start)
-          .layoutWeight(1) //占据剩余空间，将复选框推到右侧
+          .layoutWeight(1) // 占据剩余空间，将复选框推到右侧
+          .textOverflow({overflow : TextOverflow.Ellipsis})
+          .maxLines(1)
 
         if (this.deleteMode) {//选中就改变样式
           Checkbox()
@@ -153,7 +156,6 @@ export struct Notes {
 
       }
       .width("100%")
-//      .height("40%")
       .justifyContent(FlexAlign.SpaceBetween)
 
       Row() {

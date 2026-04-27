@@ -1,10 +1,11 @@
 import NoteData from "../viewmodel/NoteData"
 import NotePreferenceModel from "../model/NotePreferenceModel"
+import { router } from "@kit.ArkUI";
 
 //编辑note的页面
 @Component
 export default struct NoteItemEdit {
-  @StorageLink('globalBgColor') bgColor: string = '#FFFFFF';
+  @StorageLink('eyeMode') eyeMode: boolean = false;
   @Consume("Notes") notes: Array<NoteData>
   @Consume("NotesPageStack") notesPageStack: NavPathStack;
   @Prop note: NoteData;//单向接收note的值
@@ -38,39 +39,64 @@ export default struct NoteItemEdit {
   build() {
     NavDestination() {
       Column() {
-        Row() {
-          Text($r("app.string.create_at"))
-            .fontColor(this.getTextColor())
-          Text((new Date(this.note.createdAt)).toLocaleString())
-            .fontColor(this.getTextColor())
+        Row(){
+          Image($r('app.media.arrow_Left'))
+            .width(25)
+            .height(25)
+            .margin({left:20,top: 20})
+            .onClick(() => {
+                this.notesPageStack.pop();
+            })
+
+          Blank()
+            .layoutWeight(0.8)
+
+          Column(){
+            Row() {
+              Text($r("app.string.create_at"))
+                .fontColor(Color.Black)
+              Text((new Date(this.note.createdAt)).toLocaleString())
+                .fontColor(Color.Black)
+            }
+            .height("3%")
+            .margin({top:40})
+            Row() {
+              Text($r("app.string.updated_at"))
+                .fontColor(Color.Black)
+              Text((new Date(this.note.updatedAt)).toLocaleString())
+                .fontColor(Color.Black)
+            }
+            .height("3%")
+            .margin("1%")
+          }
+          Blank()
+            .layoutWeight(1)
         }
-        .height("3%")
-        .margin({top:40})
-        Row() {
-          Text($r("app.string.updated_at"))
-            .fontColor(this.getTextColor())
-          Text((new Date(this.note.updatedAt)).toLocaleString())
-            .fontColor(this.getTextColor())
-        }
-        .height("3%")
-        .margin("1%")
+         .width('100%')
         TextInput({placeholder: $r("app.string.title_input_tip"), text: this.m_title})
           .onChange((v: string) => {
             this.m_title = v;
           })
-          .fontColor(this.getTextColor())
-          .placeholderColor(this.getTextColor())
+          .fontColor(Color.Black)
+          .placeholderColor('#ff3e3e3e')
           .margin("2%")
           .height("6%")
+          .borderStyle(BorderStyle.Solid)
+          .borderWidth(1)
+          .borderColor('#ff515151')
         TextArea({placeholder: $r("app.string.content_input_tip"), text: this.m_content})
           .onChange((v: string) => {
             this.m_content = v;
           })
-          .fontColor(this.getTextColor())
-          .placeholderColor(this.getTextColor())
+          .fontColor(Color.Black)
+          .placeholderColor('#ff3e3e3e')
           .height("80%")
+          .borderStyle(BorderStyle.Solid)
+          .borderWidth(1)
+          .borderColor('#ff515151')
+          .width('95%')
       }
-      .backgroundColor(this.bgColor)
+      .backgroundColor(this.eyeMode === true ? '#FAF9DE' : "#F1F3F5")
       .width("100%")
       .height("100%")
 
@@ -78,7 +104,5 @@ export default struct NoteItemEdit {
     .hideTitleBar(true)
 
   }
-  private getTextColor(): Color {
-    return this.bgColor === '#333333' ? Color.White : Color.Black;
-  }
+
 }

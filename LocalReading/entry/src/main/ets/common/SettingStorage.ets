@@ -82,7 +82,6 @@ export class SettingStorage {
       const json = await pref.get(SETTINGS_KEY, '');
       if (!json) return null;
 
-      
       const loaded = JSON.parse(json as string) as Record<string, Object>;
       // 合并默认值，确保所有字段都存在
       return SettingStorage.mergeWithDefaults(loaded);

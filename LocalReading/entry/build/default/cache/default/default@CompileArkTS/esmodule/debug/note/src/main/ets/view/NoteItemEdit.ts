@@ -2,7 +2,7 @@ if (!("finalizeConstruction" in ViewPU.prototype)) {
     Reflect.set(ViewPU.prototype, "finalizeConstruction", () => { });
 }
 interface NoteItemEdit_Params {
-    bgColor?: string;
+    eyeMode?: boolean;
     notes?: Array<NoteData>;
     notesPageStack?: NavPathStack;
     note?: NoteData;
@@ -17,7 +17,7 @@ export default class NoteItemEdit extends ViewPU {
         if (typeof paramsLambda === "function") {
             this.paramsGenerator_ = paramsLambda;
         }
-        this.__bgColor = this.createStorageLink('globalBgColor', '#FFFFFF', "bgColor");
+        this.__eyeMode = this.createStorageLink('eyeMode', false, "eyeMode");
         this.__notes = this.initializeConsume("Notes", "notes");
         this.__notesPageStack = this.initializeConsume("NotesPageStack", "notesPageStack");
         this.__note = new SynchedPropertyObjectOneWayPU(params.note, this, "note");
@@ -38,7 +38,7 @@ export default class NoteItemEdit extends ViewPU {
         this.__note.reset(params.note);
     }
     purgeVariableDependenciesOnElmtId(rmElmtId) {
-        this.__bgColor.purgeDependencyOnElmtId(rmElmtId);
+        this.__eyeMode.purgeDependencyOnElmtId(rmElmtId);
         this.__notes.purgeDependencyOnElmtId(rmElmtId);
         this.__notesPageStack.purgeDependencyOnElmtId(rmElmtId);
         this.__note.purgeDependencyOnElmtId(rmElmtId);
@@ -46,7 +46,7 @@ export default class NoteItemEdit extends ViewPU {
         this.__m_content.purgeDependencyOnElmtId(rmElmtId);
     }
     aboutToBeDeleted() {
-        this.__bgColor.aboutToBeDeleted();
+        this.__eyeMode.aboutToBeDeleted();
         this.__notes.aboutToBeDeleted();
         this.__notesPageStack.aboutToBeDeleted();
         this.__note.aboutToBeDeleted();
@@ -55,12 +55,12 @@ export default class NoteItemEdit extends ViewPU {
         SubscriberManager.Get().delete(this.id__());
         this.aboutToBeDeletedInternal();
     }
-    private __bgColor: ObservedPropertyAbstractPU<string>;
-    get bgColor() {
-        return this.__bgColor.get();
+    private __eyeMode: ObservedPropertyAbstractPU<boolean>;
+    get eyeMode() {
+        return this.__eyeMode.get();
     }
-    set bgColor(newValue: string) {
-        this.__bgColor.set(newValue);
+    set eyeMode(newValue: boolean) {
+        this.__eyeMode.set(newValue);
     }
     private __notes: ObservedPropertyAbstractPU<Array<NoteData>>;
     get notes() {
@@ -124,9 +124,30 @@ export default class NoteItemEdit extends ViewPU {
             NavDestination.create(() => {
                 this.observeComponentCreation2((elmtId, isInitialRender) => {
                     Column.create();
-                    Column.backgroundColor(this.bgColor);
+                    Column.backgroundColor(this.eyeMode === true ? '#FAF9DE' : "#F1F3F5");
                     Column.width("100%");
                     Column.height("100%");
+                }, Column);
+                this.observeComponentCreation2((elmtId, isInitialRender) => {
+                    Row.create();
+                    Row.width('100%');
+                }, Row);
+                this.observeComponentCreation2((elmtId, isInitialRender) => {
+                    Image.create({ "id": 16777277, "type": 20000, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
+                    Image.width(25);
+                    Image.height(25);
+                    Image.margin({ left: 20, top: 20 });
+                    Image.onClick(() => {
+                        this.notesPageStack.pop();
+                    });
+                }, Image);
+                this.observeComponentCreation2((elmtId, isInitialRender) => {
+                    Blank.create();
+                    Blank.layoutWeight(0.8);
+                }, Blank);
+                Blank.pop();
+                this.observeComponentCreation2((elmtId, isInitialRender) => {
+                    Column.create();
                 }, Column);
                 this.observeComponentCreation2((elmtId, isInitialRender) => {
                     Row.create();
@@ -135,12 +156,12 @@ export default class NoteItemEdit extends ViewPU {
                 }, Row);
                 this.observeComponentCreation2((elmtId, isInitialRender) => {
                     Text.create({ "id": 16777311, "type": 10003, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
-                    Text.fontColor(this.getTextColor());
+                    Text.fontColor(Color.Black);
                 }, Text);
                 Text.pop();
                 this.observeComponentCreation2((elmtId, isInitialRender) => {
                     Text.create((new Date(this.note.createdAt)).toLocaleString());
-                    Text.fontColor(this.getTextColor());
+                    Text.fontColor(Color.Black);
                 }, Text);
                 Text.pop();
                 Row.pop();
@@ -151,42 +172,53 @@ export default class NoteItemEdit extends ViewPU {
                 }, Row);
                 this.observeComponentCreation2((elmtId, isInitialRender) => {
                     Text.create({ "id": 16777317, "type": 10003, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
-                    Text.fontColor(this.getTextColor());
+                    Text.fontColor(Color.Black);
                 }, Text);
                 Text.pop();
                 this.observeComponentCreation2((elmtId, isInitialRender) => {
                     Text.create((new Date(this.note.updatedAt)).toLocaleString());
-                    Text.fontColor(this.getTextColor());
+                    Text.fontColor(Color.Black);
                 }, Text);
                 Text.pop();
+                Row.pop();
+                Column.pop();
+                this.observeComponentCreation2((elmtId, isInitialRender) => {
+                    Blank.create();
+                    Blank.layoutWeight(1);
+                }, Blank);
+                Blank.pop();
                 Row.pop();
                 this.observeComponentCreation2((elmtId, isInitialRender) => {
                     TextInput.create({ placeholder: { "id": 16777316, "type": 10003, params: [], "bundleName": "com.example.reader", "moduleName": "entry" }, text: this.m_title });
                     TextInput.onChange((v: string) => {
                         this.m_title = v;
                     });
-                    TextInput.fontColor(this.getTextColor());
-                    TextInput.placeholderColor(this.getTextColor());
+                    TextInput.fontColor(Color.Black);
+                    TextInput.placeholderColor('#ff3e3e3e');
                     TextInput.margin("2%");
                     TextInput.height("6%");
+                    TextInput.borderStyle(BorderStyle.Solid);
+                    TextInput.borderWidth(1);
+                    TextInput.borderColor('#ff515151');
                 }, TextInput);
                 this.observeComponentCreation2((elmtId, isInitialRender) => {
                     TextArea.create({ placeholder: { "id": 16777310, "type": 10003, params: [], "bundleName": "com.example.reader", "moduleName": "entry" }, text: this.m_content });
                     TextArea.onChange((v: string) => {
                         this.m_content = v;
                     });
-                    TextArea.fontColor(this.getTextColor());
-                    TextArea.placeholderColor(this.getTextColor());
+                    TextArea.fontColor(Color.Black);
+                    TextArea.placeholderColor('#ff3e3e3e');
                     TextArea.height("80%");
+                    TextArea.borderStyle(BorderStyle.Solid);
+                    TextArea.borderWidth(1);
+                    TextArea.borderColor('#ff515151');
+                    TextArea.width('95%');
                 }, TextArea);
                 Column.pop();
             }, { moduleName: "entry", pagePath: "exfeature/note/src/main/ets/view/NoteItemEdit" });
             NavDestination.hideTitleBar(true);
         }, NavDestination);
         NavDestination.pop();
-    }
-    private getTextColor(): Color {
-        return this.bgColor === '#333333' ? Color.White : Color.Black;
     }
     rerender() {
         this.updateDirtyElements();

@@ -309,11 +309,13 @@ export class Notes extends ViewPU {
         }, Row);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Text.create(noteData.title);
-            Text.fontColor(Color.Black);
-            Text.fontSize("20fp");
+            Text.fontColor("#ff545454");
+            Text.fontSize("18fp");
             Text.fontWeight(FontWeight.Bold);
             Text.textAlign(TextAlign.Start);
             Text.layoutWeight(1);
+            Text.textOverflow({ overflow: TextOverflow.Ellipsis });
+            Text.maxLines(1);
         }, Text);
         Text.pop();
         this.observeComponentCreation2((elmtId, isInitialRender) => {
@@ -367,7 +369,7 @@ export class Notes extends ViewPU {
         {
             this.observeComponentCreation2((elmtId, isInitialRender) => {
                 if (isInitialRender) {
-                    let componentCall = new NoteItemEdit(this, { note: this.note }, undefined, elmtId, () => { }, { page: "exfeature/note/src/main/ets/components/Notes.ets", line: 183, col: 5 });
+                    let componentCall = new NoteItemEdit(this, { note: this.note }, undefined, elmtId, () => { }, { page: "exfeature/note/src/main/ets/components/Notes.ets", line: 185, col: 5 });
                     ViewPU.create(componentCall);
                     let paramsLambda = () => {
                         return {
