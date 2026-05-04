@@ -1128,11 +1128,11 @@ struct Reader {
           .margin({left:5})
 
         Radio({
-          value: 'flipMode', group: 'radioGroup'
+          value: 'flipMode0', group: 'radioGroup'
         })
           .height(20)
           .width(20)
-          .checked(true)
+          .checked(this.readerSetting.flipMode === '0')
           .radioStyle({
             checkedBackgroundColor: $r('app.color.blue2'),
           })
@@ -1155,11 +1155,11 @@ struct Reader {
           .fontColor(this.eyeMode ? Color.White : Color.Black)
 
         Radio({
-          value: 'flipMode', group: 'radioGroup'
+          value: 'flipMode1', group: 'radioGroup'
         })
           .height(20)
           .width(20)
-          .checked(false)
+          .checked(this.readerSetting.flipMode === '1')
           .radioStyle({
             checkedBackgroundColor: $r('app.color.blue2'),
           })

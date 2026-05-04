@@ -1540,11 +1540,11 @@ class Reader extends ViewPU {
         Text.pop();
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Radio.create({
-                value: 'flipMode', group: 'radioGroup'
+                value: 'flipMode0', group: 'radioGroup'
             });
             Radio.height(20);
             Radio.width(20);
-            Radio.checked(true);
+            Radio.checked(this.readerSetting.flipMode === '0');
             Radio.radioStyle({
                 checkedBackgroundColor: { "id": 16777334, "type": 10001, params: [], "bundleName": "com.example.reader", "moduleName": "entry" },
             });
@@ -1571,11 +1571,11 @@ class Reader extends ViewPU {
         Text.pop();
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Radio.create({
-                value: 'flipMode', group: 'radioGroup'
+                value: 'flipMode1', group: 'radioGroup'
             });
             Radio.height(20);
             Radio.width(20);
-            Radio.checked(false);
+            Radio.checked(this.readerSetting.flipMode === '1');
             Radio.radioStyle({
                 checkedBackgroundColor: { "id": 16777334, "type": 10001, params: [], "bundleName": "com.example.reader", "moduleName": "entry" },
             });

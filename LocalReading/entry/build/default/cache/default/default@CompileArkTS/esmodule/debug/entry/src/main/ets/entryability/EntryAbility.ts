@@ -70,7 +70,7 @@ export default class EntryAbility extends UIAbility {
             hilog.error(0x0000, TAG, 'Failed to restore login state: ' + JSON.stringify(error));
             AppStorage.setOrCreate('currentUser', '');
         }
-        //pages/MainTab，页面加载 SyncTest
+        //pages/MainTab
         windowStage.loadContent('pages/Welcome', (err, data) => {
             if (err.code !== 0) {
                 hilog.error(0x0000, TAG, `Failed to load the content. Code: ${err.code}, message: ${err.message}`);

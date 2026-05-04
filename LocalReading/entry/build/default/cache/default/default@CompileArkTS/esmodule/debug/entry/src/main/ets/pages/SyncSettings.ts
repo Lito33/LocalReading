@@ -614,7 +614,7 @@ class SyncSettings extends ViewPU {
             Column.create();
             Column.width('100%');
             Column.padding(16);
-            Column.backgroundColor({ "id": 16777263, "type": 10001, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
+            Column.backgroundColor(Color.White);
             Column.borderRadius(8);
             Column.shadow({ radius: 4, color: '#00000010', offsetX: 0, offsetY: 2 });
         }, Column);

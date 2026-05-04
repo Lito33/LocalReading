@@ -359,7 +359,7 @@ struct SyncSettings {
     }
     .width('100%')
     .padding(16)
-    .backgroundColor($r('app.color.page_background1'))
+    .backgroundColor(Color.White)
     .borderRadius(8)
     .shadow({ radius: 4, color: '#00000010', offsetX: 0, offsetY: 2 })
   }
