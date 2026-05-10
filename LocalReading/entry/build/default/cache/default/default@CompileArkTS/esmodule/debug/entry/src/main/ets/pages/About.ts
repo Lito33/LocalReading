@@ -4,13 +4,21 @@ if (!("finalizeConstruction" in ViewPU.prototype)) {
 interface About_Params {
     eyeMode?: boolean;
     odd?: number;
+    audio?: number;
     isOddPressed?: boolean;
     isSyncPressed?: boolean;
+    isAudioPressed?: boolean;
+    avPlayer?: media.AVPlayer | null;
+    isPlayerInitialized?: boolean;
+    shouldAutoPlay?: boolean;
     windowWidth?: number;
 }
 import promptAction from "@ohos:promptAction";
 import router from "@ohos:router";
 import hilog from "@ohos:hilog";
+import media from "@ohos:multimedia.media";
+import type { BusinessError } from "@ohos:base";
+import type common from "@ohos:app.ability.common";
 const TAG = 'About';
 class About extends ViewPU {
     constructor(parent, params, __localStorage, elmtId = -1, paramsLambda = undefined, extraInfo) {
@@ -20,8 +28,13 @@ class About extends ViewPU {
         }
         this.__eyeMode = this.createStorageLink('eyeMode', false, "eyeMode");
         this.__odd = new ObservedPropertySimplePU(0, this, "odd");
+        this.__audio = new ObservedPropertySimplePU(0, this, "audio");
         this.__isOddPressed = new ObservedPropertySimplePU(false, this, "isOddPressed");
         this.__isSyncPressed = new ObservedPropertySimplePU(false, this, "isSyncPressed");
+        this.__isAudioPressed = new ObservedPropertySimplePU(false, this, "isAudioPressed");
+        this.avPlayer = null;
+        this.isPlayerInitialized = false;
+        this.shouldAutoPlay = false;
         this.__windowWidth = this.createStorageLink('windowWidth', 360
         // 判断是否为平板（物理像素阈值：手机 720-1440，平板 1600+）
         , "windowWidth");
@@ -32,11 +45,26 @@ class About extends ViewPU {
         if (params.odd !== undefined) {
             this.odd = params.odd;
         }
+        if (params.audio !== undefined) {
+            this.audio = params.audio;
+        }
         if (params.isOddPressed !== undefined) {
             this.isOddPressed = params.isOddPressed;
         }
         if (params.isSyncPressed !== undefined) {
             this.isSyncPressed = params.isSyncPressed;
+        }
+        if (params.isAudioPressed !== undefined) {
+            this.isAudioPressed = params.isAudioPressed;
+        }
+        if (params.avPlayer !== undefined) {
+            this.avPlayer = params.avPlayer;
+        }
+        if (params.isPlayerInitialized !== undefined) {
+            this.isPlayerInitialized = params.isPlayerInitialized;
+        }
+        if (params.shouldAutoPlay !== undefined) {
+            this.shouldAutoPlay = params.shouldAutoPlay;
         }
     }
     updateStateVars(params: About_Params) {
@@ -44,15 +72,19 @@ class About extends ViewPU {
     purgeVariableDependenciesOnElmtId(rmElmtId) {
         this.__eyeMode.purgeDependencyOnElmtId(rmElmtId);
         this.__odd.purgeDependencyOnElmtId(rmElmtId);
+        this.__audio.purgeDependencyOnElmtId(rmElmtId);
         this.__isOddPressed.purgeDependencyOnElmtId(rmElmtId);
         this.__isSyncPressed.purgeDependencyOnElmtId(rmElmtId);
+        this.__isAudioPressed.purgeDependencyOnElmtId(rmElmtId);
         this.__windowWidth.purgeDependencyOnElmtId(rmElmtId);
     }
     aboutToBeDeleted() {
         this.__eyeMode.aboutToBeDeleted();
         this.__odd.aboutToBeDeleted();
+        this.__audio.aboutToBeDeleted();
         this.__isOddPressed.aboutToBeDeleted();
         this.__isSyncPressed.aboutToBeDeleted();
+        this.__isAudioPressed.aboutToBeDeleted();
         this.__windowWidth.aboutToBeDeleted();
         SubscriberManager.Get().delete(this.id__());
         this.aboutToBeDeletedInternal();
@@ -71,6 +103,13 @@ class About extends ViewPU {
     set odd(newValue: number) {
         this.__odd.set(newValue);
     }
+    private __audio: ObservedPropertySimplePU<number>;
+    get audio() {
+        return this.__audio.get();
+    }
+    set audio(newValue: number) {
+        this.__audio.set(newValue);
+    }
     private __isOddPressed: ObservedPropertySimplePU<boolean>;
     get isOddPressed() {
         return this.__isOddPressed.get();
@@ -85,6 +124,17 @@ class About extends ViewPU {
     set isSyncPressed(newValue: boolean) {
         this.__isSyncPressed.set(newValue);
     }
+    private __isAudioPressed: ObservedPropertySimplePU<boolean>;
+    get isAudioPressed() {
+        return this.__isAudioPressed.get();
+    }
+    set isAudioPressed(newValue: boolean) {
+        this.__isAudioPressed.set(newValue);
+    }
+    // 音频播放器实例
+    private avPlayer: media.AVPlayer | null;
+    private isPlayerInitialized: boolean;
+    private shouldAutoPlay: boolean;
     // 响应式布局：监听窗口宽度
     private __windowWidth: ObservedPropertyAbstractPU<number>;
     get windowWidth() {
@@ -116,6 +166,202 @@ class About extends ViewPU {
     // 计算图标大小
     private getIconSize(): number {
         return this.isTablet() ? 30 : 25;
+    }
+    // 初始化并播放音频
+    private async playAudio(): Promise<void> {
+        try {
+            // 如果播放器未初始化，则创建并设置
+            if (!this.avPlayer) {
+                this.avPlayer = await media.createAVPlayer();
+                this.shouldAutoPlay = true; // 设置自动播放标志
+                // 监听状态变化
+                this.avPlayer.on('stateChange', async (state: media.AVPlayerState, reason: media.StateChangeReason) => {
+                    hilog.info(0x0000, TAG, `Audio player state changed: ${state}, reason: ${reason}`);
+                    switch (state) {
+                        case 'initialized':
+                            // 进入initialized状态后调用prepare
+                            try {
+                                await this.avPlayer!.prepare();
+                                hilog.info(0x0000, TAG, 'Audio player prepared');
+                            }
+                            catch (error) {
+                                hilog.error(0x0000, TAG, `Failed to prepare audio player: ${error}`);
+                                this.shouldAutoPlay = false; // 准备失败，清除自动播放标志
+                            }
+                            break;
+                        case 'prepared':
+                            // 进入prepared状态后，如果shouldAutoPlay为true则播放
+                            if (this.shouldAutoPlay) {
+                                try {
+                                    await this.avPlayer!.play();
+                                    hilog.info(0x0000, TAG, 'Audio started playing');
+                                    this.shouldAutoPlay = false; // 播放后清除标志
+                                }
+                                catch (error) {
+                                    hilog.error(0x0000, TAG, `Failed to play audio: ${error}`);
+                                    this.shouldAutoPlay = false;
+                                }
+                            }
+                            break;
+                        case 'playing':
+                            hilog.info(0x0000, TAG, 'Audio is now playing');
+                            break;
+                        case 'completed':
+                            hilog.info(0x0000, TAG, 'Audio playback completed');
+                            // 播放完成后自动停止
+                            try {
+                                await this.avPlayer!.stop();
+                                hilog.info(0x0000, TAG, 'Audio stopped after completion');
+                            }
+                            catch (error) {
+                                hilog.error(0x0000, TAG, `Failed to stop audio after completion: ${error}`);
+                            }
+                            break;
+                        case 'stopped':
+                            hilog.info(0x0000, TAG, 'Audio stopped');
+                            // 停止后重置到idle状态，以便下次重新准备
+                            try {
+                                await this.avPlayer!.reset();
+                                hilog.info(0x0000, TAG, 'Audio player reset to idle');
+                            }
+                            catch (error) {
+                                hilog.error(0x0000, TAG, `Failed to reset audio player: ${error}`);
+                            }
+                            break;
+                        case 'error':
+                            hilog.error(0x0000, TAG, 'Audio player entered error state');
+                            this.shouldAutoPlay = false; // 错误状态清除自动播放标志
+                            break;
+                        case 'released':
+                            hilog.info(0x0000, TAG, 'Audio player released');
+                            this.shouldAutoPlay = false;
+                            break;
+                    }
+                });
+                // 监听错误
+                this.avPlayer.on('error', (error: BusinessError) => {
+                    hilog.error(0x0000, TAG, `Audio playback error: ${error.code}, ${error.message}`);
+                    this.shouldAutoPlay = false;
+                });
+                // 设置音频源（resources/rawfile/hacimi.wav）
+                // 使用resourceManager获取rawfile文件描述符，然后设置fdSrc
+                try {
+                    const context = getContext(this) as common.UIAbilityContext;
+                    const fileDescriptor = await context.resourceManager.getRawFd('hacimi.wav');
+                    const avFileDescriptor: media.AVFileDescriptor = {
+                        fd: fileDescriptor.fd,
+                        offset: fileDescriptor.offset,
+                        length: fileDescriptor.length
+                    };
+                    this.avPlayer.fdSrc = avFileDescriptor;
+                    hilog.info(0x0000, TAG, 'Audio source set via fdSrc, player should move to initialized state');
+                }
+                catch (error) {
+                    hilog.error(0x0000, TAG, `Failed to get raw file descriptor: ${error}`);
+                    this.shouldAutoPlay = false;
+                    return;
+                }
+            }
+            else {
+                // 如果播放器已存在，检查当前状态
+                const currentState = this.avPlayer.state;
+                hilog.info(0x0000, TAG, `Current player state: ${currentState}`);
+                // 根据当前状态决定操作
+                if (currentState === 'prepared' || currentState === 'paused' || currentState === 'completed') {
+                    // 在prepared、paused、completed状态下可以播放
+                    try {
+                        await this.avPlayer.play();
+                        hilog.info(0x0000, TAG, 'Audio resumed playing');
+                    }
+                    catch (error) {
+                        hilog.error(0x0000, TAG, `Failed to resume audio: ${error}`);
+                    }
+                }
+                else if (currentState === 'stopped') {
+                    // 在stopped状态下需要先reset到idle，然后重新设置url
+                    try {
+                        await this.avPlayer.reset();
+                        hilog.info(0x0000, TAG, 'Audio player reset to idle');
+                        // 重置后重新设置fdSrc
+                        const context = getContext(this) as common.UIAbilityContext;
+                        const fileDescriptor = await context.resourceManager.getRawFd('hacimi.wav');
+                        const avFileDescriptor: media.AVFileDescriptor = {
+                            fd: fileDescriptor.fd,
+                            offset: fileDescriptor.offset,
+                            length: fileDescriptor.length
+                        };
+                        this.avPlayer.fdSrc = avFileDescriptor;
+                        this.shouldAutoPlay = true; // 设置自动播放标志
+                        hilog.info(0x0000, TAG, 'Audio source reset via fdSrc, player should move to initialized state');
+                    }
+                    catch (error) {
+                        hilog.error(0x0000, TAG, `Failed to reset audio player: ${error}`);
+                    }
+                }
+                else if (currentState === 'idle') {
+                    // 在idle状态下需要重新设置fdSrc
+                    try {
+                        const context = getContext(this) as common.UIAbilityContext;
+                        const fileDescriptor = await context.resourceManager.getRawFd('hacimi.wav');
+                        const avFileDescriptor: media.AVFileDescriptor = {
+                            fd: fileDescriptor.fd,
+                            offset: fileDescriptor.offset,
+                            length: fileDescriptor.length
+                        };
+                        this.avPlayer.fdSrc = avFileDescriptor;
+                        this.shouldAutoPlay = true; // 设置自动播放标志
+                        hilog.info(0x0000, TAG, 'Audio source reset via fdSrc, player should move to initialized state');
+                    }
+                    catch (error) {
+                        hilog.error(0x0000, TAG, `Failed to get raw file descriptor in idle state: ${error}`);
+                        this.shouldAutoPlay = false;
+                    }
+                }
+                else if (currentState === 'playing') {
+                    // 已经在播放中，无需操作
+                    hilog.info(0x0000, TAG, 'Audio is already playing');
+                }
+                else if (currentState === 'initialized') {
+                    // 在initialized状态下调用prepare
+                    try {
+                        await this.avPlayer.prepare();
+                        hilog.info(0x0000, TAG, 'Audio player prepared from initialized state');
+                    }
+                    catch (error) {
+                        hilog.error(0x0000, TAG, `Failed to prepare audio from initialized state: ${error}`);
+                    }
+                }
+            }
+        }
+        catch (error) {
+            hilog.error(0x0000, TAG, `Failed to play audio: ${error}`);
+            this.shouldAutoPlay = false;
+        }
+    }
+    // 停止音频播放器
+    private async stopAudio(): Promise<void> {
+        try {
+            if (this.avPlayer) {
+                const currentState = this.avPlayer.state;
+                hilog.info(0x0000, TAG, `Current player state before stop: ${currentState}`);
+                // 只有在prepared、playing、paused、completed状态下才能调用stop
+                if (currentState === 'prepared' || currentState === 'playing' ||
+                    currentState === 'paused' || currentState === 'completed') {
+                    await this.avPlayer.stop();
+                    hilog.info(0x0000, TAG, 'Audio stopped successfully');
+                }
+                else if (currentState === 'stopped' || currentState === 'idle' || currentState === 'released') {
+                    // 已经在停止状态或已释放，无需操作
+                    hilog.info(0x0000, TAG, `Audio already in ${currentState} state`);
+                }
+                else {
+                    hilog.warn(0x0000, TAG, `Cannot stop audio from state: ${currentState}`);
+                }
+            }
+        }
+        catch (error) {
+            hilog.error(0x0000, TAG, `Failed to stop audio: ${error}`);
+        }
     }
     initialRender() {
         this.observeComponentCreation2((elmtId, isInitialRender) => {
@@ -269,6 +515,34 @@ class About extends ViewPU {
             Row.height(this.getRowHeight());
             Row.padding({ left: 6, right: 6, top: 6, bottom: 6 });
             Row.justifyContent(FlexAlign.SpaceBetween);
+            Row.backgroundColor(this.isAudioPressed ? '#E0E0E0' : Color.White);
+            Row.onTouch((event: TouchEvent) => {
+                if (event.type === TouchType.Down) {
+                    // 按下时改变状态
+                    this.isAudioPressed = true;
+                }
+                else if (event.type === TouchType.Up || event.type === TouchType.Cancel) {
+                    // 松开或取消时恢复状态
+                    this.isAudioPressed = false;
+                }
+            });
+            Row.onClick(async () => {
+                this.audio = (this.audio + 1) % 8;
+                if (this.audio == 7) { // 点击7下播放
+                    promptAction.showToast({
+                        message: '诗歌剧为您演唱',
+                        duration: 2000
+                    });
+                    await this.playAudio();
+                }
+                if (this.audio == 0) { // 第8下暂停播放
+                    promptAction.showToast({
+                        message: '(〒︿〒)',
+                        duration: 2000
+                    });
+                    await this.stopAudio();
+                }
+            });
         }, Row);
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Text.create("版本号:");
@@ -343,42 +617,6 @@ class About extends ViewPU {
             Image.height(this.isTablet() ? 24 : 20);
         }, Image);
         // 数据同步
-        Row.pop();
-        this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Row.create();
-            Row.width('100%');
-            Row.height(50);
-            Row.padding({ left: 6, right: 6, top: 6, bottom: 6 });
-            Row.justifyContent(FlexAlign.SpaceBetween);
-            Row.backgroundColor(this.isSyncPressed ? '#E0E0E0' : Color.White);
-            Row.onClick(() => {
-                router.pushUrl({ url: 'pages/SyncTest' }).catch((err: Error) => {
-                    hilog.error(0x0000, TAG, `pushUrl failed: ${err.message}`);
-                });
-            });
-        }, Row);
-        this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Row.create({ space: 7 });
-        }, Row);
-        this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Text.create("数据测试");
-            Text.fontSize(14);
-            Text.fontColor(Color.Black);
-            Text.margin({ left: 5 });
-        }, Text);
-        Text.pop();
-        this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Image.create({ "id": 16777300, "type": 20000, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
-            Image.width(20);
-            Image.height(20);
-        }, Image);
-        Row.pop();
-        this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Image.create({ "id": 16777278, "type": 20000, params: [], "bundleName": "com.example.reader", "moduleName": "entry" });
-            Image.margin({ right: 5 });
-            Image.width(20);
-            Image.height(20);
-        }, Image);
         Row.pop();
         //文字
         Column.pop();
@@ -497,6 +735,58 @@ class About extends ViewPU {
             PageTransitionExit.slide(SlideEffect.Right);
         }, null);
         PageTransition.pop();
+    }
+    // 释放音频播放器资源
+    private async releaseAudio(): Promise<void> {
+        try {
+            if (this.avPlayer) {
+                const currentState = this.avPlayer.state;
+                hilog.info(0x0000, TAG, `Current player state before release: ${currentState}`);
+                // 根据当前状态决定操作
+                if (currentState === 'prepared' || currentState === 'playing' ||
+                    currentState === 'paused' || currentState === 'completed') {
+                    // 先停止播放
+                    try {
+                        await this.avPlayer.stop();
+                        hilog.info(0x0000, TAG, 'Audio stopped before release');
+                        // 停止后等待状态变为stopped
+                        await new Promise<void>(resolve => setTimeout(resolve, 100));
+                    }
+                    catch (error) {
+                        hilog.error(0x0000, TAG, `Failed to stop audio before release: ${error}`);
+                    }
+                }
+                // 如果状态不是idle，先reset到idle状态
+                if (currentState !== 'idle' && currentState !== 'released') {
+                    try {
+                        await this.avPlayer.reset();
+                        hilog.info(0x0000, TAG, 'Audio player reset to idle');
+                        await new Promise<void>(resolve => setTimeout(resolve, 100));
+                    }
+                    catch (error) {
+                        hilog.error(0x0000, TAG, `Failed to reset audio player: ${error}`);
+                    }
+                }
+                // 释放资源（应该在idle状态调用release）
+                await this.avPlayer.release();
+                this.avPlayer = null;
+                this.isPlayerInitialized = false;
+                this.shouldAutoPlay = false;
+                hilog.info(0x0000, TAG, 'Audio player released');
+            }
+        }
+        catch (error) {
+            hilog.error(0x0000, TAG, `Failed to release audio player: ${error}`);
+        }
+    }
+    // 组件销毁时释放音频资源
+    aboutToDisappear(): void {
+        // 异步释放资源，但不等待
+        this.releaseAudio().then(() => {
+            hilog.info(0x0000, TAG, 'Audio player released in aboutToDisappear');
+        }).catch((error: Error) => {
+            hilog.error(0x0000, TAG, `Failed to release audio player in aboutToDisappear: ${error}`);
+        });
     }
     rerender() {
         this.updateDirtyElements();

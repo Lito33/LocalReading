@@ -347,7 +347,7 @@ struct Reader {
   }
 
 
-  //监听“文本缩放因子”Display.scaledDensity的变化。在变化时触发相应的页面退出行为，以确保阅读器能够重新适配新的密度设置
+  //监听“文本缩放因子”Display.scaledDensity的变化。检测到变化时重新初始化阅读器界面，以确保文字排版和UI布局能正确适配新的屏幕密度设置。
   registerScreenDensityChange() {
     this.screenDensityCallBack = () => {
       try {
@@ -793,9 +793,9 @@ struct Reader {
 
       // 准备多个可能的资源路径
       const possiblePaths: string[] = [];
-      if (spineItem.href) possiblePaths.push(spineItem.href);
-      if (spineItem.idRef) possiblePaths.push(spineItem.idRef);
-      // 如果 href 包含路径，有时需要去掉目录部分只取文件名？但不确定，先保持原样
+      if (spineItem.href) possiblePaths.push(spineItem.href);// 内容节点资源标识，唯一标识一个正文内容文件
+      if (spineItem.idRef) possiblePaths.push(spineItem.idRef);// 内容资源在书籍内的引用路径
+      // 如果 href 包含路径，有时需要去掉目录部分只取文件名？
 
       // 尝试不同的参数组合
       const attempts: AttemptParams[] = [];
